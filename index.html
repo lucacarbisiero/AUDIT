@@ -137,7 +137,12 @@ body {
   display: none !important;
         .docHeader { display:none !important; }
 }
-
+.printHeader{
+  position: fixed;
+  top: 15mm;      /* più in alto rispetto a prima */
+  left: 10mm;
+  right: 10mm;
+}
 .wrap{
   grid-template-columns: 1fr !important;
 }
@@ -145,7 +150,7 @@ body {
       .wrap { padding:0; }
       .panel.preview { border:0; padding:0; }
        .doc{
-    padding: 50mm 10mm 50mm 10mm !important;  /* 5cm sopra/sotto */
+    padding: 65mm 10mm 50mm 10mm !important;  /* 5cm sopra/sotto */
     border: 0 !important;
     border-radius: 0 !important;
 }
@@ -1561,6 +1566,7 @@ fileImport.addEventListener("change", async (e) => {
 </script>
 </body>
 </html>
+
 
 
 

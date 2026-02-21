@@ -132,6 +132,14 @@ body {
     /* Print */
     @media print {
       header, .panel.form { display:none; }
+      #formPanel,
+      .panel.form{
+  display: none !important;
+}
+
+.wrap{
+  grid-template-columns: 1fr !important;
+}
       body { background:#fff; }
       .wrap { padding:0; }
       .panel.preview { border:0; padding:0; }
@@ -209,17 +217,19 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    height: 80px;
+    height: 60px;
+    background: #fff;
+    z-index: 9999;
     text-align: left;
   }
 
   .printHeader img {
-    height: 60px;
-    margin: 10px 0 0 20px;
+    height: 30px;
+    margin: 10px 0 10px 20px;
   }
 
   .doc {
-    margin-top: 100px; /* spazio per non sovrapporre il contenuto */
+    padding-top: 80px !important;  /* spinge giù il contenuto */
   }
 
 }
@@ -1549,6 +1559,7 @@ fileImport.addEventListener("change", async (e) => {
 </script>
 </body>
 </html>
+
 
 
 

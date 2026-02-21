@@ -135,6 +135,7 @@ body {
       #formPanel,
       .panel.form{
   display: none !important;
+        .docHeader { display:none !important; }
 }
 
 .wrap{
@@ -143,7 +144,12 @@ body {
       body { background:#fff; }
       .wrap { padding:0; }
       .panel.preview { border:0; padding:0; }
-      .doc { max-width:none; border:0; border-radius:0; padding:0 10mm; }
+      .doc { 
+  max-width:none; 
+  border:0; 
+  border-radius:0; 
+  padding: 30mm 10mm 30mm 10mm; 
+}
       .chartCard { page-break-inside: avoid; }
       canvas { page-break-inside: avoid; }
       table { page-break-inside: avoid; }
@@ -224,7 +230,7 @@ body {
   }
 
   .printHeader img {
-    height: 30px;
+    height: 38px;
     margin: 10px 0 10px 20px;
   }
 
@@ -1559,6 +1565,7 @@ fileImport.addEventListener("change", async (e) => {
 </script>
 </body>
 </html>
+
 
 
 

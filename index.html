@@ -4,23 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Audit Energetico - Relazione</title>
-<link rel="manifest" href="manifest.json">
+
+  <!-- PWA / Icone (ho lasciato solo il necessario, senza duplicati) -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#7E57C2">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <link rel="icon" type="image/png" sizes="192x192" href="icona-192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="icona-512.png">
-<meta name="theme-color" content="#7E57C2">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" sizes="512x512" href="icona-512.png">
+  <link rel="apple-touch-icon" href="icona-192.png">
 
-<link rel="icon" type="image/png" sizes="192x192" href="icona-192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="icona-512.png">
-
-<link rel="apple-touch-icon" href="icona-192.png">
-
-<meta name="theme-color" content="#ffffff">
-<!-- fallback favicon -->
-<link rel="icon" type="image/png" sizes="192x192" href="icona-192.png">
-<link rel="apple-touch-icon" href="icona-512.png">
   <!-- ATECO map (stessa cartella) -->
   <script src="ateco_map.js"></script>
 
@@ -30,251 +23,418 @@
 
   <style>
     :root { --b:#ddd; --bg:#fafafa; --txt:#111; --muted:#666; }
-    html, body {
-  height: 100%;
-}
 
-body {
-  margin:0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  color:var(--txt);
-  background:var(--bg);
-  overflow: hidden; /* blocca scroll globale */
-}
-    header { padding:16px 20px; border-bottom:1px solid var(--b); background:#fff; }
-    header .sub { color:var(--muted); font-size:12px; margin-top:4px; }
-    .wrap {
-  display:grid;
-  grid-template-columns: 460px 1fr;
-  gap:16px;
-  padding:16px;
-  height: calc(100vh - 70px); /* altezza meno header */
-}
-    .panel { background:#fff; border:1px solid var(--b); border-radius:14px; padding:14px; }
-    .panel h2 { margin:0 0 10px; font-size:15px; }
+    html, body { height: 100%; }
 
-    label { display:block; font-size:12px; margin:10px 0 6px; color:#333; }
-    input, select, textarea {
-      width:100%; box-sizing:border-box; padding:10px;
-      border:1px solid #ccc; border-radius:10px; background:#fff;
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--txt);
+      background:var(--bg);
+      overflow: hidden; /* blocca scroll globale (2 scroll indipendenti nei pannelli) */
+    }
+
+    header{
+      padding:16px 20px;
+      border-bottom:1px solid var(--b);
+      background:#fff;
+    }
+    header .sub{ color:var(--muted); font-size:12px; margin-top:4px; }
+
+    .wrap{
+      display:grid;
+      grid-template-columns: 460px 1fr;
+      gap:16px;
+      padding:16px;
+      height: calc(100vh - 70px);
+    }
+
+    .panel{
+      background:#fff;
+      border:1px solid var(--b);
+      border-radius:14px;
+      padding:14px;
+      box-sizing: border-box;
+    }
+    .panel h2{ margin:0 0 10px; font-size:15px; }
+
+    label{ display:block; font-size:12px; margin:10px 0 6px; color:#333; }
+    input, select, textarea{
+      width:100%;
+      box-sizing:border-box;
+      padding:10px;
+      border:1px solid #ccc;
+      border-radius:10px;
+      background:#fff;
       font-size:14px;
     }
-    textarea { resize: vertical; min-height: 90px; }
-    .row { display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
-    .btns { display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
-    button { padding:10px 12px; border-radius:10px; cursor:pointer; border:1px solid #ccc; background:#fff; }
-    button.primary { background:#111; color:#fff; border-color:#111; }
-    .note { color:var(--muted); font-size:12px; margin-top:10px; line-height:1.35; }
-    .hr { border:0; border-top:1px solid #eee; margin: 14px 0; }
+    textarea{ resize: vertical; min-height: 90px; }
+
+    .row{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+    .btns{ display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
+    button{
+      padding:10px 12px;
+      border-radius:10px;
+      cursor:pointer;
+      border:1px solid #ccc;
+      background:#fff;
+    }
+    button.primary{ background:#111; color:#fff; border-color:#111; }
+    .note{ color:var(--muted); font-size:12px; margin-top:10px; line-height:1.35; }
+    .hr{ border:0; border-top:1px solid #eee; margin: 14px 0; }
 
     /* Documento preview (stile “Word-like”) */
-    .doc { max-width: 1050px; margin: 0 auto; padding: 10px 18px 40px; background:#fff; border:1px solid #eee; border-radius:14px; }
-    .doc h1 { font-size:22px; margin: 8px 0 12px; text-align:left; }
-    .doc h2 { font-size:16px; margin: 18px 0 8px; }
-    .doc p { font-size:13px; line-height:1.45; margin: 0 0 10px; text-align: justify;}
-    .muted { color:var(--muted); font-size:12px; }
+    .doc{
+      max-width: 1050px;
+      margin: 0 auto;
+      padding: 10px 18px 40px;
+      background:#fff;
+      border:1px solid #eee;
+      border-radius:14px;
+    }
+    .doc h1{ font-size:22px; margin: 8px 0 12px; text-align:left; }
+    .doc h2{ font-size:16px; margin: 18px 0 8px; }
+    .doc p{ font-size:13px; line-height:1.45; margin: 0 0 10px; text-align: justify; }
+    .muted{ color:var(--muted); font-size:12px; }
 
-    table { width:100%; border-collapse: collapse; font-size:13px; margin: 8px 0 12px; }
-    th, td { border:1px solid #ddd; padding:8px; vertical-align: top; }
-    th { background:#f6f6f6; text-align:left; }
-    .center { text-align:center; }
-    .right { text-align:right; }
+    table{ width:100%; border-collapse: collapse; font-size:13px; margin: 8px 0 12px; }
+    th, td{ border:1px solid #ddd; padding:8px; vertical-align: top; }
+    th{ background:#f6f6f6; text-align:left; }
+    .center{ text-align:center; }
+    .right{ text-align:right; }
 
     /* Interventi - form */
-    .intervForm { border:1px solid #eee; border-radius:12px; padding:10px; }
+    .intervForm{ border:1px solid #eee; border-radius:12px; padding:10px; }
 
-    /* ✅ FIX: aggiunta la 5ª colonna */
-    .iRow {
+    .iRow{
       display:grid;
       grid-template-columns: 1.2fr 0.9fr 0.9fr 0.9fr 1fr;
       gap:10px;
       margin-top:10px;
     }
-    .iRow:first-child { margin-top:0; }
-    .inlineChk { display:flex; align-items:center; gap:8px; padding:10px; border:1px solid #ccc; border-radius:10px; background:#fff; height: 42px; box-sizing:border-box; }
-    .inlineChk input { width:auto; }
+    .iRow:first-child{ margin-top:0; }
+    .inlineChk{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:10px;
+      border:1px solid #ccc;
+      border-radius:10px;
+      background:#fff;
+      height: 42px;
+      box-sizing:border-box;
+    }
+    .inlineChk input{ width:auto; }
 
     /* Charts */
-    .chartCard { border:1px solid #eee; border-radius:14px; padding:12px; background:#fff; margin: 8px 0 12px; }
-    .chartTitle { font-size:22px; font-weight:800; text-align:center; margin: 6px 0 8px; }
-    .chartWrap { position:relative; width:100%; }
-    .chartWrap.donut { max-width: 560px; margin: 0 auto; }
+    .chartCard{ border:1px solid #eee; border-radius:14px; padding:12px; background:#fff; margin: 8px 0 12px; }
+    .chartTitle{ font-size:22px; font-weight:800; text-align:center; margin: 6px 0 8px; }
+    .chartWrap{ position:relative; width:100%; }
+    .chartWrap.donut{ max-width: 560px; margin: 0 auto; }
 
-    .charts2 { display:grid; grid-columns: 2fr 1fr; gap: 14px; align-items:start; }
+    .charts2{ display:grid; grid-template-columns: 2fr 1fr; gap: 14px; align-items:start; }
+    .charts2equal{ display:grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items:start; }
 
-    /* Grafici sintesi consumi (2 colonne) */
-    .charts2equal {
-      display:grid;
-      grid-columns: 1fr 1fr;
-      gap: 14px;
-      align-items:start;
-    }
-
-    /* Immagine capitolo 6 */
     .nextStepsImg{
       display:block;
-  width:30%;
-  max-width: 520px;
-  height:auto;
-  margin: 14px auto 0;
-  border: 1px solid #eee;
-  border-radius: 14px;
-  page-break-inside: avoid;
+      width:30%;
+      max-width: 520px;
+      height:auto;
+      margin: 14px auto 0;
+      border: 1px solid #eee;
+      border-radius: 14px;
+      page-break-inside: avoid;
     }
 
-    @media (max-width: 980px) {
-      .wrap { grid-columns: 1fr; }
-      .charts2 { grid-columns: 1fr; }
-      .charts2equal { grid-columns: 1fr; }
-      .iRow { grid-columns: 1fr; }
+    @media (max-width: 980px){
+      .wrap{ grid-template-columns: 1fr; }
+      .charts2{ grid-template-columns: 1fr; }
+      .charts2equal{ grid-template-columns: 1fr; }
+      .iRow{ grid-template-columns: 1fr; }
     }
 
-/* =========================
-   PRINT
-   ========================= */
-@media print {
-  .printHeader{
-    position: fixed;
-    top: 15mm;
-    left: 15mm;
-    right: 10mm;
-    z-index: 9999;
-  }
+    /* Indice */
+    .indice{
+      margin: 40px 0;
+      padding: 18px 24px;
+      border: 1px solid #eee;
+      border-radius: 14px;
+      background: #fafafa;
+    }
+    .indice h2{ margin: 0 0 12px; font-size: 16px; }
+    .indice ul{ margin:0; padding-left:18px; }
+    .indice li{ margin:6px 0; font-size:13px; }
 
-  .printHeader img{
-    height: 38px;
-    display:block;
-  }
+    /* ===== Scroll pannelli (normale) ===== */
+    .panel.form{
+      display:flex;
+      flex-direction: column;
+      height: 100%;
+      overflow-y: auto;
+      padding-right: 8px;
+    }
+    .panel.preview{ overflow-y: auto; }
 
-  /* qui gestisci l'inizio del testo SENZA toccare il logo */
-  .printContent{
-    padding-top: 65mm; /* aumenta/diminuisci qui */
-  }
+    .formContent{
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 8px;
+    }
 
-  .doc{
-    max-width:none !important;
-    border:0 !important;
-    border-radius:0 !important;
-    padding: 0 10mm 50mm 10mm !important; /* niente padding-top qui */
-  }
-}
-    
+    /* Export sempre visibile */
+    .panel.form h2:last-of-type,
+    .panel.form .btns{ flex-shrink: 0; }
+
+    /* ===== Logo (a schermo lo nascondiamo, serve solo in stampa) ===== */
+    .printHeader{ display:none; }
+
+    /* =========================
+       PRINT
+       ========================= */
     @media print {
 
-  /* Nascondi form e header app */
-  header,
-  #formPanel,
-  .panel.form {
-    display: none !important;
-  }
+      /* Nascondi form e header app */
+      header,
+      #formPanel,
+      .panel.form{
+        display: none !important;
+      }
 
-  /* Layout a 1 colonna */
-  .wrap {
-    grid-template-columns: 1fr !important;
-    padding: 0 !important;
-    height: auto !important;
-  }
+      /* Layout a 1 colonna */
+      .wrap{
+        grid-template-columns: 1fr !important;
+        padding: 0 !important;
+        height: auto !important;
+      }
 
-  body {
-    background: #fff !important;
-    overflow: visible !important;
-  }
+      body{
+        background: #fff !important;
+        overflow: visible !important;
+      }
 
-  .panel.preview {
-    border: 0 !important;
-    padding: 0 !important;
-  }
+      .panel.preview{
+        border: 0 !important;
+        padding: 0 !important;
+        overflow: visible !important;
+      }
 
-  /* LOGO fisso (non si muove col testo) */
-  .printHeader {
-    position: fixed;
-    top: 15mm;          /* distanza dal bordo superiore pagina */
-    left: 15mm;
-    right: 10mm;
-    background: #fff;
-    z-index: 9999;
-    text-align: left;
-  }
+      /* LOGO fisso (ripetuto su ogni pagina) */
+      .printHeader{
+        display:block !important;
+        position: fixed;
+        top: 15mm;      /* 1,5 cm dal bordo alto */
+        left: 15mm;
+        right: 10mm;
+        background:#fff;
+        z-index: 9999;
+        text-align:left;
+      }
 
-  .printHeader img {
-    height: 38px;       /* +25% */
-    display: block;
-  }
+      .printHeader img{
+        height: 38px;   /* +25% */
+        display:block;
+      }
 
-  /* CONTENUTO: crea spazio sotto al logo */
-  .doc {
-    max-width: none !important;
-    border: 0 !important;
-    border-radius: 0 !important;
+      /* Documento: niente bordi, e margini carta via padding laterale/basso */
+      .doc{
+        max-width:none !important;
+        border:0 !important;
+        border-radius:0 !important;
+        padding: 0 10mm 50mm 10mm !important; /* no padding-top qui */
+      }
 
-    /* Qui controlli dove parte il testo su OGNI pagina */
-    padding: 65mm 10mm 50mm 10mm !important; /* top | right | bottom | left */
-  }
+      /* Contenuto: parte più in basso in TUTTE le pagine (sotto al logo) */
+      .printContent{
+        padding-top: 65mm !important; /* 6,5 cm dal bordo alto */
+      }
 
-  /* IMPORTANTISSIMO:
-     evita che il logo "rubI" spazio o venga trattato come primo elemento da spostare */
-  .doc > .printHeader {
-    margin: 0 !important;
-    padding: 0 !important;
-  }
+      /* Page break manuali */
+      .pageBreak{
+        break-before: page;
+        page-break-before: always;
+      }
 
-  /* Se vuoi spingere ANCORA GIÙ il contenuto, fallo sul primo titolo, non sul primo figlio */
-  .doc h1 {
-    margin-top: 0 !important; /* il padding-top della .doc gestisce già l'inizio */
-  }
+      /* Evita spezzature brutte */
+      .chartCard,
+      table,
+      canvas,
+      .nextStepsImg{
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
 
-  /* Page break manuali */
-  .pageBreak {
-    break-before: page;
-    page-break-before: always;
-  }
+<body>
+<header>
+  <div><strong>Luca Carbisiero</strong></div>
+  <div class="sub">Benvenuto</div>
+</header>
 
-  /* Evita spezzature brutte */
-  .chartCard,
-  table,
-  canvas,
-  .nextStepsImg {
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-}    
-/* =========================
-   SCROLL PANNELLI (NORMALE)
-   ========================= */
-body{
-  overflow: hidden; /* blocca scroll globale */
-}
+<div class="wrap">
+  <!-- FORM -->
+  <section class="panel form" id="formPanel">
+    <div class="formContent">
+      <h2>Dati base</h2>
 
-/* due scroll indipendenti */
-.panel.form{
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  overflow-y: auto;
-  padding-right: 8px;
-}
+      <label>Società ({{azienda}})</label>
+      <input id="azienda" placeholder="Es. ABC S.r.l." />
 
-.panel.preview{
-  overflow-y: auto;
-}
+      <div class="row">
+        <div>
+          <label>Data ({{data}})</label>
+          <input id="data" type="date" />
+        </div>
+        <div>
+          <label>Indirizzo del sito ({{indirizzo}})</label>
+          <input id="indirizzo" placeholder="Via..., Città" />
+        </div>
+      </div>
 
-/* formContent scrolla, export resta visibile */
-.formContent{
-  flex: 1;
-  overflow-y: auto;
-  padding-right: 8px;
-}
+      <div class="row">
+        <div>
+          <label>Codice ATECO ({{ateco}})</label>
+          <input id="ateco" placeholder="Es. 80.10.00" />
+        </div>
+        <div>
+          <label>Anno ATECO</label>
+          <select id="atecoAnno">
+            <option value="2007">2007</option>
+            <option value="2025">2025</option>
+          </select>
+        </div>
+      </div>
 
-.panel.form h2:last-of-type,
-.panel.form .btns{
-  flex-shrink: 0;
-}
+      <label>Descrizione ATECO ({{descrizioneateco}})</label>
+      <input id="descrizioneateco" placeholder="Compilata automaticamente" />
 
+      <hr class="hr"/>
+
+      <h2>Dati generali</h2>
+      <div class="row">
+        <div>
+          <label>Superficie stabilimento [m²] ({{superficie}})</label>
+          <input id="superficie" type="number" step="1" />
+        </div>
+        <div>
+          <label>Numero linee produttive ({{linee}})</label>
+          <input id="linee" type="number" step="1" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>Ore di funzionamento annue ({{ore}})</label>
+          <input id="ore" type="number" step="1" />
+        </div>
+        <div>
+          <label>Ambiente riscaldato ({{riscaldato}})</label>
+          <select id="riscaldato">
+            <option value="—">—</option>
+            <option value="Sì">Sì</option>
+            <option value="No">No</option>
+          </select>
+        </div>
+      </div>
+
+      <hr class="hr"/>
+
+      <h2>Flotta aziendale</h2>
+      <div class="row">
+        <div>
+          <label>Numero veicoli flotta aziendale ({{veicoli}})</label>
+          <input id="veicoli" type="number" step="1" />
+        </div>
+        <div>
+          <label>Chilometraggio medio auto [km] ({{km}})</label>
+          <input id="km" type="number" step="1" />
+        </div>
+      </div>
+
+      <label>Commento generale ({{Commento_generale}})</label>
+      <textarea id="commento_generale" placeholder="Inserisci qui note generali..."></textarea>
+
+      <hr class="hr"/>
+
+      <h2>Consumi annui</h2>
+      <div class="row">
+        <div>
+          <label>Energia elettrica rete [kWh] ({{EErete}})</label>
+          <input id="EErete" type="number" step="0.01" />
+        </div>
+        <div>
+          <label>Energia elettrica FER [kWh] ({{EEfer}})</label>
+          <input id="EEfer" type="number" step="0.01" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>Consumo annuo gas [Smc] ({{gas}})</label>
+          <input id="gas" type="number" step="0.01" />
+        </div>
+        <div>
+          <label>Consumo annuo gasolio [l] ({{gasolio}})</label>
+          <input id="gasolio" type="number" step="0.01" />
+        </div>
+      </div>
+
+      <hr class="hr"/>
+
+      <h2>Tariffe</h2>
+      <div class="row">
+        <div>
+          <label>Tariffa energia elettrica [€/kWh] ({{PEE}})</label>
+          <input id="PEE" type="number" step="0.0001" />
+        </div>
+        <div>
+          <label>Tariffa gas [€/Smc] ({{Pgas}})</label>
+          <input id="Pgas" type="number" step="0.0001" />
+        </div>
+      </div>
+      <label>Tariffa gasolio [€/l] ({{Pgasolio}})</label>
+      <input id="Pgasolio" type="number" step="0.0001" />
+
+      <hr class="hr"/>
+
+      <h2>Aree di intervento (standard)</h2>
+      <div class="note">
+        Selezioni solo <b>Efficienza</b>. La checkbox “Intervento consigliato” si spunta automaticamente per <b>Media</b> o <b>Bassa</b>.
+        Il campo <b>Opportunità</b> si abilita solo se la checkbox è spuntata (altrimenti resta vuoto e non editabile).
+      </div>
+
+      <div class="intervForm" id="interventiForm"></div>
+
+      <hr class="hr"/>
+    </div>
+
+    <h2>Export</h2>
+    <div class="btns">
+      <button class="primary" id="btnPrint">Stampa / Salva PDF</button>
+
+      <button id="btnExportJson">Esporta JSON</button>
+
+      <button id="btnImportJson">Importa JSON</button>
+      <input id="fileImportJson" type="file" accept="application/json" style="display:none" />
+
+      <button id="btnReset">Reset</button>
+    </div>
+  </section>
+
+  <!-- PREVIEW -->
+  <section class="panel preview">
+    <div class="doc" id="docRoot"></div>
+  </section>
+</div>
+
+<script>
   // =========================
-  // COLORI (come richiesto)
+  // COLORI
   // =========================
-  const ENERGY_COL = { ee:"#7E57C2", gas:"#00E676", gasolio:"#0F5B6E" }; // viola / verde / petrolio
-  const EFF_COL = { alta:"#8BD96B", media:"#FFC000", bassa:"#E8742B" };  // verde / giallo / arancio
+  const ENERGY_COL = { ee:"#7E57C2", gas:"#00E676", gasolio:"#0F5B6E" };
+  const EFF_COL    = { alta:"#8BD96B", media:"#FFC000", bassa:"#E8742B" };
+
   function rgba(hex, a){
     const h=hex.replace("#","");
     const r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),b=parseInt(h.slice(4,6),16);
@@ -282,7 +442,7 @@ body{
   }
 
   // =========================
-  // INTERVENTI STANDARD (dal Word)
+  // INTERVENTI STANDARD
   // =========================
   const INTERVENTI_STANDARD = [
     { area:"Motori elettrici", tipo:"Elettrico" },
@@ -303,344 +463,332 @@ body{
     { area:"Altro", tipo:"" }
   ];
 
-  // stato interventi: efficienza + opportunità (testo)
   const interventiState = INTERVENTI_STANDARD.map(() => ({ eff:"N.A.", intervento:false, opportunita:"" }));
 
   // =========================
-  // TEMPLATE (strutturato come Word)
+  // TEMPLATE (logo + wrapper printContent)
   // =========================
   const TEMPLATE = `
+    <div class="printHeader">
+      <img src="logo.png" alt="Logo" />
+    </div>
 
+    <div class="printContent">
+      <h1>AUDIT ENERGETICO</h1>
 
-<div class="printHeader">
-  <img src="logo.png" alt="Logo" />
-</div>
-   <div class="printContent">
-<h1>AUDIT ENERGETICO</h1>
+      <table>
+        <tbody>
+          <tr>
+            <td><b>Società:</b></td><td>{{azienda}}</td>
+            <td><b>Data:</b></td><td>{{data}}</td>
+          </tr>
+          <tr>
+            <td><b>Indirizzo del sito:</b></td><td colspan="3">{{indirizzo}}</td>
+          </tr>
+          <tr>
+            <td><b>Codice ATECO:</b></td><td>{{ateco}}</td>
+            <td><b>Descrizione ATECO:</b></td><td>{{descrizioneateco}}</td>
+          </tr>
+        </tbody>
+      </table>
 
+      <div class="indice">
+        <h2>Indice</h2>
+        <ul>
+          <li>1. Obiettivi dell'audit</li>
+          <li>2. Dati generali</li>
+          <li>3. Metodologia</li>
+          <li>4. Sintesi dei consumi</li>
+          <li>5. Analisi settoriale e opportunità</li>
+          <li>6. Aree di intervento</li>
+          <li>7. Next steps</li>
+        </ul>
+      </div>
 
-    <table>
-      <tbody>
-        <tr>
-          <td><b>Società:</b></td><td>{{azienda}}</td>
-          <td><b>Data:</b></td><td>{{data}}</td>
-        </tr>
-        <tr>
-          <td><b>Indirizzo del sito:</b></td><td colspan="3">{{indirizzo}}</td>
-        </tr>
-        <tr>
-          <td><b>Codice ATECO:</b></td><td>{{ateco}}</td>
-          <td><b>Descrizione ATECO:</b></td><td>{{descrizioneateco}}</td>
-        </tr>
-      </tbody>
-    </table>
+      <h2>Obiettivi dell'audit</h2>
+      <p>
+        L’audit ha come scopo principale l’analisi dei consumi energetici complessivi dell’azienda, con particolare attenzione alle aree e ai reparti che risultano più energivori.
+        L’attività è volta a individuare inefficienze o sprechi, stimare potenziali risparmi energetici e fornire raccomandazioni operative e strategiche che possano aiutare l’azienda a ottimizzare l’uso dell’energia.
+        Il focus si concentra su un sopralluogo generale e sull’identificazione di criticità evidenti.
+      </p>
 
-<div class="indice">
-  <h2>Indice</h2>
-  <ul>
-    <li>1. Obiettivi dell'audit</li>
-    <li>2. Dati generali</li>
-    <li>3. Metodologia</li>
-    <li>4. Sintesi dei consumi</li>
-    <li>5. Analisi settoriale e opportunità</li>
-    <li>6. Aree di intervento</li>
-    <li>7. Next steps</li>
-  </ul>
-</div>
-                
-    <h2>Obiettivi dell'audit</h2>
-    <p>
-      L’audit ha come scopo principale l’analisi dei consumi energetici complessivi dell’azienda, con particolare attenzione alle aree e ai reparti che risultano più energivori.
-      L’attività è volta a individuare inefficienze o sprechi, stimare potenziali risparmi energetici e fornire raccomandazioni operative e strategiche che possano aiutare l’azienda a ottimizzare l’uso dell’energia.
-      Il focus si concentra su un sopralluogo generale e sull’identificazione di criticità evidenti.
-    </p>
+      <div class="pageBreak"></div>
 
-                        <div class="pageBreak"></div>
-        
-    <h2>Dati generali</h2>
-    <p>
-      Il check-up considera i principali dati energetici disponibili dell’azienda, tra cui la superficie dello stabilimento, il numero di linee produttive, il consumo annuo di elettricità e gas/metano,
-      le ore di funzionamento e le tariffe energetiche applicate. Questi dati servono a fornire un quadro generale dell’impegno energetico dell’azienda e delle possibili aree di intervento.
-      Eventuali informazioni aggiuntive, come il tipo di impianti utilizzati o le caratteristiche specifiche di alcuni reparti, vengono annotate durante il sopralluogo.
-      L'output del presente report è prodotto sulla base di interviste al personale aziendale e analisi delle fatture dei fornitori di energia.
-    </p>
+      <h2>Dati generali</h2>
+      <p>
+        Il check-up considera i principali dati energetici disponibili dell’azienda, tra cui la superficie dello stabilimento, il numero di linee produttive, il consumo annuo di elettricità e gas/metano,
+        le ore di funzionamento e le tariffe energetiche applicate. Questi dati servono a fornire un quadro generale dell’impegno energetico dell’azienda e delle possibili aree di intervento.
+        Eventuali informazioni aggiuntive, come il tipo di impianti utilizzati o le caratteristiche specifiche di alcuni reparti, vengono annotate durante il sopralluogo.
+        L'output del presente report è prodotto sulla base di interviste al personale aziendale e analisi delle fatture dei fornitori di energia.
+      </p>
 
-    <table>
-      <tbody>
-        <tr><td>Superficie stabilimento [m2]:</td><td class="right">{{superficie}}</td></tr>
-        <tr><td>Numero linee produttive:</td><td class="right">{{linee}}</td></tr>
-        <tr><td>Ore di funzionamento annue:</td><td class="right">{{ore}}</td></tr>
-        <tr><td>Energia elettrica rete [kWh]:</td><td class="right">{{EErete}}</td></tr>
-        <tr><td>Energia elettrica FER [kWh]:</td><td class="right">{{EEfer}}</td></tr>
-        <tr><td>Consumo annuo gas [Smc]:</td><td class="right">{{gas}}</td></tr>
-        <tr><td>Consumo annuo gasolio [l]:</td><td class="right">{{gasolio}}</td></tr>
-        <tr><td>Tariffa energetica [€/kWh]:</td><td class="right">{{PEE}}</td></tr>
-        <tr><td>Tariffa energetica [€/Smc]:</td><td class="right">{{Pgas}}</td></tr>
-        <tr><td>Tariffa energetica [€/l]:</td><td class="right">{{Pgasolio}}</td></tr>
-        <tr><td>Ambiente di produzione riscaldato:</td><td class="right">{{riscaldato}}</td></tr>
-      </tbody>
-    </table>
+      <table>
+        <tbody>
+          <tr><td>Superficie stabilimento [m2]:</td><td class="right">{{superficie}}</td></tr>
+          <tr><td>Numero linee produttive:</td><td class="right">{{linee}}</td></tr>
+          <tr><td>Ore di funzionamento annue:</td><td class="right">{{ore}}</td></tr>
+          <tr><td>Energia elettrica rete [kWh]:</td><td class="right">{{EErete}}</td></tr>
+          <tr><td>Energia elettrica FER [kWh]:</td><td class="right">{{EEfer}}</td></tr>
+          <tr><td>Consumo annuo gas [Smc]:</td><td class="right">{{gas}}</td></tr>
+          <tr><td>Consumo annuo gasolio [l]:</td><td class="right">{{gasolio}}</td></tr>
+          <tr><td>Tariffa energetica [€/kWh]:</td><td class="right">{{PEE}}</td></tr>
+          <tr><td>Tariffa energetica [€/Smc]:</td><td class="right">{{Pgas}}</td></tr>
+          <tr><td>Tariffa energetica [€/l]:</td><td class="right">{{Pgasolio}}</td></tr>
+          <tr><td>Ambiente di produzione riscaldato:</td><td class="right">{{riscaldato}}</td></tr>
+        </tbody>
+      </table>
 
-                        <div class="pageBreak"></div>
-        
-    <h2>Metodologia</h2>
-    <p>
-      L’approccio adottato per il check-up energetico prevede la raccolta dei dati disponibili, l’osservazione diretta delle utenze principali (elettricità, gas, aria compressa, acqua e combustibili)
-      e l’individuazione di perdite o inefficienze evidenti. A differenza della diagnosi energetica, che è un’analisi approfondita con misurazioni dettagliate e che richiede diversi giorni per la realizzazione,
-      l'audit energetico si presenta come un'indagine orientata a evidenziare criticità e a sondare le opportunità di miglioramento.
-      Gli indicatori energetici principali, come kWh/m² o kWh per unità prodotta, vengono calcolati utilizzando dati di consumo storici e rilevazioni semplificate durante il sopralluogo.
-    </p>
+      <div class="pageBreak"></div>
 
-    <h2>Sintesi dei consumi</h2>
-    <p>
-      I consumi energetici dell’azienda sono stati valutati complessivamente e suddivisi per tipologia: elettricità, gas e gasolio.
-      Per ogni voce sono riportati il consumo annuo stimato, la percentuale sul totale, il costo energetico.
-      I vettori energetici prelevati dalla rete (fonti tradizionali) che concorrono al consumo di energia primaria sono stati trattati separatamente rispetto ad eventuali consumi associati a fonti rinnovabili.
-      Lo scopo di questa sintesi è fornire una visione immediata delle aree più critiche e dei margini di miglioramento.
-    </p>
+      <h2>Metodologia</h2>
+      <p>
+        L’approccio adottato per il check-up energetico prevede la raccolta dei dati disponibili, l’osservazione diretta delle utenze principali (elettricità, gas, aria compressa, acqua e combustibili)
+        e l’individuazione di perdite o inefficienze evidenti. A differenza della diagnosi energetica, che è un’analisi approfondita con misurazioni dettagliate e che richiede diversi giorni per la realizzazione,
+        l'audit energetico si presenta come un'indagine orientata a evidenziare criticità e a sondare le opportunità di miglioramento.
+        Gli indicatori energetici principali, come kWh/m² o kWh per unità prodotta, vengono calcolati utilizzando dati di consumo storici e rilevazioni semplificate durante il sopralluogo.
+      </p>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Consumi tradizionali</th>
-          <th class="center">kWh</th>
-          <th class="center">Smc</th>
-          <th class="center">litri</th>
-          <th class="center">tep (*)</th>
-          <th class="center">tep [%]</th>
-          <th class="center">conversione<br/>in tep</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Energia Elettrica rete</td>
-          <td class="right">{{EErete}}</td>
-          <td></td><td></td>
-          <td class="right">{{Eerete_tep}}</td>
-          <td class="right">{{perEE}}</td>
-          <td class="center">0,187 x 10<sup>-3</sup></td>
-        </tr>
-        <tr>
-          <td>Gas</td>
-          <td></td>
-          <td class="right">{{gas}}</td>
-          <td></td>
-          <td class="right">{{gas_tep}}</td>
-          <td class="right">{{pergas}}</td>
-          <td class="center">0,825 x 10<sup>-3</sup></td>
-        </tr>
-        <tr>
-          <td>Gasolio</td>
-          <td></td><td></td>
-          <td class="right">{{gasolio}}</td>
-          <td class="right">{{gasolio_tep}}</td>
-          <td class="right">{{pergasolio}}</td>
-          <td class="center">0,867 x 10<sup>-3</sup></td>
-        </tr>
-        <tr>
-          <th>TOTALE</th>
-          <th class="right">{{EErete}}</th>
-          <th class="right">{{gas}}</th>
-          <th class="right">{{gasolio}}</th>
-          <th class="right">{{tot_tep}}</th>
-          <th class="right">100%</th>
-          <th></th>
-        </tr>
-      </tbody>
-    </table>
+      <h2>Sintesi dei consumi</h2>
+      <p>
+        I consumi energetici dell’azienda sono stati valutati complessivamente e suddivisi per tipologia: elettricità, gas e gasolio.
+        Per ogni voce sono riportati il consumo annuo stimato, la percentuale sul totale, il costo energetico.
+        I vettori energetici prelevati dalla rete (fonti tradizionali) che concorrono al consumo di energia primaria sono stati trattati separatamente rispetto ad eventuali consumi associati a fonti rinnovabili.
+        Lo scopo di questa sintesi è fornire una visione immediata delle aree più critiche e dei margini di miglioramento.
+      </p>
 
+      <table>
+        <thead>
+          <tr>
+            <th>Consumi tradizionali</th>
+            <th class="center">kWh</th>
+            <th class="center">Smc</th>
+            <th class="center">litri</th>
+            <th class="center">tep (*)</th>
+            <th class="center">tep [%]</th>
+            <th class="center">conversione<br/>in tep</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Energia Elettrica rete</td>
+            <td class="right">{{EErete}}</td>
+            <td></td><td></td>
+            <td class="right">{{Eerete_tep}}</td>
+            <td class="right">{{perEE}}</td>
+            <td class="center">0,187 x 10<sup>-3</sup></td>
+          </tr>
+          <tr>
+            <td>Gas</td>
+            <td></td>
+            <td class="right">{{gas}}</td>
+            <td></td>
+            <td class="right">{{gas_tep}}</td>
+            <td class="right">{{pergas}}</td>
+            <td class="center">0,825 x 10<sup>-3</sup></td>
+          </tr>
+          <tr>
+            <td>Gasolio</td>
+            <td></td><td></td>
+            <td class="right">{{gasolio}}</td>
+            <td class="right">{{gasolio_tep}}</td>
+            <td class="right">{{pergasolio}}</td>
+            <td class="center">0,867 x 10<sup>-3</sup></td>
+          </tr>
+          <tr>
+            <th>TOTALE</th>
+            <th class="right">{{EErete}}</th>
+            <th class="right">{{gas}}</th>
+            <th class="right">{{gasolio}}</th>
+            <th class="right">{{tot_tep}}</th>
+            <th class="right">100%</th>
+            <th></th>
+          </tr>
+        </tbody>
+      </table>
 
+      <div class="pageBreak"></div>
 
-                        <div class="pageBreak"></div>
-        
-    
-<h3>Energia da Fonti Rinnovabili (FER)</h3>
+      <h3>Energia da Fonti Rinnovabili (FER)</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Energia elettrica FER</th>
+            <th class="center">kWh</th>
+            <th class="center">Conversione in tep</th>
+            <th class="center">tep</th>
+            <th class="center">Quota sul totale [%]</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Produzione da FER</td>
+            <td class="right">{{EEfer}}</td>
+            <td class="center">0,187 x 10<sup>-3</sup></td>
+            <td class="right">{{EEfer_tep}}</td>
+            <td class="right">{{perFER}}</td>
+          </tr>
+        </tbody>
+      </table>
 
-<table>
-  <thead>
-    <tr>
-      <th>Energia elettrica FER</th>
-      <th class="center">kWh</th>
-      <th class="center">Conversione in tep</th>
-      <th class="center">tep</th>
-      <th class="center">Quota sul totale [%]</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Produzione da FER</td>
-      <td class="right">{{EEfer}}</td>
-      <td class="center">0,187 x 10<sup>-3</sup></td>
-      <td class="right">{{EEfer_tep}}</td>
-      <td class="right">{{perFER}}</td>
-    </tr>
-  </tbody>
-</table>
-    <h3>GRAFICI ENERGIA PRIMARIA</h3>
-    <div class="charts2equal">
+      <h3>GRAFICI ENERGIA PRIMARIA</h3>
+      <div class="charts2equal">
+        <div class="chartCard">
+          <div class="chartTitle">Energia primaria [tep]</div>
+          <div class="chartWrap donut">
+            <canvas id="chartEnergiaPrimaria" height="320"></canvas>
+          </div>
+        </div>
+
+        <div class="chartCard">
+          <div class="chartTitle">Principali vettori energetici [tep]</div>
+          <div class="chartWrap">
+            <canvas id="chartVettoriEnergetici" height="320"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <p class="muted">(*) Il tep (tonnellata equivalente di petrolio) rappresenta la quantità di energia rilasciata dalla combustione di una tonnellata di petrolio grezzo.</p>
+      <p class="muted">(**) L'energia FER deriva da Fonti Energetiche Rinnovabili, come impianti fotovoltaici o idroelettrici.</p>
+
+      <p>Di seguito si riportano i costi associati ai consumi energetici:</p>
+
+      <table>
+        <thead>
+          <tr><th>Consumi</th><th class="center">Prezzo</th><th class="center">Quantità</th><th class="center">Costo energia</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Energia Elettrica</td><td class="right">{{PEE}}</td><td class="right">{{EErete}}</td><td class="right">{{costoEE}} €</td></tr>
+          <tr><td>Gas</td><td class="right">{{Pgas}}</td><td class="right">{{gas}}</td><td class="right">{{costogas}} €</td></tr>
+          <tr><td>Gasolio</td><td class="right">{{Pgasolio}}</td><td class="right">{{gasolio}}</td><td class="right">{{costogasolio}} €</td></tr>
+          <tr><th>TOTALE</th><th></th><th></th><th class="right">{{costotot}} €</th></tr>
+        </tbody>
+      </table>
+
+      <h3>GRAFICI COSTI</h3>
       <div class="chartCard">
-        <div class="chartTitle">Energia primaria [tep]</div>
+        <div class="chartTitle">Confronto costi vs consumi energetici</div>
         <div class="chartWrap donut">
-          <canvas id="chartEnergiaPrimaria" height="320"></canvas>
+          <canvas id="chartCostiConsumi" height="320"></canvas>
+        </div>
+        <p class="muted" style="text-align:center;margin:8px 0 0;">Anello esterno: consumi [tep] — Anello interno: costi [€]</p>
+      </div>
+
+      <div class="pageBreak"></div>
+
+      <p>
+        Di seguito si riportano alcuni KPI (key performance indicators) di carattere generale, utili per confronti a distanza di tempo con una baseline, obiettivi o con valori di benchmark.
+        Il confronto di questi dati è da attenzionare poichè sono strettamente legati alla performance del sistema: creando appositi indicatori, anche di maggior dettaglio e specificità,
+        e monitorandoli sistematicamente nel tempo è possibile prendere decisioni strategiche e valutare l'efficienza dell'azienda.
+      </p>
+
+      <h2>Benchmark settoriali</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Indicatore</th>
+            <th class="center">KPI azienda</th>
+            <th class="center">Unità</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Energia elettrica totale</td>
+            <td class="right">{{kpi_ee}}</td>
+            <td class="center">kWh/m²</td>
+          </tr>
+          <tr>
+            <td>Gas</td>
+            <td class="right">{{kpi_gas}}</td>
+            <td class="center">Smc/m²</td>
+          </tr>
+          <tr>
+            <td>Gasolio</td>
+            <td class="right">{{kpi_gasolio}}</td>
+            <td class="center">l/100 km</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="pageBreak"></div>
+
+      <h2>Analisi settoriale e opportunità</h2>
+      <p>
+        Durante il sopralluogo sono stati osservati i principali reparti dell’azienda, annotando il tipo di consumo energetico predominante, l’efficienza percepita e le note rilevanti per ciascun reparto.
+        L’analisi si basa su osservazioni visive e dati generali, finalizzata a evidenziare i reparti dove l’energia viene maggiormente utilizzata o dispersa, e dove eventuali interventi di ottimizzazione possono portare benefici immediati.
+      </p>
+      <p>
+        Il check-up include l’individuazione delle perdite o degli sprechi evidenti, come ad esempio: perdite di aria compressa, consumi elettrici eccessivi dovuti a cablaggi o motori inefficienti,
+        dispersioni termiche dagli impianti di riscaldamento e raffreddamento.
+      </p>
+
+      <h3>GRAFICI EFFICIENZA</h3>
+      <div class="charts2">
+        <div class="chartCard">
+          <div class="chartTitle">Efficienza rilevata</div>
+          <div class="chartWrap">
+            <canvas id="chartEffBar" height="260"></canvas>
+          </div>
+        </div>
+        <div class="chartCard">
+          <div class="chartTitle">&nbsp;</div>
+          <div class="chartWrap donut">
+            <canvas id="chartEffDonut" height="260"></canvas>
+          </div>
         </div>
       </div>
 
-      <div class="chartCard">
-        <div class="chartTitle">Principali vettori energetici [tep]</div>
-        <div class="chartWrap">
-          <canvas id="chartVettoriEnergetici" height="320"></canvas>
-        </div>
-      </div>
+      <h3>Commento generale</h3>
+      <p>{{Commento_generale_html}}</p>
+
+      <div class="pageBreak"></div>
+
+      <h2>Aree di intervento</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Aree di intervento</th>
+            <th>Tipo</th>
+            <th class="center">Efficienza</th>
+            <th class="center">Intervento consigliato</th>
+            <th>Opportunità</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{INTERVENTI_ROWS}}
+        </tbody>
+      </table>
+
+      <div class="pageBreak"></div>
+
+      <h2>6. Next steps</h2>
+      <p>
+        A seguito del sopralluogo e dell’analisi preliminare dei consumi energetici, si raccomanda di intervenire innanzitutto sulle inefficienze più facilmente individuabili,
+        quali perdite di aria compressa, dispersioni energetiche e utilizzi non ottimali delle apparecchiature. Queste azioni consentono di ottenere riduzioni di costo rapide,
+        con investimenti limitati e tempi di ritorno contenuti.
+      </p>
+      <p>
+        Un fattore determinante per una gestione efficace dell’energia è l’adozione di un sistema di monitoraggio strutturato dei consumi, in grado di fornire dati affidabili,
+        continui e confrontabili nel tempo. Il presidio dei principali indicatori di prestazione energetica (KPI) permette di controllare una voce di costo strategica,
+        individuare tempestivamente eventuali anomalie e valutare in modo oggettivo l’impatto economico degli interventi di efficientamento.
+      </p>
+      <p>
+        Il valore del sistema di monitoraggio non si esaurisce nel breve periodo: pur venendo installato oggi, esso costituisce un asset informativo a lungo termine.
+        La creazione di uno storico dei consumi e di una base dati solida rappresenta un elemento essenziale per supportare decisioni future,
+        quali investimenti, ampliamenti produttivi o nuove linee di business, consentendo di stimarne in modo affidabile gli impatti energetici ed economici.
+      </p>
+      <p>
+        Il monitoraggio dei consumi deve essere parte integrante di un approccio strutturato di energy management, orientato al controllo continuo delle prestazioni energetiche
+        e alla riduzione stabile dei costi operativi. Una gestione dell’energia basata su dati misurabili consente di migliorare la prevedibilità dei costi
+        e di supportare la pianificazione strategica nel medio e lungo periodo.
+      </p>
+      <p>
+        Si evidenzia infine che il presente check-up energetico ha carattere orientativo e non sostituisce una diagnosi energetica approfondita.
+        Qualora l’azienda intenda disporre di una visione completa dei flussi energetici e di una quantificazione puntuale dei benefici economici degli interventi,
+        è fortemente consigliato procedere con una diagnosi energetica strutturata, considerata uno strumento fondamentale per una gestione consapevole ed efficace dell’energia.
+      </p>
+
+      <img class="nextStepsImg" src="next_steps.png" alt="Next steps" />
     </div>
-
-    <p class="muted">(*) Il tep (tonnellata equivalente di petrolio) rappresenta la quantità di energia rilasciata dalla combustione di una tonnellata di petrolio grezzo.</p>
-    <p class="muted">(**) L'energia FER deriva da Fonti Energetiche Rinnovabili, come impianti fotovoltaici o idroelettrici.</p>
-
-  
-    <p>Di seguito si riportano i costi associati ai consumi energetici:</p>
-
-    <table>
-      <thead>
-        <tr><th>Consumi</th><th class="center">Prezzo</th><th class="center">Quantità</th><th class="center">Costo energia</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>Energia Elettrica</td><td class="right">{{PEE}}</td><td class="right">{{EErete}}</td><td class="right">{{costoEE}} €</td></tr>
-        <tr><td>Gas</td><td class="right">{{Pgas}}</td><td class="right">{{gas}}</td><td class="right">{{costogas}} €</td></tr>
-        <tr><td>Gasolio</td><td class="right">{{Pgasolio}}</td><td class="right">{{gasolio}}</td><td class="right">{{costogasolio}} €</td></tr>
-        <tr><th>TOTALE</th><th></th><th></th><th class="right">{{costotot}} €</th></tr>
-      </tbody>
-    </table>
-
-    <h3>GRAFICI COSTI</h3>
-    <div class="chartCard">
-      <div class="chartTitle">Confronto costi vs consumi energetici</div>
-      <div class="chartWrap donut">
-        <canvas id="chartCostiConsumi" height="320"></canvas>
-      </div>
-      <p class="muted" style="text-align:center;margin:8px 0 0;">Anello esterno: consumi [tep] — Anello interno: costi [€]</p>
-    </div>
-
-
-                        <div class="pageBreak"></div>
-        
-
-    <p>
-      Di seguito si riportano alcuni KPI (key performance indicators) di carattere generale, utili per confronti a distanza di tempo con una baseline, obiettivi o con valori di benchmark.
-      Il confronto di questi dati è da attenzionare poichè sono strettamente legati alla performance del sistema: creando appositi indicatori, anche di maggior dettaglio e specificità,
-      e monitorandoli sistematicamente nel tempo è possibile prendere decisioni strategiche e valutare l'efficienza dell'azienda.
-    </p>
-<h2>Benchmark settoriali</h2>
-
-<table>
-  <thead>
-    <tr>
-      <th>Indicatore</th>
-      <th class="center">KPI azienda</th>
-      <th class="center">Unità</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Energia elettrica totale</td>
-      <td class="right">{{kpi_ee}}</td>
-      <td class="center">kWh/m²</td>
-    </tr>
-    <tr>
-      <td>Gas</td>
-      <td class="right">{{kpi_gas}}</td>
-      <td class="center">Smc/m²</td>
-    </tr>
-    <tr>
-      <td>Gasolio</td>
-      <td class="right">{{kpi_gasolio}}</td>
-      <td class="center">l/100 km</td>
-    </tr>
-  </tbody>
-</table>
-
-
-                        <div class="pageBreak"></div>
-        
-    <h2>Analisi settoriale e opportunità</h2>
-    <p>
-      Durante il sopralluogo sono stati osservati i principali reparti dell’azienda, annotando il tipo di consumo energetico predominante, l’efficienza percepita e le note rilevanti per ciascun reparto.
-      L’analisi si basa su osservazioni visive e dati generali, finalizzata a evidenziare i reparti dove l’energia viene maggiormente utilizzata o dispersa, e dove eventuali interventi di ottimizzazione possono portare benefici immediati.
-    </p>
-    <p>
-      Il check-up include l’individuazione delle perdite o degli sprechi evidenti, come ad esempio: perdite di aria compressa, consumi elettrici eccessivi dovuti a cablaggi o motori inefficienti,
-      dispersioni termiche dagli impianti di riscaldamento e raffreddamento.
-    </p>
-
-    <h3>GRAFICI EFFICIENZA</h3>
-    <div class="charts2">
-      <div class="chartCard">
-        <div class="chartTitle">Efficienza rilevata</div>
-        <div class="chartWrap">
-          <canvas id="chartEffBar" height="260"></canvas>
-        </div>
-      </div>
-      <div class="chartCard">
-        <div class="chartTitle">&nbsp;</div>
-        <div class="chartWrap donut">
-          <canvas id="chartEffDonut" height="260"></canvas>
-        </div>
-      </div>
-    </div>
-<h3>Commento generale</h3>
-<p>{{Commento_generale_html}}</p>
-                        <div class="pageBreak"></div>
-        
-    <h2>Aree di intervento</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Aree di intervento</th>
-          <th>Tipo</th>
-          <th class="center">Efficienza</th>
-          <th class="center">Intervento consigliato</th>
-          <th>Opportunità</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{INTERVENTI_ROWS}}
-      </tbody>
-    </table>
-
-                        <div class="pageBreak"></div>
-        
-    <h2>6. Next steps</h2>
-
-    <p>
-      A seguito del sopralluogo e dell’analisi preliminare dei consumi energetici, si raccomanda di intervenire innanzitutto sulle inefficienze più facilmente individuabili,
-      quali perdite di aria compressa, dispersioni energetiche e utilizzi non ottimali delle apparecchiature. Queste azioni consentono di ottenere riduzioni di costo rapide,
-      con investimenti limitati e tempi di ritorno contenuti.
-    </p>
-
-    <p>
-      Un fattore determinante per una gestione efficace dell’energia è l’adozione di un sistema di monitoraggio strutturato dei consumi, in grado di fornire dati affidabili,
-      continui e confrontabili nel tempo. Il presidio dei principali indicatori di prestazione energetica (KPI) permette di controllare una voce di costo strategica,
-      individuare tempestivamente eventuali anomalie e valutare in modo oggettivo l’impatto economico degli interventi di efficientamento.
-    </p>
-
-    <p>
-      Il valore del sistema di monitoraggio non si esaurisce nel breve periodo: pur venendo installato oggi, esso costituisce un asset informativo a lungo termine.
-      La creazione di uno storico dei consumi e di una base dati solida rappresenta un elemento essenziale per supportare decisioni future,
-      quali investimenti, ampliamenti produttivi o nuove linee di business, consentendo di stimarne in modo affidabile gli impatti energetici ed economici.
-    </p>
-
-    <p>
-      Il monitoraggio dei consumi deve essere parte integrante di un approccio strutturato di energy management, orientato al controllo continuo delle prestazioni energetiche
-      e alla riduzione stabile dei costi operativi. Una gestione dell’energia basata su dati misurabili consente di migliorare la prevedibilità dei costi
-      e di supportare la pianificazione strategica nel medio e lungo periodo.
-    </p>
-
-    <p>
-      Si evidenzia infine che il presente check-up energetico ha carattere orientativo e non sostituisce una diagnosi energetica approfondita.
-      Qualora l’azienda intenda disporre di una visione completa dei flussi energetici e di una quantificazione puntuale dei benefici economici degli interventi,
-      è fortemente consigliato procedere con una diagnosi energetica strutturata, considerata uno strumento fondamentale per una gestione consapevole ed efficace dell’energia.
-    </p>
-
-    <img class="nextStepsImg" src="next_steps.png" alt="Next steps" />
   `;
 
   // =========================
@@ -655,10 +803,8 @@ body{
   function fmtInt(n){ return Number(n).toLocaleString("it-IT", { maximumFractionDigits: 0 }); }
   function fmt1(n){ return Number(n).toLocaleString("it-IT", { minimumFractionDigits: 1, maximumFractionDigits: 1 }); }
   function fmt2(n){ return Number(n).toLocaleString("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
-function fmt4(n){ 
-  return Number(n).toLocaleString("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); 
-}  
-function fmtPct0(n){ return `${Math.round(n)}%`; }
+  function fmt4(n){ return Number(n).toLocaleString("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  function fmtPct0(n){ return `${Math.round(n)}%`; }
 
   function applyTemplate(html, data) {
     return html.replace(/\{\{([^}]+)\}\}/g, (_, key) => {
@@ -680,7 +826,7 @@ function fmtPct0(n){ return `${Math.round(n)}%`; }
   }
 
   // =========================
-  // Interventi form render (standard)
+  // Interventi form
   // =========================
   const interventiForm = document.getElementById("interventiForm");
 
@@ -744,132 +890,117 @@ function fmtPct0(n){ return `${Math.round(n)}%`; }
   }
 
   // =========================
-  // Calcoli energetici + costi + KPI + stats efficienza
+  // Calcoli
   // =========================
-function compute(input) {
-  // ---- numeri grezzi
-  const EErete_kWh = num(input.EErete);
-  const EEfer_kWh  = num(input.EEfer);
-  const gas_smc    = num(input.gas);
-  const gasolio_l  = num(input.gasolio);
+  function compute(input) {
+    const EErete_kWh = num(input.EErete);
+    const EEfer_kWh  = num(input.EEfer);
+    const gas_smc    = num(input.gas);
+    const gasolio_l  = num(input.gasolio);
 
-  const PEE      = num(input.PEE);
-  const Pgas     = num(input.Pgas);
-  const Pgasolio = num(input.Pgasolio);
+    const PEE      = num(input.PEE);
+    const Pgas     = num(input.Pgas);
+    const Pgasolio = num(input.Pgasolio);
 
-  const superficieNum = num(input.superficie);
-  const veicoliNum    = num(input.veicoli);
-  const kmNum         = num(input.km);
+    const superficieNum = num(input.superficie);
+    const veicoliNum    = num(input.veicoli);
+    const kmNum         = num(input.km);
 
-  // ---- conversioni tep
-  const fEE     = 0.187e-3;
-  const fGas    = 0.825e-3;
-  const fGasolio= 0.867e-3;
+    const fEE      = 0.187e-3;
+    const fGas     = 0.825e-3;
+    const fGasolio = 0.867e-3;
 
-  const Eerete_tep  = EErete_kWh * fEE;
-  const EEfer_tep   = EEfer_kWh  * fEE;
-  const gas_tep     = gas_smc    * fGas;
-  const gasolio_tep = gasolio_l  * fGasolio;
+    const Eerete_tep  = EErete_kWh * fEE;
+    const EEfer_tep   = EEfer_kWh  * fEE;
+    const gas_tep     = gas_smc    * fGas;
+    const gasolio_tep = gasolio_l  * fGasolio;
 
-  // Energia primaria "tradizionale" (come la tua tabella principale)
-  const tot_tep = Eerete_tep + gas_tep + gasolio_tep;
-  const denom = tot_tep > 0 ? tot_tep : 1;
+    const tot_tep = Eerete_tep + gas_tep + gasolio_tep;
+    const denom = tot_tep > 0 ? tot_tep : 1;
 
-  const perEE      = (Eerete_tep / denom) * 100;
-  const pergas     = (gas_tep / denom) * 100;
-  const pergasolio = (gasolio_tep / denom) * 100;
+    const perEE      = (Eerete_tep / denom) * 100;
+    const pergas     = (gas_tep / denom) * 100;
+    const pergasolio = (gasolio_tep / denom) * 100;
 
-  // ---- quota FER (sul totale includendo FER)
-  const tot_tep_inclFER = tot_tep + EEfer_tep;
-  const perFER = tot_tep_inclFER > 0 ? (EEfer_tep / tot_tep_inclFER) * 100 : 0;
+    const tot_tep_inclFER = tot_tep + EEfer_tep;
+    const perFER = tot_tep_inclFER > 0 ? (EEfer_tep / tot_tep_inclFER) * 100 : 0;
 
-  // ---- costi
-  const costoEE      = EErete_kWh * PEE;
-  const costogas     = gas_smc * Pgas;
-  const costogasolio = gasolio_l * Pgasolio;
-  const costotot     = costoEE + costogas + costogasolio;
+    const costoEE      = EErete_kWh * PEE;
+    const costogas     = gas_smc * Pgas;
+    const costogasolio = gasolio_l * Pgasolio;
+    const costotot     = costoEE + costogas + costogasolio;
 
-  // ---- KPI richiesti (automatici)
-  const EEtot = EErete_kWh + EEfer_kWh;
+    const EEtot = EErete_kWh + EEfer_kWh;
 
-  // EE: kWh/m²
-  const kpi_ee = superficieNum > 0 ? (EEtot / superficieNum) : 0;
+    const kpi_ee  = superficieNum > 0 ? (EEtot / superficieNum) : 0;
+    const kpi_gas = superficieNum > 0 ? (gas_smc / superficieNum) : 0;
+    const kpi_gasolio =
+      (kmNum > 0 && veicoliNum > 0)
+        ? (gasolio_l / (kmNum * veicoliNum)) * 100
+        : 0;
 
-  // Gas: Smc/m²
-  const kpi_gas = superficieNum > 0 ? (gas_smc / superficieNum) : 0;
+    const counts = { Alta:0, Media:0, Bassa:0, "N.A.":0 };
+    interventiState.forEach(s => { counts[s.eff] = (counts[s.eff] ?? 0) + 1; });
+    const valid = counts.Alta + counts.Media + counts.Bassa;
 
-  // Gasolio: l/100km  
-  const kpi_gasolio =
-  (kmNum > 0 && veicoliNum > 0)
-    ? (gasolio_l / (kmNum * veicoliNum)) * 100
-    : 0;
+    return {
+      ...input,
 
-  // ---- efficienza
-  const counts = { Alta:0, Media:0, Bassa:0, "N.A.":0 };
-  interventiState.forEach(s => { counts[s.eff] = (counts[s.eff] ?? 0) + 1; });
-  const valid = counts.Alta + counts.Media + counts.Bassa;
+      azienda: input.azienda || "—",
+      data: input.data || new Date().toISOString().slice(0,10),
+      indirizzo: input.indirizzo || "—",
+      ateco: input.ateco || "—",
+      descrizioneateco: input.descrizioneateco || "—",
+      riscaldato: input.riscaldato || "—",
 
-  return {
-    ...input,
+      superficie: input.superficie || "—",
+      linee: input.linee || "—",
+      ore: input.ore || "—",
 
-    azienda: input.azienda || "—",
-    data: input.data || new Date().toISOString().slice(0,10),
-    indirizzo: input.indirizzo || "—",
-    ateco: input.ateco || "—",
-    descrizioneateco: input.descrizioneateco || "—",
-    riscaldato: input.riscaldato || "—",
+      veicoli: input.veicoli ? fmtInt(veicoliNum) : "—",
+      km: input.km ? fmtInt(kmNum) : "—",
 
-    superficie: input.superficie || "—",
-    linee: input.linee || "—",
-    ore: input.ore || "—",
+      EErete: fmtInt(EErete_kWh),
+      EEfer: fmtInt(EEfer_kWh),
+      gas: fmtInt(gas_smc),
+      gasolio: fmtInt(gasolio_l),
 
-    veicoli: input.veicoli ? fmtInt(veicoliNum) : "—",
-    km: input.km ? fmtInt(kmNum) : "—",
+      PEE: input.PEE ? fmt2(PEE) : "—",
+      Pgas: input.Pgas ? fmt2(Pgas) : "—",
+      Pgasolio: input.Pgasolio ? fmt2(Pgasolio) : "—",
 
-    EErete: fmtInt(EErete_kWh),
-    EEfer: fmtInt(EEfer_kWh),
-    gas: fmtInt(gas_smc),
-    gasolio: fmtInt(gasolio_l),
+      Eerete_tep: fmt1(Eerete_tep),
+      EEfer_tep: fmt1(EEfer_tep),
+      gas_tep: fmt1(gas_tep),
+      gasolio_tep: fmt1(gasolio_tep),
+      tot_tep: fmt1(tot_tep),
 
-    PEE: input.PEE ? fmt2(PEE) : "—",
-    Pgas: input.Pgas ? fmt2(Pgas) : "—",
-    Pgasolio: input.Pgasolio ? fmt2(Pgasolio) : "—",
+      perEE: fmtPct0(perEE),
+      pergas: fmtPct0(pergas),
+      pergasolio: fmtPct0(pergasolio),
+      perFER: fmtPct0(perFER),
 
-    Eerete_tep: fmt1(Eerete_tep),
-    EEfer_tep: fmt1(EEfer_tep),
-    gas_tep: fmt1(gas_tep),
-    gasolio_tep: fmt1(gasolio_tep),
-    tot_tep: fmt1(tot_tep),
+      costoEE: fmt2(costoEE),
+      costogas: fmt2(costogas),
+      costogasolio: fmt2(costogasolio),
+      costotot: fmt2(costotot),
 
-    perEE: fmtPct0(perEE),
-    pergas: fmtPct0(pergas),
-    pergasolio: fmtPct0(pergasolio),
-    perFER: fmtPct0(perFER),
+      kpi_ee: fmt2(kpi_ee),
+      kpi_gas: fmt2(kpi_gas),
+      kpi_gasolio: fmt4(kpi_gasolio),
 
-    costoEE: fmt2(costoEE),
-    costogas: fmt2(costogas),
-    costogasolio: fmt2(costogasolio),
-    costotot: fmt2(costotot),
+      Commento_generale_html: (input.Commento_generale || "").replaceAll("\n","<br/>"),
 
-    EEtot: fmtInt(EEtot),
+      _raw: {
+        Eerete_tep, EEfer_tep, gas_tep, gasolio_tep,
+        costoEE, costogas, costogasolio,
+        effCounts: counts, effValid: valid
+      }
+    };
+  }
 
-    // KPI nel template "Benchmark settoriali"
-    kpi_ee: fmt2(kpi_ee),
-    kpi_gas: fmt2(kpi_gas),
-    kpi_gasolio: fmt4(kpi_gasolio), // l/km spesso è piccolo: meglio 4 decimali
-
-    // commento (se poi lo stampi nel template)
-    Commento_generale_html: (input.Commento_generale || "").replaceAll("\n","<br/>"),
-
-    _raw: {
-      Eerete_tep, EEfer_tep, gas_tep, gasolio_tep,
-      costoEE, costogas, costogasolio,
-      effCounts: counts, effValid: valid
-    }
-  };
-}
   // =========================
-  // Render tabella interventi (preview)
+  // Interventi preview
   // =========================
   function buildInterventiRowsHTML() {
     return INTERVENTI_STANDARD.map((it, idx) => {
@@ -906,7 +1037,6 @@ function compute(input) {
   function renderCharts(calc){
     const r = calc._raw;
 
-    // DONUT: Energia primaria [tep]
     const epEl = document.getElementById("chartEnergiaPrimaria");
     if (epEl){
       const labels = ["Energia Elettrica rete", "Gas", "Gasolio"];
@@ -915,17 +1045,14 @@ function compute(input) {
 
       chartEnergiaPrimaria = new Chart(epEl, {
         type: "doughnut",
-        data: {
-          labels,
-          datasets: [{
-            data,
-            backgroundColor: [ENERGY_COL.ee, ENERGY_COL.gas, ENERGY_COL.gasolio],
-            borderColor: "#fff",
-            borderWidth: 10,
-            spacing: 4,
-            hoverOffset: 6
-          }]
-        },
+        data: { labels, datasets: [{
+          data,
+          backgroundColor: [ENERGY_COL.ee, ENERGY_COL.gas, ENERGY_COL.gasolio],
+          borderColor: "#fff",
+          borderWidth: 10,
+          spacing: 4,
+          hoverOffset: 6
+        }]},
         options: {
           responsive: true,
           maintainAspectRatio: false,
@@ -934,15 +1061,13 @@ function compute(input) {
           layout: { padding: 40 },
           plugins: {
             legend: { display: false },
-            tooltip: {
-              callbacks: {
-                label: (ctx) => {
-                  const v = ctx.parsed || 0;
-                  const pct = Math.round((v / tot) * 100);
-                  return `${ctx.label}: ${fmt1(v)} tep (${pct}%)`;
-                }
+            tooltip: { callbacks: {
+              label: (ctx) => {
+                const v = ctx.parsed || 0;
+                const pct = Math.round((v / tot) * 100);
+                return `${ctx.label}: ${fmt1(v)} tep (${pct}%)`;
               }
-            },
+            }},
             datalabels: {
               color: "#111",
               font: { size: 12, weight: "700" },
@@ -962,193 +1087,139 @@ function compute(input) {
       });
     }
 
-    // BAR: Principali vettori energetici [tep] (FER come “risparmiate”)
     const veEl = document.getElementById("chartVettoriEnergetici");
     if (veEl){
       const labels = [
-        ["Energia", "Elettrica rete"],
+        ["Energia","Elettrica rete"],
         ["Gas"],
         ["Gasolio"],
-        ["Energia", "Elettrica", "FER(**)"]
+        ["Energia","Elettrica","FER(**)"]
       ];
-
       const data = [r.Eerete_tep, r.gas_tep, r.gasolio_tep, r.EEfer_tep || 0];
 
       chartVettoriEnergetici = new Chart(veEl, {
         type: "bar",
-        data: {
-          labels,
-          datasets: [{
-            data,
-            backgroundColor: [
-              ENERGY_COL.ee,
-              ENERGY_COL.gas,
-              ENERGY_COL.gasolio,
-              rgba(ENERGY_COL.ee, 0.25)
-            ],
-            borderColor: "#fff",
-            borderWidth: 6,
-            borderRadius: 6,
-            barPercentage: 0.6,
-            categoryPercentage: 0.7
-          }]
-        },
+        data: { labels, datasets: [{
+          data,
+          backgroundColor: [ENERGY_COL.ee, ENERGY_COL.gas, ENERGY_COL.gasolio, rgba(ENERGY_COL.ee, 0.25)],
+          borderColor: "#fff",
+          borderWidth: 6,
+          borderRadius: 6,
+          barPercentage: 0.6,
+          categoryPercentage: 0.7
+        }]},
         options: {
           responsive: true,
           maintainAspectRatio: false,
           layout: { padding: { top: 22, right: 18, left: 18, bottom: 8 } },
           plugins: {
             legend: { display: false },
-            tooltip: {
-              callbacks: { label: (ctx) => `${fmt1(ctx.parsed.y)} tep` }
-            },
+            tooltip: { callbacks: { label: (ctx) => `${fmt1(ctx.parsed.y)} tep` } },
             datalabels: {
               color: "#333",
               anchor: "end",
               align: "end",
               offset: 6,
               font: { size: 12, weight: "700" },
-              formatter: (v, ctx) => {
-                const isFER = ctx.dataIndex === 3;
-                if (isFER) return [`${fmt1(v)} tep`, `risparmiate`];
-                return `${fmt1(v)} tep`;
-              }
+              formatter: (v, ctx) => ctx.dataIndex === 3 ? [`${fmt1(v)} tep`, `risparmiate`] : `${fmt1(v)} tep`
             }
           },
           scales: {
-            y: {
-              beginAtZero: true,
-              grid: { color: "#E6E6E6" },
-              ticks: {
-                callback: (v) => Number(v).toLocaleString("it-IT", { minimumFractionDigits: 0, maximumFractionDigits: 0 })
+            y: { beginAtZero: true, grid: { color: "#E6E6E6" } },
+            x: { grid: { display: false } }
+          }
+        }
+      });
+    }
+
+    const cEl = document.getElementById("chartCostiConsumi");
+    if (cEl){
+      const labels = ["Energia Elettrica", "Gas", "Gasolio"];
+      const outer = [r.Eerete_tep, r.gas_tep, r.gasolio_tep];
+      const inner = [r.costoEE, r.costogas, r.costogasolio];
+
+      const ringSeparatorPlugin = {
+        id: "ringSeparatorPlugin",
+        afterDatasetsDraw(chart) {
+          const { ctx } = chart;
+          const metaOuter = chart.getDatasetMeta(1);
+          if (!metaOuter?.data?.length) return;
+          const boundaryRadius = metaOuter.data[0].innerRadius;
+          ctx.save();
+          ctx.beginPath();
+          ctx.strokeStyle = "#ffffff";
+          ctx.lineWidth = 1;
+          ctx.arc(metaOuter.data[0].x, metaOuter.data[0].y, boundaryRadius, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.restore();
+        }
+      };
+
+      const centerTextPlugin = {
+        id: "centerTextPlugin",
+        afterDraw(chart) {
+          const { ctx, chartArea:{left, right, top, bottom} } = chart;
+          const x = (left + right) / 2;
+          const y = (top + bottom) / 2;
+          const meta = chart.getDatasetMeta(0);
+          if (!meta?.data?.length) return;
+
+          ctx.save();
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillStyle = "#333";
+          ctx.font = "600 12px system-ui";
+          ctx.fillText("Costi [€]", x, y - 20);
+          ctx.font = "11px system-ui";
+          ctx.fillText(`EE: ${fmtInt(chart.data.datasets[0].data[0])}`, x, y - 4);
+          ctx.fillText(`Gas: ${fmtInt(chart.data.datasets[0].data[1])}`, x, y + 10);
+          ctx.fillText(`Gasolio: ${fmtInt(chart.data.datasets[0].data[2])}`, x, y + 24);
+          ctx.restore();
+        }
+      };
+
+      chartCostiConsumi = new Chart(cEl, {
+        type:"doughnut",
+        plugins:[ringSeparatorPlugin, centerTextPlugin],
+        data:{
+          labels,
+          datasets:[
+            { label:"Costi [€]", data: inner, backgroundColor:[ENERGY_COL.ee, ENERGY_COL.gas, ENERGY_COL.gasolio], borderWidth:0, spacing:0, weight:1 },
+            { label:"Consumi [tep]", data: outer, backgroundColor:[rgba(ENERGY_COL.ee,0.35), rgba(ENERGY_COL.gas,0.35), rgba(ENERGY_COL.gasolio,0.35)], borderWidth:0, spacing:0, weight:1 }
+          ]
+        },
+        options:{
+          responsive:true,
+          maintainAspectRatio:false,
+          rotation:-90*(Math.PI/180),
+          layout:{ padding: 46 },
+          radius:"72%",
+          cutout:"45%",
+          plugins:{
+            legend:{display:false},
+            tooltip:{ callbacks:{
+              label:(ctx)=>{
+                const v = ctx.parsed || 0;
+                const isOuter = ctx.datasetIndex===1;
+                return isOuter ? `${ctx.label}: ${fmt1(v)} tep` : `${ctx.label}: ${fmt2(v)} €`;
               }
-            },
-            x: {
-              grid: { display: false },
-              ticks: { font: { size: 12 } }
+            }},
+            datalabels:{
+              display:(ctx)=>ctx.datasetIndex===1,
+              color:"#777",
+              font:{size:11, weight:"600"},
+              anchor:"end", align:"end", offset:22,
+              formatter:(value, ctx)=>{
+                if(!value || value<=0) return "";
+                const lab = ctx.chart.data.labels[ctx.dataIndex];
+                return [`Consumi [tep]`, lab, fmt1(value)];
+              }
             }
           }
         }
       });
     }
 
-    // COSTI vs CONSUMI (doppio anello)
-    // COSTI vs CONSUMI (doppio anello) — anelli attaccati
-const cEl = document.getElementById("chartCostiConsumi");
-if (cEl){
-
-  const labels = ["Energia Elettrica", "Gas", "Gasolio"];
-  const outer = [r.Eerete_tep, r.gas_tep, r.gasolio_tep];      // consumi (esterno)
-  const inner = [r.costoEE, r.costogas, r.costogasolio];       // costi (interno)
-
-  // 1 sola linea tra gli anelli (non gap)
-  const ringSeparatorPlugin = {
-    id: "ringSeparatorPlugin",
-    afterDatasetsDraw(chart) {
-      const { ctx } = chart;
-      const metaOuter = chart.getDatasetMeta(1); // datasetIndex 1 = anello esterno
-      if (!metaOuter?.data?.length) return;
-
-      const boundaryRadius = metaOuter.data[0].innerRadius; // confine tra i due anelli
-      ctx.save();
-      ctx.beginPath();
-      ctx.strokeStyle = "#ffffff";
-      ctx.lineWidth = 1;
-      ctx.arc(metaOuter.data[0].x, metaOuter.data[0].y, boundaryRadius, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.restore();
-    }
-  };
-const centerTextPlugin = {
-  id: "centerTextPlugin",
-  afterDraw(chart) {
-    const { ctx, chartArea:{left, right, top, bottom} } = chart;
-    const x = (left + right) / 2;
-    const y = (top + bottom) / 2;
-
-    const meta = chart.getDatasetMeta(0); // dataset interno = COSTI
-    if (!meta?.data?.length) return;
-
-    const innerRadius = meta.data[0].innerRadius;
-
-    ctx.save();
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillStyle = "#333";
-
-    // Titolo
-    ctx.font = "600 12px system-ui";
-    ctx.fillText("Costi [€]", x, y - 20);
-
-    // Voci costi (molto piccole)
-    ctx.font = "11px system-ui";
-ctx.fillText(`EE: ${fmtInt(chart.data.datasets[0].data[0])}`, x, y - 4);
-ctx.fillText(`Gas: ${fmtInt(chart.data.datasets[0].data[1])}`, x, y + 10);
-ctx.fillText(`Gasolio: ${fmtInt(chart.data.datasets[0].data[2])}`, x, y + 24);
-    ctx.restore();
-  }
-};
-  chartCostiConsumi = new Chart(cEl, {
-    type:"doughnut",
-    plugins:[ringSeparatorPlugin, centerTextPlugin],
-    data:{
-      labels,
-      datasets:[
-        { // interno: COSTI
-          label:"Costi [€]",
-          data: inner,
-          backgroundColor:[ENERGY_COL.ee, ENERGY_COL.gas, ENERGY_COL.gasolio],
-          borderWidth: 0,
-          spacing: 0,
-          weight: 1
-        },
-        { // esterno: CONSUMI
-          label:"Consumi [tep]",
-          data: outer,
-          backgroundColor:[rgba(ENERGY_COL.ee,0.35), rgba(ENERGY_COL.gas,0.35), rgba(ENERGY_COL.gasolio,0.35)],
-          borderWidth: 0,
-          spacing: 0,
-          weight: 1
-        }
-      ]
-    },
-    options:{
-      responsive:true,
-      maintainAspectRatio:false,
-      rotation:-90*(Math.PI/180),
-  layout: { padding: 46 },
- radius: "72%",
-      // 👇 questo è il “buco” centrale complessivo
-      cutout:"45%",
-
-      plugins:{
-        legend:{display:false},
-        tooltip:{
-          callbacks:{
-            label:(ctx)=>{
-              const v = ctx.parsed || 0;
-              const isOuter = ctx.datasetIndex===1;
-              return isOuter ? `${ctx.label}: ${fmt1(v)} tep` : `${ctx.label}: ${fmt2(v)} €`;
-            }
-          }
-        },
-        datalabels:{
-          display:(ctx)=>ctx.datasetIndex===1, // etichette SOLO sull’anello esterno
-          color:"#777",
-          font:{size:11, weight:"600"},
-          anchor:"end", align:"end", offset:22,
-          formatter:(value, ctx)=>{
-            if(!value || value<=0) return "";
-            const lab = ctx.chart.data.labels[ctx.dataIndex];
-            return [`Consumi [tep]`, lab, fmt1(value)];
-          }
-        }
-      }
-    }
-  });
-}
-
-    // Efficienza (N.A. esclusi)
     const counts = r.effCounts || {Alta:0, Media:0, Bassa:0, "N.A.":0};
     const alta=counts.Alta||0, media=counts.Media||0, bassa=counts.Bassa||0;
     const valid = alta+media+bassa;
@@ -1157,30 +1228,15 @@ ctx.fillText(`Gasolio: ${fmtInt(chart.data.datasets[0].data[2])}`, x, y + 24);
     if(bEl){
       chartEffBar = new Chart(bEl,{
         type:"bar",
-        data:{
-          labels:["Bassa","Media","Alta"],
-          datasets:[{
-            data:[bassa, media, alta],
-            backgroundColor:[EFF_COL.bassa, EFF_COL.media, EFF_COL.alta],
-            borderRadius:6
-          }]
-        },
+        data:{ labels:["Bassa","Media","Alta"], datasets:[{ data:[bassa, media, alta], backgroundColor:[EFF_COL.bassa, EFF_COL.media, EFF_COL.alta], borderRadius:6 }]},
         options:{
           indexAxis:"y",
           responsive:true, maintainAspectRatio:false,
           plugins:{
             legend:{display:false},
-            datalabels:{
-              color:"#111",
-              anchor:"end", align:"right", offset:6,
-              font:{size:12, weight:"700"},
-              formatter:(v)=>String(v)
-            }
+            datalabels:{ color:"#111", anchor:"end", align:"right", offset:6, font:{size:12, weight:"700"}, formatter:(v)=>String(v) }
           },
-          scales:{
-            x:{beginAtZero:true, grid:{color:"#E6E6E6"}, ticks:{precision:0}},
-            y:{grid:{display:false}}
-          }
+          scales:{ x:{beginAtZero:true, grid:{color:"#E6E6E6"}}, y:{grid:{display:false}} }
         }
       });
     }
@@ -1189,14 +1245,7 @@ ctx.fillText(`Gasolio: ${fmtInt(chart.data.datasets[0].data[2])}`, x, y + 24);
     if(dEl){
       chartEffDonut = new Chart(dEl,{
         type:"doughnut",
-        data:{
-          labels:["Bassa","Media","Alta"],
-          datasets:[{
-            data:[bassa, media, alta],
-            backgroundColor:[EFF_COL.bassa, EFF_COL.media, EFF_COL.alta],
-            borderColor:"#fff", borderWidth:6
-          }]
-        },
+        data:{ labels:["Bassa","Media","Alta"], datasets:[{ data:[bassa, media, alta], backgroundColor:[EFF_COL.bassa, EFF_COL.media, EFF_COL.alta], borderColor:"#fff", borderWidth:6 }]},
         options:{
           responsive:true, maintainAspectRatio:false,
           cutout:"60%",
@@ -1219,7 +1268,7 @@ ctx.fillText(`Gasolio: ${fmtInt(chart.data.datasets[0].data[2])}`, x, y + 24);
   }
 
   // =========================
-  // getFormData + render
+  // Render
   // =========================
   const docRoot = document.getElementById("docRoot");
 
@@ -1247,9 +1296,9 @@ ctx.fillText(`Gasolio: ${fmtInt(chart.data.datasets[0].data[2])}`, x, y + 24);
       Pgas: safe(document.getElementById("Pgas").value),
       Pgasolio: safe(document.getElementById("Pgasolio").value),
 
-veicoli: safe(document.getElementById("veicoli").value),
-km: safe(document.getElementById("km").value),
-Commento_generale: safe(document.getElementById("commento_generale").value),
+      veicoli: safe(document.getElementById("veicoli").value),
+      km: safe(document.getElementById("km").value),
+      Commento_generale: safe(document.getElementById("commento_generale").value),
     };
   }
 
@@ -1263,114 +1312,112 @@ Commento_generale: safe(document.getElementById("commento_generale").value),
     destroyCharts();
     renderCharts(calc);
   }
-function downloadJSON(filename, obj){
-  const blob = new Blob([JSON.stringify(obj, null, 2)], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
-}
 
-function exportAuditJSON(){
-  // prendiamo i valori grezzi dal form (non formattati)
-  const payload = {
-    version: 1,
-    saved_at: new Date().toISOString(),
-    form: {
-      azienda: document.getElementById("azienda").value ?? "",
-      data: document.getElementById("data").value ?? "",
-      indirizzo: document.getElementById("indirizzo").value ?? "",
-      ateco: document.getElementById("ateco").value ?? "",
-      atecoAnno: document.getElementById("atecoAnno").value ?? "2007",
-      descrizioneateco: document.getElementById("descrizioneateco").value ?? "",
-
-      superficie: document.getElementById("superficie").value ?? "",
-      linee: document.getElementById("linee").value ?? "",
-      ore: document.getElementById("ore").value ?? "",
-      riscaldato: document.getElementById("riscaldato").value ?? "—",
-
-      veicoli: document.getElementById("veicoli")?.value ?? "",
-      km: document.getElementById("km")?.value ?? "",
-      commento_generale: document.getElementById("commento_generale")?.value ?? "",
-
-      EErete: document.getElementById("EErete").value ?? "",
-      EEfer: document.getElementById("EEfer").value ?? "",
-      gas: document.getElementById("gas").value ?? "",
-      gasolio: document.getElementById("gasolio").value ?? "",
-
-      PEE: document.getElementById("PEE").value ?? "",
-      Pgas: document.getElementById("Pgas").value ?? "",
-      Pgasolio: document.getElementById("Pgasolio").value ?? ""
-    },
-    interventiState: interventiState.map(s => ({
-      eff: s.eff,
-      intervento: !!s.intervento,
-      opportunita: s.opportunita ?? ""
-    }))
-  };
-
-  downloadJSON("audit.json", payload);
-}
-
-function applyAuditJSON(payload){
-  if(!payload || typeof payload !== "object") throw new Error("JSON non valido");
-
-  const f = payload.form || {};
-
-  // set form fields (in chiaro, non safe())
-  const setVal = (id, val) => {
-    const el = document.getElementById(id);
-    if(!el) return;
-    el.value = (val ?? "");
-  };
-
-  setVal("azienda", f.azienda);
-  setVal("data", f.data);
-  setVal("indirizzo", f.indirizzo);
-
-  setVal("ateco", f.ateco);
-  setVal("atecoAnno", f.atecoAnno ?? "2007");
-  setVal("descrizioneateco", f.descrizioneateco);
-
-  setVal("superficie", f.superficie);
-  setVal("linee", f.linee);
-  setVal("ore", f.ore);
-  setVal("riscaldato", f.riscaldato ?? "—");
-
-  setVal("veicoli", f.veicoli);
-  setVal("km", f.km);
-  setVal("commento_generale", f.commento_generale);
-
-  setVal("EErete", f.EErete);
-  setVal("EEfer", f.EEfer);
-  setVal("gas", f.gas);
-  setVal("gasolio", f.gasolio);
-
-  setVal("PEE", f.PEE);
-  setVal("Pgas", f.Pgas);
-  setVal("Pgasolio", f.Pgasolio);
-
-  // interventi
-  if(Array.isArray(payload.interventiState)){
-    payload.interventiState.forEach((s, i) => {
-      if(!interventiState[i]) return;
-      interventiState[i].eff = s.eff ?? "N.A.";
-      interventiState[i].intervento = !!s.intervento;
-      interventiState[i].opportunita = s.opportunita ?? "";
-    });
+  // =========================
+  // Export/Import JSON
+  // =========================
+  function downloadJSON(filename, obj){
+    const blob = new Blob([JSON.stringify(obj, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
   }
 
-  // ricalcolo descrizione ATECO (se usi map)
-  updateDescrizioneAteco();
+  function exportAuditJSON(){
+    const payload = {
+      version: 1,
+      saved_at: new Date().toISOString(),
+      form: {
+        azienda: document.getElementById("azienda").value ?? "",
+        data: document.getElementById("data").value ?? "",
+        indirizzo: document.getElementById("indirizzo").value ?? "",
+        ateco: document.getElementById("ateco").value ?? "",
+        atecoAnno: document.getElementById("atecoAnno").value ?? "2007",
+        descrizioneateco: document.getElementById("descrizioneateco").value ?? "",
 
-  // aggiorna UI interventi + preview
-  renderInterventiForm();
-  render();
-}
+        superficie: document.getElementById("superficie").value ?? "",
+        linee: document.getElementById("linee").value ?? "",
+        ore: document.getElementById("ore").value ?? "",
+        riscaldato: document.getElementById("riscaldato").value ?? "—",
+
+        veicoli: document.getElementById("veicoli")?.value ?? "",
+        km: document.getElementById("km")?.value ?? "",
+        commento_generale: document.getElementById("commento_generale")?.value ?? "",
+
+        EErete: document.getElementById("EErete").value ?? "",
+        EEfer: document.getElementById("EEfer").value ?? "",
+        gas: document.getElementById("gas").value ?? "",
+        gasolio: document.getElementById("gasolio").value ?? "",
+
+        PEE: document.getElementById("PEE").value ?? "",
+        Pgas: document.getElementById("Pgas").value ?? "",
+        Pgasolio: document.getElementById("Pgasolio").value ?? ""
+      },
+      interventiState: interventiState.map(s => ({
+        eff: s.eff,
+        intervento: !!s.intervento,
+        opportunita: s.opportunita ?? ""
+      }))
+    };
+
+    downloadJSON("audit.json", payload);
+  }
+
+  function applyAuditJSON(payload){
+    if(!payload || typeof payload !== "object") throw new Error("JSON non valido");
+    const f = payload.form || {};
+
+    const setVal = (id, val) => {
+      const el = document.getElementById(id);
+      if(!el) return;
+      el.value = (val ?? "");
+    };
+
+    setVal("azienda", f.azienda);
+    setVal("data", f.data);
+    setVal("indirizzo", f.indirizzo);
+
+    setVal("ateco", f.ateco);
+    setVal("atecoAnno", f.atecoAnno ?? "2007");
+    setVal("descrizioneateco", f.descrizioneateco);
+
+    setVal("superficie", f.superficie);
+    setVal("linee", f.linee);
+    setVal("ore", f.ore);
+    setVal("riscaldato", f.riscaldato ?? "—");
+
+    setVal("veicoli", f.veicoli);
+    setVal("km", f.km);
+    setVal("commento_generale", f.commento_generale);
+
+    setVal("EErete", f.EErete);
+    setVal("EEfer", f.EEfer);
+    setVal("gas", f.gas);
+    setVal("gasolio", f.gasolio);
+
+    setVal("PEE", f.PEE);
+    setVal("Pgas", f.Pgas);
+    setVal("Pgasolio", f.Pgasolio);
+
+    if(Array.isArray(payload.interventiState)){
+      payload.interventiState.forEach((s, i) => {
+        if(!interventiState[i]) return;
+        interventiState[i].eff = s.eff ?? "N.A.";
+        interventiState[i].intervento = !!s.intervento;
+        interventiState[i].opportunita = s.opportunita ?? "";
+      });
+    }
+
+    updateDescrizioneAteco();
+    renderInterventiForm();
+    render();
+  }
+
   // =========================
   // Eventi UI
   // =========================
@@ -1384,28 +1431,27 @@ function applyAuditJSON(payload){
   document.getElementById("atecoAnno").addEventListener("change", () => { updateDescrizioneAteco(); render(); });
 
   document.getElementById("btnPrint").addEventListener("click", () => window.print());
-document.getElementById("btnExportJson").addEventListener("click", exportAuditJSON);
+  document.getElementById("btnExportJson").addEventListener("click", exportAuditJSON);
 
-const fileImport = document.getElementById("fileImportJson");
-document.getElementById("btnImportJson").addEventListener("click", () => fileImport.click());
+  const fileImport = document.getElementById("fileImportJson");
+  document.getElementById("btnImportJson").addEventListener("click", () => fileImport.click());
 
-fileImport.addEventListener("change", async (e) => {
-  const file = e.target.files?.[0];
-  if(!file) return;
+  fileImport.addEventListener("change", async (e) => {
+    const file = e.target.files?.[0];
+    if(!file) return;
+    try{
+      const txt = await file.text();
+      const payload = JSON.parse(txt);
+      applyAuditJSON(payload);
+    } catch(err){
+      alert("Errore import JSON: " + (err?.message || err));
+    } finally {
+      fileImport.value = "";
+    }
+  });
 
-  try{
-    const txt = await file.text();
-    const payload = JSON.parse(txt);
-    applyAuditJSON(payload);
-  } catch(err){
-    alert("Errore import JSON: " + (err?.message || err));
-  } finally {
-    // reset input così puoi ricaricare lo stesso file
-    fileImport.value = "";
-  }
-});
   document.getElementById("btnReset").addEventListener("click", () => {
-   const ids = ["azienda","data","indirizzo","ateco","descrizioneateco","superficie","linee","ore","veicoli","km","commento_generale","EErete","EEfer","gas","gasolio","PEE","Pgas","Pgasolio"];
+    const ids = ["azienda","data","indirizzo","ateco","descrizioneateco","superficie","linee","ore","veicoli","km","commento_generale","EErete","EEfer","gas","gasolio","PEE","Pgas","Pgasolio"];
     ids.forEach(id => document.getElementById(id).value = "");
     document.getElementById("atecoAnno").value = "2007";
     document.getElementById("riscaldato").value = "—";
@@ -1423,35 +1469,3 @@ fileImport.addEventListener("change", async (e) => {
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

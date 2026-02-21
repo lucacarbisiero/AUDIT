@@ -635,7 +635,7 @@ body {
     <tr>
       <td>Gasolio</td>
       <td class="right">{{kpi_gasolio}}</td>
-      <td class="center">l/km</td>
+      <td class="center">l/100 km</td>
     </tr>
   </tbody>
 </table>
@@ -872,8 +872,11 @@ function compute(input) {
   // Gas: Smc/m²
   const kpi_gas = superficieNum > 0 ? (gas_smc / superficieNum) : 0;
 
-  // Gasolio: l/km   (come hai chiesto: Gasoliotot/km)
-  const kpi_gasolio = kmNum > 0 ? (gasolio_l / kmNum) : 0;
+  // Gasolio: l/100km  
+  const kpi_gasolio =
+  (kmNum > 0 && veicoliNum > 0)
+    ? (gasolio_l / (kmNum * veicoliNum)) * 100
+    : 0;
 
   // ---- efficienza
   const counts = { Alta:0, Media:0, Bassa:0, "N.A.":0 };
@@ -1494,6 +1497,7 @@ fileImport.addEventListener("change", async (e) => {
 </script>
 </body>
 </html>
+
 
 
 

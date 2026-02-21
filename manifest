@@ -1,5 +1,5 @@
 {
-  "name": "AUDIT Energetico",
+  "name": "Audit Energetico",
   "short_name": "AUDIT",
   "start_url": "./",
   "scope": "./",
@@ -10,14 +10,12 @@
     {
       "src": "icona-192.png",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     },
     {
       "src": "icona-512.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     }
   ]
 }

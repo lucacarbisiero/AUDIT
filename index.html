@@ -176,7 +176,23 @@ body {
 .panel.preview {
   overflow-y: auto;
 }
+.panel.form {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
 
+.formContent {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+/* Sezione export sempre visibile */
+.panel.form h2:last-of-type,
+.panel.form .btns {
+  flex-shrink: 0;
+}
 
   </style>
 </head>
@@ -190,6 +206,7 @@ body {
 <div class="wrap">
   <!-- FORM -->
   <section class="panel form" id="formPanel">
+    <div class="formContent">
     <h2>Dati base</h2>
 
     <label>Società ({{azienda}})</label>
@@ -319,7 +336,7 @@ body {
     <div class="intervForm" id="interventiForm"></div>
 
     <hr class="hr"/>
-
+</div>
     <h2>Export</h2>
 <div class="btns">
   <button class="primary" id="btnPrint">Stampa / Salva PDF</button>
@@ -1468,6 +1485,7 @@ fileImport.addEventListener("change", async (e) => {
 </script>
 </body>
 </html>
+
 
 
 

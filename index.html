@@ -129,74 +129,7 @@ body {
       .iRow { grid-columns: 1fr; }
     }
 
-    /* Print */
-@media print {
-  /* Nascondi tutto ciò che non è preview */
-  header,
-  #formPanel,
-  .panel.form {
-    display: none !important;
-  }
-
-  /* Layout a 1 colonna */
-  .wrap {
-    grid-template-columns: 1fr !important;
-    padding: 0 !important;
-    height: auto !important;
-  }
-
-  body {
-    background: #fff !important;
-    overflow: visible !important;
-  }
-
-  .panel.preview {
-    border: 0 !important;
-    padding: 0 !important;
-  }
-
-  /* Logo ripetuto in alto */
-  .printHeader {
-    position: fixed;
-    top: 15mm;      /* logo un po’ più in alto */
-    left: 10mm;
-    right: 10mm;
-    z-index: 9999;
-    background: #fff;
-  }
-
-  .printHeader img {
-    height: 38px;   /* +25% */
-    display: block;
-  }
-
-  /* Contenuto: parte sotto al logo */
-  .doc {
-    max-width: none !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-
-    /* 65mm sopra (margine + spazio logo), 50mm sotto */
-    padding: 65mm 10mm 50mm 10mm !important;
-  }
-
-  /* Evita tagli brutti */
-  .chartCard,
-  table,
-  canvas,
-  .nextStepsImg {
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-
-  /* Salti pagina “manuali” */
-  .pageBreak {
-    break-before: page;
-    page-break-before: always;
-  }
-}
-
-
+  /* Print */ @media print { header, .panel.form { display:none; } #formPanel, .panel.form{ display: none !important; .docHeader { display:none !important; } } .printHeader{ position: fixed; top: 15mm; /* più in alto rispetto a prima */ left: 10mm; right: 10mm; } .wrap{ grid-template-columns: 1fr !important; } body { background:#fff; } .wrap { padding:0; } .panel.preview { border:0; padding:0; } .doc{ padding: 65mm 10mm 50mm 10mm !important; /* 5cm sopra/sotto */ border: 0 !important; border-radius: 0 !important; } .chartCard { page-break-inside: avoid; } canvas { page-break-inside: avoid; } table { page-break-inside: avoid; } .nextStepsImg { page-break-inside: avoid; } } .docHeader{ display:flex; align-items:flex-start; justify-content:flex-start; /* logo a sx come molti report */ margin: 6px 0 8px; } .docLogo{ width: 180px; /* regola qui la dimensione */ max-width: 40%; height:auto; object-fit: contain; } .indice{ margin: 40px 0 40px; /* spazio sopra e sotto */ padding: 18px 24px; border: 1px solid #eee; border-radius: 14px; background: #fafafa; } .indice h2{ margin: 0 0 12px; font-size: 16px; } .indice ul{ margin:0; padding-left:18px; } .indice li{ margin:6px 0; font-size:13px; } .panel.form { overflow-y: auto; padding-right: 8px; } .panel.preview { overflow-y: auto; } .panel.form { display: flex; flex-direction: column; height: 100%; } .formContent { flex: 1; overflow-y: auto; padding-right: 8px; } /* Sezione export sempre visibile */ .panel.form h2:last-of-type, .panel.form .btns { flex-shrink: 0; } @media print { .printHeader{ position: fixed; top: 10mm; /* logo dentro il margine */ left: 10mm; right: 10mm; background: #fff; z-index: 9999; text-align: left; } .printHeader img{ height: 38px; /* +25% rispetto a 30px */ display: block; } .doc { padding-top: 80px !important; /* spinge giù il contenuto */ } } @media print { .pageBreak { break-before: page; page-break-before: always; } /* per evitare che grafici/tabelle si spezzino */ .chartCard, table, .nextStepsImg { break-inside: avoid; page-break-inside: avoid; } }
     
   </style>
 </head>
@@ -1514,6 +1447,7 @@ fileImport.addEventListener("change", async (e) => {
 </script>
 </body>
 </html>
+
 
 
 

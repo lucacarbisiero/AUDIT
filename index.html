@@ -137,20 +137,17 @@ body {
   display: none !important;
         .docHeader { display:none !important; }
 }
-@page {
-  margin: 50mm 10mm 50mm 10mm;
-}
+
 .wrap{
   grid-template-columns: 1fr !important;
 }
       body { background:#fff; }
       .wrap { padding:0; }
       .panel.preview { border:0; padding:0; }
-      .doc {
-  max-width: none;
-  border: 0;
-  border-radius: 0;
-  padding: 0;
+       .doc{
+    padding: 50mm 10mm 50mm 10mm !important;  /* 5cm sopra/sotto */
+    border: 0 !important;
+    border-radius: 0 !important;
 }
       .chartCard { page-break-inside: avoid; }
       canvas { page-break-inside: avoid; }
@@ -220,20 +217,19 @@ body {
 }
 @media print {
 
-  .printHeader {
+.printHeader{
     position: fixed;
-    top: 20mm;   /* lo metti dentro il margine */
-  left: 10mm;
-  right: 10mm;
-    height: 60px;
+    top: 10mm;          /* logo dentro il margine */
+    left: 10mm;
+    right: 10mm;
     background: #fff;
     z-index: 9999;
     text-align: left;
   }
 
-  .printHeader img {
-    height: 38px;
-    margin: 10px 0 10px 20px;
+  .printHeader img{
+    height: 38px;       /* +25% rispetto a 30px */
+    display: block;
   }
 
   .doc {
@@ -1565,6 +1561,7 @@ fileImport.addEventListener("change", async (e) => {
 </script>
 </body>
 </html>
+
 
 
 

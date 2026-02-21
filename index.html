@@ -202,7 +202,35 @@ body {
 .panel.form .btns {
   flex-shrink: 0;
 }
+@media print {
 
+  .printHeader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    text-align: left;
+  }
+
+  .printHeader img {
+    height: 60px;
+    margin: 10px 0 0 20px;
+  }
+
+  .doc {
+    margin-top: 100px; /* spazio per non sovrapporre il contenuto */
+  }
+
+}
+@media print {
+  .pageBreak { break-before: page; page-break-before: always; }
+  /* per evitare che grafici/tabelle si spezzino */
+  .chartCard, table, .nextStepsImg { break-inside: avoid; page-break-inside: avoid; }
+}
+
+
+    
   </style>
 </head>
 
@@ -410,6 +438,9 @@ body {
   <img class="docLogo" src="logo.png" alt="Logo azienda" />
 </div>
 
+<div class="printHeader">
+  <img src="logo.png" alt="Logo" />
+</div>
    
 <h1>AUDIT ENERGETICO</h1>
 
@@ -442,8 +473,7 @@ body {
     <li>7. Next steps</li>
   </ul>
 </div>
-
-
+                
     <h2>Obiettivi dell'audit</h2>
     <p>
       L’audit ha come scopo principale l’analisi dei consumi energetici complessivi dell’azienda, con particolare attenzione alle aree e ai reparti che risultano più energivori.
@@ -451,6 +481,8 @@ body {
       Il focus si concentra su un sopralluogo generale e sull’identificazione di criticità evidenti.
     </p>
 
+                        <div class="pageBreak"></div>
+        
     <h2>Dati generali</h2>
     <p>
       Il check-up considera i principali dati energetici disponibili dell’azienda, tra cui la superficie dello stabilimento, il numero di linee produttive, il consumo annuo di elettricità e gas/metano,
@@ -475,6 +507,8 @@ body {
       </tbody>
     </table>
 
+                        <div class="pageBreak"></div>
+        
     <h2>Metodologia</h2>
     <p>
       L’approccio adottato per il check-up energetico prevede la raccolta dei dati disponibili, l’osservazione diretta delle utenze principali (elettricità, gas, aria compressa, acqua e combustibili)
@@ -540,6 +574,12 @@ body {
         </tr>
       </tbody>
     </table>
+
+
+
+                        <div class="pageBreak"></div>
+        
+    
 <h3>Energia da Fonti Rinnovabili (FER)</h3>
 
 <table>
@@ -606,6 +646,10 @@ body {
       <p class="muted" style="text-align:center;margin:8px 0 0;">Anello esterno: consumi [tep] — Anello interno: costi [€]</p>
     </div>
 
+
+                        <div class="pageBreak"></div>
+        
+
     <p>
       Di seguito si riportano alcuni KPI (key performance indicators) di carattere generale, utili per confronti a distanza di tempo con una baseline, obiettivi o con valori di benchmark.
       Il confronto di questi dati è da attenzionare poichè sono strettamente legati alla performance del sistema: creando appositi indicatori, anche di maggior dettaglio e specificità,
@@ -640,6 +684,9 @@ body {
   </tbody>
 </table>
 
+
+                        <div class="pageBreak"></div>
+        
     <h2>Analisi settoriale e opportunità</h2>
     <p>
       Durante il sopralluogo sono stati osservati i principali reparti dell’azienda, annotando il tipo di consumo energetico predominante, l’efficienza percepita e le note rilevanti per ciascun reparto.
@@ -666,6 +713,8 @@ body {
       </div>
     </div>
 
+                        <div class="pageBreak"></div>
+        
     <h2>Aree di intervento</h2>
     <table>
       <thead>
@@ -682,6 +731,8 @@ body {
       </tbody>
     </table>
 
+                        <div class="pageBreak"></div>
+        
     <h2>6. Next steps</h2>
 
     <p>
@@ -1497,6 +1548,7 @@ fileImport.addEventListener("change", async (e) => {
 </script>
 </body>
 </html>
+
 
 
 

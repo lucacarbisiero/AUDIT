@@ -184,9 +184,11 @@ body {
     border-radius: 0 !important;
 
     /* 65mm sopra (spazio logo + margine), 50mm sotto */
-     padding-top: 30mm !important; 
+      padding-top: 0 !important;
   }
-
+  .doc > *:first-child {
+    margin-top: 65mm;
+  }
   /* Salti pagina manuali */
   .pageBreak {
     break-before: page;
@@ -1586,6 +1588,7 @@ fileImport.addEventListener("change", async (e) => {
 </script>
 </body>
 </html>
+
 
 
 

@@ -321,10 +321,16 @@ body {
     <hr class="hr"/>
 
     <h2>Export</h2>
-    <div class="btns">
-      <button class="primary" id="btnPrint">Stampa / Salva PDF</button>
-      <button id="btnReset">Reset</button>
-    </div>
+<div class="btns">
+  <button class="primary" id="btnPrint">Stampa / Salva PDF</button>
+
+  <button id="btnExportJson">Esporta JSON</button>
+
+  <button id="btnImportJson">Importa JSON</button>
+  <input id="fileImportJson" type="file" accept="application/json" style="display:none" />
+
+  <button id="btnReset">Reset</button>
+</div>
   </section>
 
   <!-- PREVIEW -->
@@ -1302,7 +1308,114 @@ Commento_generale: safe(document.getElementById("commento_generale").value),
     destroyCharts();
     renderCharts(calc);
   }
+function downloadJSON(filename, obj){
+  const blob = new Blob([JSON.stringify(obj, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
 
+function exportAuditJSON(){
+  // prendiamo i valori grezzi dal form (non formattati)
+  const payload = {
+    version: 1,
+    saved_at: new Date().toISOString(),
+    form: {
+      azienda: document.getElementById("azienda").value ?? "",
+      data: document.getElementById("data").value ?? "",
+      indirizzo: document.getElementById("indirizzo").value ?? "",
+      ateco: document.getElementById("ateco").value ?? "",
+      atecoAnno: document.getElementById("atecoAnno").value ?? "2007",
+      descrizioneateco: document.getElementById("descrizioneateco").value ?? "",
+
+      superficie: document.getElementById("superficie").value ?? "",
+      linee: document.getElementById("linee").value ?? "",
+      ore: document.getElementById("ore").value ?? "",
+      riscaldato: document.getElementById("riscaldato").value ?? "—",
+
+      veicoli: document.getElementById("veicoli")?.value ?? "",
+      km: document.getElementById("km")?.value ?? "",
+      commento_generale: document.getElementById("commento_generale")?.value ?? "",
+
+      EErete: document.getElementById("EErete").value ?? "",
+      EEfer: document.getElementById("EEfer").value ?? "",
+      gas: document.getElementById("gas").value ?? "",
+      gasolio: document.getElementById("gasolio").value ?? "",
+
+      PEE: document.getElementById("PEE").value ?? "",
+      Pgas: document.getElementById("Pgas").value ?? "",
+      Pgasolio: document.getElementById("Pgasolio").value ?? ""
+    },
+    interventiState: interventiState.map(s => ({
+      eff: s.eff,
+      intervento: !!s.intervento,
+      opportunita: s.opportunita ?? ""
+    }))
+  };
+
+  downloadJSON("audit.json", payload);
+}
+
+function applyAuditJSON(payload){
+  if(!payload || typeof payload !== "object") throw new Error("JSON non valido");
+
+  const f = payload.form || {};
+
+  // set form fields (in chiaro, non safe())
+  const setVal = (id, val) => {
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.value = (val ?? "");
+  };
+
+  setVal("azienda", f.azienda);
+  setVal("data", f.data);
+  setVal("indirizzo", f.indirizzo);
+
+  setVal("ateco", f.ateco);
+  setVal("atecoAnno", f.atecoAnno ?? "2007");
+  setVal("descrizioneateco", f.descrizioneateco);
+
+  setVal("superficie", f.superficie);
+  setVal("linee", f.linee);
+  setVal("ore", f.ore);
+  setVal("riscaldato", f.riscaldato ?? "—");
+
+  setVal("veicoli", f.veicoli);
+  setVal("km", f.km);
+  setVal("commento_generale", f.commento_generale);
+
+  setVal("EErete", f.EErete);
+  setVal("EEfer", f.EEfer);
+  setVal("gas", f.gas);
+  setVal("gasolio", f.gasolio);
+
+  setVal("PEE", f.PEE);
+  setVal("Pgas", f.Pgas);
+  setVal("Pgasolio", f.Pgasolio);
+
+  // interventi
+  if(Array.isArray(payload.interventiState)){
+    payload.interventiState.forEach((s, i) => {
+      if(!interventiState[i]) return;
+      interventiState[i].eff = s.eff ?? "N.A.";
+      interventiState[i].intervento = !!s.intervento;
+      interventiState[i].opportunita = s.opportunita ?? "";
+    });
+  }
+
+  // ricalcolo descrizione ATECO (se usi map)
+  updateDescrizioneAteco();
+
+  // aggiorna UI interventi + preview
+  renderInterventiForm();
+  render();
+}
   // =========================
   // Eventi UI
   // =========================
@@ -1316,7 +1429,26 @@ Commento_generale: safe(document.getElementById("commento_generale").value),
   document.getElementById("atecoAnno").addEventListener("change", () => { updateDescrizioneAteco(); render(); });
 
   document.getElementById("btnPrint").addEventListener("click", () => window.print());
+document.getElementById("btnExportJson").addEventListener("click", exportAuditJSON);
 
+const fileImport = document.getElementById("fileImportJson");
+document.getElementById("btnImportJson").addEventListener("click", () => fileImport.click());
+
+fileImport.addEventListener("change", async (e) => {
+  const file = e.target.files?.[0];
+  if(!file) return;
+
+  try{
+    const txt = await file.text();
+    const payload = JSON.parse(txt);
+    applyAuditJSON(payload);
+  } catch(err){
+    alert("Errore import JSON: " + (err?.message || err));
+  } finally {
+    // reset input così puoi ricaricare lo stesso file
+    fileImport.value = "";
+  }
+});
   document.getElementById("btnReset").addEventListener("click", () => {
    const ids = ["azienda","data","indirizzo","ateco","descrizioneateco","superficie","linee","ore","veicoli","km","commento_generale","EErete","EEfer","gas","gasolio","PEE","Pgas","Pgasolio"];
     ids.forEach(id => document.getElementById(id).value = "");
@@ -1336,4 +1468,5 @@ Commento_generale: safe(document.getElementById("commento_generale").value),
 </script>
 </body>
 </html>
+
 

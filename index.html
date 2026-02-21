@@ -133,6 +133,33 @@ body {
    PRINT
    ========================= */
 @media print {
+  .printHeader{
+    position: fixed;
+    top: 15mm;
+    left: 15mm;
+    right: 10mm;
+    z-index: 9999;
+  }
+
+  .printHeader img{
+    height: 38px;
+    display:block;
+  }
+
+  /* qui gestisci l'inizio del testo SENZA toccare il logo */
+  .printContent{
+    padding-top: 65mm; /* aumenta/diminuisci qui */
+  }
+
+  .doc{
+    max-width:none !important;
+    border:0 !important;
+    border-radius:0 !important;
+    padding: 0 10mm 50mm 10mm !important; /* niente padding-top qui */
+  }
+}
+    
+    @media print {
 
   /* Nascondi form e header app */
   header,
@@ -529,7 +556,7 @@ body{
 <div class="printHeader">
   <img src="logo.png" alt="Logo" />
 </div>
-   
+   <div class="printContent">
 <h1>AUDIT ENERGETICO</h1>
 
 
@@ -1637,6 +1664,7 @@ fileImport.addEventListener("change", async (e) => {
 </script>
 </body>
 </html>
+
 
 
 

@@ -175,7 +175,9 @@ body {
     height: 38px;       /* +25% */
     display: block;
   }
-
+@page {
+  margin: 40mm 10mm 40mm 10mm;
+}
   /* Contenuto: parte sotto al logo (NO conflitti) */
   .doc {
     max-width: none !important;
@@ -183,7 +185,7 @@ body {
     border-radius: 0 !important;
 
     /* 65mm sopra (spazio logo + margine), 50mm sotto */
-    padding: 185mm 10mm 50mm 10mm !important;
+     padding: 0 !important;
   }
 
   /* Salti pagina manuali */
@@ -1585,6 +1587,7 @@ fileImport.addEventListener("change", async (e) => {
 </script>
 </body>
 </html>
+
 
 
 

@@ -129,17 +129,15 @@ body {
       .iRow { grid-columns: 1fr; }
     }
 
-/* Print */
+/* =========================
+   PRINT
+   ========================= */
 @media print {
-  /* Nascondi tutto ciò che non è preview */
+
+  /* Nascondi form e header app */
   header,
   #formPanel,
   .panel.form {
-    display: none !important;
-  }
-
-  /* Se mai esistesse ancora in futuro */
-  .docHeader {
     display: none !important;
   }
 
@@ -160,10 +158,10 @@ body {
     padding: 0 !important;
   }
 
-  /* Logo ripetuto in alto */
+  /* LOGO fisso (non si muove col testo) */
   .printHeader {
     position: fixed;
-    top: 10mm;          /* logo più in alto */
+    top: 15mm;          /* distanza dal bordo superiore pagina */
     left: 15mm;
     right: 10mm;
     background: #fff;
@@ -176,20 +174,29 @@ body {
     display: block;
   }
 
-}
-  /* Contenuto: parte sotto al logo (NO conflitti) */
+  /* CONTENUTO: crea spazio sotto al logo */
   .doc {
     max-width: none !important;
     border: 0 !important;
     border-radius: 0 !important;
 
-    /* 65mm sopra (spazio logo + margine), 50mm sotto */
-      padding-top: 30mm !important;
+    /* Qui controlli dove parte il testo su OGNI pagina */
+    padding: 65mm 10mm 50mm 10mm !important; /* top | right | bottom | left */
   }
-  .doc > *:first-child {
-    margin-top: 95mm;
+
+  /* IMPORTANTISSIMO:
+     evita che il logo "rubI" spazio o venga trattato come primo elemento da spostare */
+  .doc > .printHeader {
+    margin: 0 !important;
+    padding: 0 !important;
   }
-  /* Salti pagina manuali */
+
+  /* Se vuoi spingere ANCORA GIÙ il contenuto, fallo sul primo titolo, non sul primo figlio */
+  .doc h1 {
+    margin-top: 0 !important; /* il padding-top della .doc gestisce già l'inizio */
+  }
+
+  /* Page break manuali */
   .pageBreak {
     break-before: page;
     page-break-before: always;
@@ -203,75 +210,7 @@ body {
     break-inside: avoid;
     page-break-inside: avoid;
   }
-}
-
-/* Header logo “non stampa” */
-.docHeader {
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start; /* logo a sx come molti report */
-  margin: 6px 0 8px;
-}
-
-.docLogo {
-  width: 180px; /* regola qui la dimensione */
-  max-width: 40%;
-  height: auto;
-  object-fit: contain;
-}
-
-/* Indice */
-.indice {
-  margin: 40px 0 40px; /* spazio sopra e sotto */
-  padding: 18px 24px;
-  border: 1px solid #eee;
-  border-radius: 14px;
-  background: #fafafa;
-}
-
-.indice h2 {
-  margin: 0 0 12px;
-  font-size: 16px;
-}
-
-.indice ul {
-  margin: 0;
-  padding-left: 18px;
-}
-
-.indice li {
-  margin: 6px 0;
-  font-size: 13px;
-}
-
-/* Scroll pannelli */
-.panel.form {
-  overflow-y: auto;
-  padding-right: 8px;
-}
-
-.panel.preview {
-  overflow-y: auto;
-}
-
-.panel.form {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.formContent {
-  flex: 1;
-  overflow-y: auto;
-  padding-right: 8px;
-}
-
-/* Sezione export sempre visibile */
-.panel.form h2:last-of-type,
-.panel.form .btns {
-  flex-shrink: 0;
-}
-    
+}    
   </style>
 </head>
 
@@ -1588,6 +1527,7 @@ fileImport.addEventListener("change", async (e) => {
 </script>
 </body>
 </html>
+
 
 
 

@@ -12,17 +12,28 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
 
-  <!-- Export DOCX -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pizzip/3.1.5/pizzip.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.44.0/docxtemplater.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-
   <style>
     :root { --b:#ddd; --bg:#fafafa; --txt:#111; --muted:#666; }
-    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:var(--txt); background:var(--bg); }
+    html, body {
+  height: 100%;
+}
+
+body {
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color:var(--txt);
+  background:var(--bg);
+  overflow: hidden; /* blocca scroll globale */
+}
     header { padding:16px 20px; border-bottom:1px solid var(--b); background:#fff; }
     header .sub { color:var(--muted); font-size:12px; margin-top:4px; }
-    .wrap { display:grid; grid-template-columns: 460px 1fr; gap:16px; padding:16px; align-items:start; }
+    .wrap {
+  display:grid;
+  grid-template-columns: 460px 1fr;
+  gap:16px;
+  padding:16px;
+  height: calc(100vh - 70px); /* altezza meno header */
+}
     .panel { background:#fff; border:1px solid var(--b); border-radius:14px; padding:14px; }
     .panel h2 { margin:0 0 10px; font-size:15px; }
 
@@ -55,7 +66,14 @@
 
     /* Interventi - form */
     .intervForm { border:1px solid #eee; border-radius:12px; padding:10px; }
-    .iRow { display:grid; grid-template-columns: 1.2fr 0.9fr 0.9fr 0.9fr; gap:10px; margin-top:10px; }
+
+    /* ✅ FIX: aggiunta la 5ª colonna */
+    .iRow {
+      display:grid;
+      grid-template-columns: 1.2fr 0.9fr 0.9fr 0.9fr 1fr;
+      gap:10px;
+      margin-top:10px;
+    }
     .iRow:first-child { margin-top:0; }
     .inlineChk { display:flex; align-items:center; gap:8px; padding:10px; border:1px solid #ccc; border-radius:10px; background:#fff; height: 42px; box-sizing:border-box; }
     .inlineChk input { width:auto; }
@@ -65,10 +83,33 @@
     .chartTitle { font-size:22px; font-weight:800; text-align:center; margin: 6px 0 8px; }
     .chartWrap { position:relative; width:100%; }
     .chartWrap.donut { max-width: 560px; margin: 0 auto; }
+
     .charts2 { display:grid; grid-template-columns: 2fr 1fr; gap: 14px; align-items:start; }
+
+    /* Grafici sintesi consumi (2 colonne) */
+    .charts2equal {
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      align-items:start;
+    }
+
+    /* Immagine capitolo 6 */
+    .nextStepsImg{
+      display:block;
+  width:30%;
+  max-width: 520px;
+  height:auto;
+  margin: 14px auto 0;
+  border: 1px solid #eee;
+  border-radius: 14px;
+  page-break-inside: avoid;
+    }
+
     @media (max-width: 980px) {
       .wrap { grid-template-columns: 1fr; }
       .charts2 { grid-template-columns: 1fr; }
+      .charts2equal { grid-template-columns: 1fr; }
       .iRow { grid-template-columns: 1fr; }
     }
 
@@ -82,14 +123,61 @@
       .chartCard { page-break-inside: avoid; }
       canvas { page-break-inside: avoid; }
       table { page-break-inside: avoid; }
+      .nextStepsImg { page-break-inside: avoid; }
     }
+.docHeader{
+  display:flex;
+  align-items:flex-start;
+  justify-content:flex-start; /* logo a sx come molti report */
+  margin: 6px 0 8px;
+}
+
+.docLogo{
+  width: 180px;      /* regola qui la dimensione */
+  max-width: 40%;
+  height:auto;
+  object-fit: contain;
+}
+
+.indice{
+  margin: 40px 0 40px;   /* spazio sopra e sotto */
+  padding: 18px 24px;
+  border: 1px solid #eee;
+  border-radius: 14px;
+  background: #fafafa;
+}
+
+.indice h2{
+  margin: 0 0 12px;
+  font-size: 16px;
+}
+
+.indice ul{
+  margin:0;
+  padding-left:18px;
+}
+
+.indice li{
+  margin:6px 0;
+  font-size:13px;
+}
+
+.panel.form {
+  overflow-y: auto;
+  padding-right: 8px;
+}
+.panel.preview {
+  overflow-y: auto;
+}
+
+
   </style>
 </head>
 
 <body>
 <header>
   <div><strong>Generatore Audit Energetico</strong></div>
-  <div class="sub">Template HTML strutturato come il Word (paragrafi + tabelle) • ATECO+Anno→descrizione • Interventi standard • Grafici • Export Word</div>
+  <div class="sub">Template HTML strutturato come il Word (paragrafi + tabelle) • ATECO+Anno→descrizione • Interventi standard • Grafici</div>
 </header>
 
 <div class="wrap">
@@ -156,7 +244,22 @@
         </select>
       </div>
     </div>
+<hr class="hr"/>
 
+<h2>Flotta aziendale</h2>
+<div class="row">
+  <div>
+    <label>Numero veicoli flotta aziendale ({{veicoli}})</label>
+    <input id="veicoli" type="number" step="1" />
+  </div>
+  <div>
+    <label>Chilometraggio medio auto [km] ({{km}})</label>
+    <input id="km" type="number" step="1" />
+  </div>
+</div>
+
+<label>Commento generale ({{Commento_generale}})</label>
+<textarea id="commento_generale" placeholder="Inserisci qui note generali..."></textarea>
     <hr class="hr"/>
 
     <h2>Consumi annui</h2>
@@ -215,15 +318,6 @@
       <button class="primary" id="btnPrint">Stampa / Salva PDF</button>
       <button id="btnReset">Reset</button>
     </div>
-
-    <label style="margin-top:14px;">Carica template Word (.docx) per export</label>
-    <input type="file" id="tplDocx" accept=".docx" />
-    <div class="btns">
-      <button id="btnWord">Esporta Word (.docx)</button>
-    </div>
-    <div class="note">
-      In export Word passo anche <code>interventi</code> come array (utile se nel docx vuoi fare un loop).
-    </div>
   </section>
 
   <!-- PREVIEW -->
@@ -238,7 +332,11 @@
   // =========================
   const ENERGY_COL = { ee:"#7E57C2", gas:"#00E676", gasolio:"#0F5B6E" }; // viola / verde / petrolio
   const EFF_COL = { alta:"#8BD96B", media:"#FFC000", bassa:"#E8742B" };  // verde / giallo / arancio
-  function rgba(hex, a){ const h=hex.replace("#",""); const r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),b=parseInt(h.slice(4,6),16); return `rgba(${r},${g},${b},${a})`; }
+  function rgba(hex, a){
+    const h=hex.replace("#","");
+    const r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),b=parseInt(h.slice(4,6),16);
+    return `rgba(${r},${g},${b},${a})`;
+  }
 
   // =========================
   // INTERVENTI STANDARD (dal Word)
@@ -269,9 +367,14 @@
   // TEMPLATE (strutturato come Word)
   // =========================
   const TEMPLATE = `
-    <h1>AUDIT ENERGETICO</h1>
+<div class="docHeader">
+  <img class="docLogo" src="logo.png" alt="Logo azienda" />
+</div>
 
-    <!-- Tabella intestazione (come Word) -->
+   
+<h1>AUDIT ENERGETICO</h1>
+
+
     <table>
       <tbody>
         <tr>
@@ -288,6 +391,20 @@
       </tbody>
     </table>
 
+<div class="indice">
+  <h2>Indice</h2>
+  <ul>
+    <li>1. Obiettivi dell'audit</li>
+    <li>2. Dati generali</li>
+    <li>3. Metodologia</li>
+    <li>4. Sintesi dei consumi</li>
+    <li>5. Analisi settoriale e opportunità</li>
+    <li>6. Aree di intervento</li>
+    <li>7. Next steps</li>
+  </ul>
+</div>
+
+
     <h2>Obiettivi dell'audit</h2>
     <p>
       L’audit ha come scopo principale l’analisi dei consumi energetici complessivi dell’azienda, con particolare attenzione alle aree e ai reparti che risultano più energivori.
@@ -303,7 +420,6 @@
       L'output del presente report è prodotto sulla base di interviste al personale aziendale e analisi delle fatture dei fornitori di energia.
     </p>
 
-    <!-- Tabella dati generali (come Word, 2 colonne) -->
     <table>
       <tbody>
         <tr><td>Superficie stabilimento [m2]:</td><td class="right">{{superficie}}</td></tr>
@@ -336,7 +452,6 @@
       Lo scopo di questa sintesi è fornire una visione immediata delle aree più critiche e dei margini di miglioramento.
     </p>
 
-    <!-- Tabella consumi tradizionali (come Word, 7 colonne) -->
     <table>
       <thead>
         <tr>
@@ -386,14 +501,51 @@
         </tr>
       </tbody>
     </table>
+<h3>Energia da Fonti Rinnovabili (FER)</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Energia elettrica FER</th>
+      <th class="center">kWh</th>
+      <th class="center">Conversione in tep</th>
+      <th class="center">tep</th>
+      <th class="center">Quota sul totale [%]</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Produzione da FER</td>
+      <td class="right">{{EEfer}}</td>
+      <td class="center">0,187 x 10<sup>-3</sup></td>
+      <td class="right">{{EEfer_tep}}</td>
+      <td class="right">{{perFER}}</td>
+    </tr>
+  </tbody>
+</table>
+    <h3>GRAFICI ENERGIA PRIMARIA</h3>
+    <div class="charts2equal">
+      <div class="chartCard">
+        <div class="chartTitle">Energia primaria [tep]</div>
+        <div class="chartWrap donut">
+          <canvas id="chartEnergiaPrimaria" height="320"></canvas>
+        </div>
+      </div>
+
+      <div class="chartCard">
+        <div class="chartTitle">Principali vettori energetici [tep]</div>
+        <div class="chartWrap">
+          <canvas id="chartVettoriEnergetici" height="320"></canvas>
+        </div>
+      </div>
+    </div>
 
     <p class="muted">(*) Il tep (tonnellata equivalente di petrolio) rappresenta la quantità di energia rilasciata dalla combustione di una tonnellata di petrolio grezzo.</p>
     <p class="muted">(**) L'energia FER deriva da Fonti Energetiche Rinnovabili, come impianti fotovoltaici o idroelettrici.</p>
 
-    <h2>GRAFICI</h2>
+  
     <p>Di seguito si riportano i costi associati ai consumi energetici:</p>
 
-    <!-- Tabella costi (come Word) -->
     <table>
       <thead>
         <tr><th>Consumi</th><th class="center">Prezzo</th><th class="center">Quantità</th><th class="center">Costo energia</th></tr>
@@ -420,28 +572,34 @@
       Il confronto di questi dati è da attenzionare poichè sono strettamente legati alla performance del sistema: creando appositi indicatori, anche di maggior dettaglio e specificità,
       e monitorandoli sistematicamente nel tempo è possibile prendere decisioni strategiche e valutare l'efficienza dell'azienda.
     </p>
+<h2>Benchmark settoriali</h2>
 
-    <!-- Tabella KPI (struttura come Word, 5 colonne) -->
-    <table>
-      <thead>
-        <tr>
-          <th>Energia elettrica (inclusa FER) [kWh]</th>
-          <th class="center">Superficie [m2]</th>
-          <th class="center"></th>
-          <th class="center">KPI 1:<br/>kWh/m2</th>
-          <th class="center">Benchmark:<br/>kWh/m2</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="right">{{EEtot}}</td>
-          <td class="right">{{superficie}}</td>
-          <td class="center"></td>
-          <td class="right">{{kpi1}}</td>
-          <td class="right">{{bench1}}</td>
-        </tr>
-      </tbody>
-    </table>
+<table>
+  <thead>
+    <tr>
+      <th>Indicatore</th>
+      <th class="center">KPI azienda</th>
+      <th class="center">Unità</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Energia elettrica totale</td>
+      <td class="right">{{kpi_ee}}</td>
+      <td class="center">kWh/m²</td>
+    </tr>
+    <tr>
+      <td>Gas</td>
+      <td class="right">{{kpi_gas}}</td>
+      <td class="center">Smc/m²</td>
+    </tr>
+    <tr>
+      <td>Gasolio</td>
+      <td class="right">{{kpi_gasolio}}</td>
+      <td class="center">l/km</td>
+    </tr>
+  </tbody>
+</table>
 
     <h2>Analisi settoriale e opportunità</h2>
     <p>
@@ -453,7 +611,6 @@
       dispersioni termiche dagli impianti di riscaldamento e raffreddamento.
     </p>
 
-    <!-- Tabella aree di intervento (come Word, ma resa pulita: 5 colonne logiche) -->
     <h3>GRAFICI EFFICIENZA</h3>
     <div class="charts2">
       <div class="chartCard">
@@ -485,6 +642,40 @@
         {{INTERVENTI_ROWS}}
       </tbody>
     </table>
+
+    <h2>6. Next steps</h2>
+
+    <p>
+      A seguito del sopralluogo e dell’analisi preliminare dei consumi energetici, si raccomanda di intervenire innanzitutto sulle inefficienze più facilmente individuabili,
+      quali perdite di aria compressa, dispersioni energetiche e utilizzi non ottimali delle apparecchiature. Queste azioni consentono di ottenere riduzioni di costo rapide,
+      con investimenti limitati e tempi di ritorno contenuti.
+    </p>
+
+    <p>
+      Un fattore determinante per una gestione efficace dell’energia è l’adozione di un sistema di monitoraggio strutturato dei consumi, in grado di fornire dati affidabili,
+      continui e confrontabili nel tempo. Il presidio dei principali indicatori di prestazione energetica (KPI) permette di controllare una voce di costo strategica,
+      individuare tempestivamente eventuali anomalie e valutare in modo oggettivo l’impatto economico degli interventi di efficientamento.
+    </p>
+
+    <p>
+      Il valore del sistema di monitoraggio non si esaurisce nel breve periodo: pur venendo installato oggi, esso costituisce un asset informativo a lungo termine.
+      La creazione di uno storico dei consumi e di una base dati solida rappresenta un elemento essenziale per supportare decisioni future,
+      quali investimenti, ampliamenti produttivi o nuove linee di business, consentendo di stimarne in modo affidabile gli impatti energetici ed economici.
+    </p>
+
+    <p>
+      Il monitoraggio dei consumi deve essere parte integrante di un approccio strutturato di energy management, orientato al controllo continuo delle prestazioni energetiche
+      e alla riduzione stabile dei costi operativi. Una gestione dell’energia basata su dati misurabili consente di migliorare la prevedibilità dei costi
+      e di supportare la pianificazione strategica nel medio e lungo periodo.
+    </p>
+
+    <p>
+      Si evidenzia infine che il presente check-up energetico ha carattere orientativo e non sostituisce una diagnosi energetica approfondita.
+      Qualora l’azienda intenda disporre di una visione completa dei flussi energetici e di una quantificazione puntuale dei benefici economici degli interventi,
+      è fortemente consigliato procedere con una diagnosi energetica strutturata, considerata uno strumento fondamentale per una gestione consapevole ed efficace dell’energia.
+    </p>
+
+    <img class="nextStepsImg" src="next_steps.png" alt="Next steps" />
   `;
 
   // =========================
@@ -499,7 +690,10 @@
   function fmtInt(n){ return Number(n).toLocaleString("it-IT", { maximumFractionDigits: 0 }); }
   function fmt1(n){ return Number(n).toLocaleString("it-IT", { minimumFractionDigits: 1, maximumFractionDigits: 1 }); }
   function fmt2(n){ return Number(n).toLocaleString("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
-  function fmtPct0(n){ return `${Math.round(n)}%`; }
+function fmt4(n){ 
+  return Number(n).toLocaleString("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); 
+}  
+function fmtPct0(n){ return `${Math.round(n)}%`; }
 
   function applyTemplate(html, data) {
     return html.replace(/\{\{([^}]+)\}\}/g, (_, key) => {
@@ -568,17 +762,11 @@
       `;
       interventiForm.appendChild(wrap);
 
-      // events
       wrap.querySelector(`select[data-eff="${idx}"]`).addEventListener("change", (e) => {
         const eff = e.target.value;
         st.eff = eff;
-
-        // checkbox auto
         st.intervento = computeInterventoAuto(eff);
-
-        // se non attivo, svuota e disabilita textarea
         if (!st.intervento) st.opportunita = "";
-
         renderInterventiForm();
         render();
       });
@@ -593,97 +781,125 @@
   // =========================
   // Calcoli energetici + costi + KPI + stats efficienza
   // =========================
-  function compute(input) {
-    const EErete_kWh = num(input.EErete);
-    const EEfer_kWh = num(input.EEfer);
-    const gas_smc = num(input.gas);
-    const gasolio_l = num(input.gasolio);
+function compute(input) {
+  // ---- numeri grezzi
+  const EErete_kWh = num(input.EErete);
+  const EEfer_kWh  = num(input.EEfer);
+  const gas_smc    = num(input.gas);
+  const gasolio_l  = num(input.gasolio);
 
-    const PEE = num(input.PEE);
-    const Pgas = num(input.Pgas);
-    const Pgasolio = num(input.Pgasolio);
+  const PEE      = num(input.PEE);
+  const Pgas     = num(input.Pgas);
+  const Pgasolio = num(input.Pgasolio);
 
-    const fEE = 0.187e-3;
-    const fGas = 0.825e-3;
-    const fGasolio = 0.867e-3;
+  const superficieNum = num(input.superficie);
+  const veicoliNum    = num(input.veicoli);
+  const kmNum         = num(input.km);
 
-    const Eerete_tep = EErete_kWh * fEE;
-    const gas_tep = gas_smc * fGas;
-    const gasolio_tep = gasolio_l * fGasolio;
+  // ---- conversioni tep
+  const fEE     = 0.187e-3;
+  const fGas    = 0.825e-3;
+  const fGasolio= 0.867e-3;
 
-    const tot_tep = Eerete_tep + gas_tep + gasolio_tep;
-    const denom = tot_tep > 0 ? tot_tep : 1;
+  const Eerete_tep  = EErete_kWh * fEE;
+  const EEfer_tep   = EEfer_kWh  * fEE;
+  const gas_tep     = gas_smc    * fGas;
+  const gasolio_tep = gasolio_l  * fGasolio;
 
-    const perEE = (Eerete_tep / denom) * 100;
-    const pergas = (gas_tep / denom) * 100;
-    const pergasolio = (gasolio_tep / denom) * 100;
+  // Energia primaria "tradizionale" (come la tua tabella principale)
+  const tot_tep = Eerete_tep + gas_tep + gasolio_tep;
+  const denom = tot_tep > 0 ? tot_tep : 1;
 
-    const costoEE = EErete_kWh * PEE;
-    const costogas = gas_smc * Pgas;
-    const costogasolio = gasolio_l * Pgasolio;
-    const costotot = costoEE + costogas + costogasolio;
+  const perEE      = (Eerete_tep / denom) * 100;
+  const pergas     = (gas_tep / denom) * 100;
+  const pergasolio = (gasolio_tep / denom) * 100;
 
-    // KPI table (nel Word era lasciata generica: qui metto un default sensato)
-    const EEtot = EErete_kWh + EEfer_kWh;
-    const superficie = num(input.superficie);
-    const kpi1 = superficie > 0 ? (EEtot / superficie) : 0;
-    const bench1 = 0; // se vuoi, lo rendiamo editabile
+  // ---- quota FER (sul totale includendo FER)
+  const tot_tep_inclFER = tot_tep + EEfer_tep;
+  const perFER = tot_tep_inclFER > 0 ? (EEfer_tep / tot_tep_inclFER) * 100 : 0;
 
-    // Efficienza (N.A. esclusi)
-    const counts = { Alta:0, Media:0, Bassa:0, "N.A.":0 };
-    interventiState.forEach(s => { counts[s.eff] = (counts[s.eff] ?? 0) + 1; });
-    const valid = counts.Alta + counts.Media + counts.Bassa;
+  // ---- costi
+  const costoEE      = EErete_kWh * PEE;
+  const costogas     = gas_smc * Pgas;
+  const costogasolio = gasolio_l * Pgasolio;
+  const costotot     = costoEE + costogas + costogasolio;
 
-    return {
-      ...input,
+  // ---- KPI richiesti (automatici)
+  const EEtot = EErete_kWh + EEfer_kWh;
 
-      // formattazioni principali
-      azienda: input.azienda || "—",
-      data: input.data || new Date().toISOString().slice(0,10),
-      indirizzo: input.indirizzo || "—",
-      ateco: input.ateco || "—",
-      descrizioneateco: input.descrizioneateco || "—",
-      riscaldato: input.riscaldato || "—",
+  // EE: kWh/m²
+  const kpi_ee = superficieNum > 0 ? (EEtot / superficieNum) : 0;
 
-      superficie: input.superficie || "—",
-      linee: input.linee || "—",
-      ore: input.ore || "—",
+  // Gas: Smc/m²
+  const kpi_gas = superficieNum > 0 ? (gas_smc / superficieNum) : 0;
 
-      EErete: fmtInt(EErete_kWh),
-      EEfer: fmtInt(EEfer_kWh),
-      gas: fmtInt(gas_smc),
-      gasolio: fmtInt(gasolio_l),
+  // Gasolio: l/km   (come hai chiesto: Gasoliotot/km)
+  const kpi_gasolio = kmNum > 0 ? (gasolio_l / kmNum) : 0;
 
-      PEE: input.PEE ? fmt2(PEE) : "—",
-      Pgas: input.Pgas ? fmt2(Pgas) : "—",
-      Pgasolio: input.Pgasolio ? fmt2(Pgasolio) : "—",
+  // ---- efficienza
+  const counts = { Alta:0, Media:0, Bassa:0, "N.A.":0 };
+  interventiState.forEach(s => { counts[s.eff] = (counts[s.eff] ?? 0) + 1; });
+  const valid = counts.Alta + counts.Media + counts.Bassa;
 
-      Eerete_tep: fmt1(Eerete_tep),
-      gas_tep: fmt1(gas_tep),
-      gasolio_tep: fmt1(gasolio_tep),
-      tot_tep: fmt1(tot_tep),
+  return {
+    ...input,
 
-      perEE: fmtPct0(perEE),
-      pergas: fmtPct0(pergas),
-      pergasolio: fmtPct0(pergasolio),
+    azienda: input.azienda || "—",
+    data: input.data || new Date().toISOString().slice(0,10),
+    indirizzo: input.indirizzo || "—",
+    ateco: input.ateco || "—",
+    descrizioneateco: input.descrizioneateco || "—",
+    riscaldato: input.riscaldato || "—",
 
-      costoEE: fmt2(costoEE),
-      costogas: fmt2(costogas),
-      costogasolio: fmt2(costogasolio),
-      costotot: fmt2(costotot),
+    superficie: input.superficie || "—",
+    linee: input.linee || "—",
+    ore: input.ore || "—",
 
-      EEtot: fmtInt(EEtot),
-      kpi1: fmt2(kpi1),
-      bench1: bench1 ? fmt2(bench1) : "—",
+    veicoli: input.veicoli ? fmtInt(veicoliNum) : "—",
+    km: input.km ? fmtInt(kmNum) : "—",
 
-      _raw: {
-        Eerete_tep, gas_tep, gasolio_tep,
-        costoEE, costogas, costogasolio,
-        effCounts: counts, effValid: valid
-      }
-    };
-  }
+    EErete: fmtInt(EErete_kWh),
+    EEfer: fmtInt(EEfer_kWh),
+    gas: fmtInt(gas_smc),
+    gasolio: fmtInt(gasolio_l),
 
+    PEE: input.PEE ? fmt2(PEE) : "—",
+    Pgas: input.Pgas ? fmt2(Pgas) : "—",
+    Pgasolio: input.Pgasolio ? fmt2(Pgasolio) : "—",
+
+    Eerete_tep: fmt1(Eerete_tep),
+    EEfer_tep: fmt1(EEfer_tep),
+    gas_tep: fmt1(gas_tep),
+    gasolio_tep: fmt1(gasolio_tep),
+    tot_tep: fmt1(tot_tep),
+
+    perEE: fmtPct0(perEE),
+    pergas: fmtPct0(pergas),
+    pergasolio: fmtPct0(pergasolio),
+    perFER: fmtPct0(perFER),
+
+    costoEE: fmt2(costoEE),
+    costogas: fmt2(costogas),
+    costogasolio: fmt2(costogasolio),
+    costotot: fmt2(costotot),
+
+    EEtot: fmtInt(EEtot),
+
+    // KPI nel template "Benchmark settoriali"
+    kpi_ee: fmt2(kpi_ee),
+    kpi_gas: fmt2(kpi_gas),
+    kpi_gasolio: fmt4(kpi_gasolio), // l/km spesso è piccolo: meglio 4 decimali
+
+    // commento (se poi lo stampi nel template)
+    Commento_generale_html: (input.Commento_generale || "").replaceAll("\n","<br/>"),
+
+    _raw: {
+      Eerete_tep, EEfer_tep, gas_tep, gasolio_tep,
+      costoEE, costogas, costogasolio,
+      effCounts: counts, effValid: valid
+    }
+  };
+}
   // =========================
   // Render tabella interventi (preview)
   // =========================
@@ -708,72 +924,261 @@
   // Charts
   // =========================
   Chart.register(ChartDataLabels);
-  let chartCostiConsumi=null, chartEffBar=null, chartEffDonut=null;
+
+  let chartCostiConsumi=null, chartEffBar=null, chartEffDonut=null, chartEnergiaPrimaria=null, chartVettoriEnergetici=null;
 
   function destroyCharts(){
     if(chartCostiConsumi){ chartCostiConsumi.destroy(); chartCostiConsumi=null; }
     if(chartEffBar){ chartEffBar.destroy(); chartEffBar=null; }
     if(chartEffDonut){ chartEffDonut.destroy(); chartEffDonut=null; }
+    if(chartEnergiaPrimaria){ chartEnergiaPrimaria.destroy(); chartEnergiaPrimaria=null; }
+    if(chartVettoriEnergetici){ chartVettoriEnergetici.destroy(); chartVettoriEnergetici=null; }
   }
 
   function renderCharts(calc){
     const r = calc._raw;
 
-    // COSTI vs CONSUMI (doppio anello)
-    const cEl = document.getElementById("chartCostiConsumi");
-    if (cEl){
-      const labels = ["Energia Elettrica", "Gas", "Gasolio"];
-      const outer = [r.Eerete_tep, r.gas_tep, r.gasolio_tep];
-      const inner = [r.costoEE, r.costogas, r.costogasolio];
+    // DONUT: Energia primaria [tep]
+    const epEl = document.getElementById("chartEnergiaPrimaria");
+    if (epEl){
+      const labels = ["Energia Elettrica rete", "Gas", "Gasolio"];
+      const data = [r.Eerete_tep, r.gas_tep, r.gasolio_tep];
+      const tot = data.reduce((a,b)=>a+(b||0),0) || 1;
 
-      chartCostiConsumi = new Chart(cEl, {
-        type:"doughnut",
-        data:{
+      chartEnergiaPrimaria = new Chart(epEl, {
+        type: "doughnut",
+        data: {
           labels,
-          datasets:[
-            { // esterno consumi tep (chiaro)
-              label:"Consumi [tep]",
-              data: outer,
-              backgroundColor:[rgba(ENERGY_COL.ee,0.35), rgba(ENERGY_COL.gas,0.35), rgba(ENERGY_COL.gasolio,0.35)],
-              borderColor:"#fff", borderWidth:6, radius:"100%", cutout:"70%"
-            },
-            { // interno costi € (pieno)
-              label:"Costi [€]",
-              data: inner,
-              backgroundColor:[ENERGY_COL.ee, ENERGY_COL.gas, ENERGY_COL.gasolio],
-              borderColor:"#fff", borderWidth:6, radius:"70%", cutout:"45%"
-            }
-          ]
+          datasets: [{
+            data,
+            backgroundColor: [ENERGY_COL.ee, ENERGY_COL.gas, ENERGY_COL.gasolio],
+            borderColor: "#fff",
+            borderWidth: 10,
+            spacing: 4,
+            hoverOffset: 6
+          }]
         },
-        options:{
-          responsive:true, maintainAspectRatio:false,
-          rotation:-90*(Math.PI/180),
-          plugins:{
-            legend:{display:false},
-            tooltip:{
-              callbacks:{
-                label:(ctx)=>{
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: "55%",
+          rotation: -90 * (Math.PI/180),
+          layout: { padding: 40 },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => {
                   const v = ctx.parsed || 0;
-                  const isTep = ctx.datasetIndex===0;
-                  return isTep ? `${ctx.label}: ${fmt1(v)} tep` : `${ctx.label}: ${fmt2(v)} €`;
+                  const pct = Math.round((v / tot) * 100);
+                  return `${ctx.label}: ${fmt1(v)} tep (${pct}%)`;
                 }
               }
             },
-            datalabels:{
-              display:(ctx)=>ctx.datasetIndex===0,
-              color:"#777",
-              font:{size:11, weight:"600"},
-              anchor:"end", align:"end", offset:10,
-              formatter:(value, ctx)=>{
-                if(!value || value<=0) return "";
+            datalabels: {
+              color: "#111",
+              font: { size: 12, weight: "700" },
+              anchor: "end",
+              align: "end",
+              offset: 14,
+              clamp: true,
+              formatter: (value, ctx) => {
+                if (!value || value <= 0) return "";
                 const lab = ctx.chart.data.labels[ctx.dataIndex];
-                return [`Consumi [tep]`, lab, fmt1(value)];
+                const pct = Math.round((value / tot) * 100);
+                return [`${pct}%`, lab, `${fmt1(value)} tep`];
               }
             }
           }
         }
       });
     }
+
+    // BAR: Principali vettori energetici [tep] (FER come “risparmiate”)
+    const veEl = document.getElementById("chartVettoriEnergetici");
+    if (veEl){
+      const labels = [
+        ["Energia", "Elettrica rete"],
+        ["Gas"],
+        ["Gasolio"],
+        ["Energia", "Elettrica", "FER(**)"]
+      ];
+
+      const data = [r.Eerete_tep, r.gas_tep, r.gasolio_tep, r.EEfer_tep || 0];
+
+      chartVettoriEnergetici = new Chart(veEl, {
+        type: "bar",
+        data: {
+          labels,
+          datasets: [{
+            data,
+            backgroundColor: [
+              ENERGY_COL.ee,
+              ENERGY_COL.gas,
+              ENERGY_COL.gasolio,
+              rgba(ENERGY_COL.ee, 0.25)
+            ],
+            borderColor: "#fff",
+            borderWidth: 6,
+            borderRadius: 6,
+            barPercentage: 0.6,
+            categoryPercentage: 0.7
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          layout: { padding: { top: 22, right: 18, left: 18, bottom: 8 } },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: { label: (ctx) => `${fmt1(ctx.parsed.y)} tep` }
+            },
+            datalabels: {
+              color: "#333",
+              anchor: "end",
+              align: "end",
+              offset: 6,
+              font: { size: 12, weight: "700" },
+              formatter: (v, ctx) => {
+                const isFER = ctx.dataIndex === 3;
+                if (isFER) return [`${fmt1(v)} tep`, `risparmiate`];
+                return `${fmt1(v)} tep`;
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: { color: "#E6E6E6" },
+              ticks: {
+                callback: (v) => Number(v).toLocaleString("it-IT", { minimumFractionDigits: 0, maximumFractionDigits: 0 })
+              }
+            },
+            x: {
+              grid: { display: false },
+              ticks: { font: { size: 12 } }
+            }
+          }
+        }
+      });
+    }
+
+    // COSTI vs CONSUMI (doppio anello)
+    // COSTI vs CONSUMI (doppio anello) — anelli attaccati
+const cEl = document.getElementById("chartCostiConsumi");
+if (cEl){
+
+  const labels = ["Energia Elettrica", "Gas", "Gasolio"];
+  const outer = [r.Eerete_tep, r.gas_tep, r.gasolio_tep];      // consumi (esterno)
+  const inner = [r.costoEE, r.costogas, r.costogasolio];       // costi (interno)
+
+  // 1 sola linea tra gli anelli (non gap)
+  const ringSeparatorPlugin = {
+    id: "ringSeparatorPlugin",
+    afterDatasetsDraw(chart) {
+      const { ctx } = chart;
+      const metaOuter = chart.getDatasetMeta(1); // datasetIndex 1 = anello esterno
+      if (!metaOuter?.data?.length) return;
+
+      const boundaryRadius = metaOuter.data[0].innerRadius; // confine tra i due anelli
+      ctx.save();
+      ctx.beginPath();
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 1;
+      ctx.arc(metaOuter.data[0].x, metaOuter.data[0].y, boundaryRadius, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    }
+  };
+const centerTextPlugin = {
+  id: "centerTextPlugin",
+  afterDraw(chart) {
+    const { ctx, chartArea:{left, right, top, bottom} } = chart;
+    const x = (left + right) / 2;
+    const y = (top + bottom) / 2;
+
+    const meta = chart.getDatasetMeta(0); // dataset interno = COSTI
+    if (!meta?.data?.length) return;
+
+    const innerRadius = meta.data[0].innerRadius;
+
+    ctx.save();
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = "#333";
+
+    // Titolo
+    ctx.font = "600 12px system-ui";
+    ctx.fillText("Costi [€]", x, y - 20);
+
+    // Voci costi (molto piccole)
+    ctx.font = "11px system-ui";
+ctx.fillText(`EE: ${fmtInt(chart.data.datasets[0].data[0])}`, x, y - 4);
+ctx.fillText(`Gas: ${fmtInt(chart.data.datasets[0].data[1])}`, x, y + 10);
+ctx.fillText(`Gasolio: ${fmtInt(chart.data.datasets[0].data[2])}`, x, y + 24);
+    ctx.restore();
+  }
+};
+  chartCostiConsumi = new Chart(cEl, {
+    type:"doughnut",
+    plugins:[ringSeparatorPlugin, centerTextPlugin],
+    data:{
+      labels,
+      datasets:[
+        { // interno: COSTI
+          label:"Costi [€]",
+          data: inner,
+          backgroundColor:[ENERGY_COL.ee, ENERGY_COL.gas, ENERGY_COL.gasolio],
+          borderWidth: 0,
+          spacing: 0,
+          weight: 1
+        },
+        { // esterno: CONSUMI
+          label:"Consumi [tep]",
+          data: outer,
+          backgroundColor:[rgba(ENERGY_COL.ee,0.35), rgba(ENERGY_COL.gas,0.35), rgba(ENERGY_COL.gasolio,0.35)],
+          borderWidth: 0,
+          spacing: 0,
+          weight: 1
+        }
+      ]
+    },
+    options:{
+      responsive:true,
+      maintainAspectRatio:false,
+      rotation:-90*(Math.PI/180),
+  layout: { padding: 46 },
+ radius: "72%",
+      // 👇 questo è il “buco” centrale complessivo
+      cutout:"45%",
+
+      plugins:{
+        legend:{display:false},
+        tooltip:{
+          callbacks:{
+            label:(ctx)=>{
+              const v = ctx.parsed || 0;
+              const isOuter = ctx.datasetIndex===1;
+              return isOuter ? `${ctx.label}: ${fmt1(v)} tep` : `${ctx.label}: ${fmt2(v)} €`;
+            }
+          }
+        },
+        datalabels:{
+          display:(ctx)=>ctx.datasetIndex===1, // etichette SOLO sull’anello esterno
+          color:"#777",
+          font:{size:11, weight:"600"},
+          anchor:"end", align:"end", offset:22,
+          formatter:(value, ctx)=>{
+            if(!value || value<=0) return "";
+            const lab = ctx.chart.data.labels[ctx.dataIndex];
+            return [`Consumi [tep]`, lab, fmt1(value)];
+          }
+        }
+      }
+    }
+  });
+}
 
     // Efficienza (N.A. esclusi)
     const counts = r.effCounts || {Alta:0, Media:0, Bassa:0, "N.A.":0};
@@ -873,6 +1278,10 @@
       PEE: safe(document.getElementById("PEE").value),
       Pgas: safe(document.getElementById("Pgas").value),
       Pgasolio: safe(document.getElementById("Pgasolio").value),
+
+veicoli: safe(document.getElementById("veicoli").value),
+km: safe(document.getElementById("km").value),
+Commento_generale: safe(document.getElementById("commento_generale").value),
     };
   }
 
@@ -880,62 +1289,11 @@
     const input = getFormData();
     const calc = compute(input);
 
-    // inserisco righe interventi nel template
     const html = TEMPLATE.replace("{{INTERVENTI_ROWS}}", buildInterventiRowsHTML());
     docRoot.innerHTML = applyTemplate(html, calc);
 
     destroyCharts();
     renderCharts(calc);
-  }
-
-  // =========================
-  // Export Word
-  // =========================
-  async function exportWordDocx(){
-    const fileInput = document.getElementById("tplDocx");
-    if(!fileInput.files || !fileInput.files[0]){
-      alert("Carica prima il template Word (.docx).");
-      return;
-    }
-
-    const input = getFormData();
-    const calc = compute(input);
-
-    // preparo array interventi per eventuale loop nel docx
-    const interventi = INTERVENTI_STANDARD.map((it, idx) => {
-      const st = interventiState[idx];
-      return {
-        area: it.area,
-        tipo: it.tipo,
-        efficienza: st.eff,
-        intervento: st.intervento ? "Sì" : "No",
-        intervento_box: st.intervento ? "☑" : "☐",
-        opportunita: st.intervento ? st.opportunita : ""
-      };
-    });
-
-    const dataForDocx = { ...calc, interventi };
-
-    const buf = await fileInput.files[0].arrayBuffer();
-    const zip = new PizZip(buf);
-    const doc = new docxtemplater(zip, { paragraphLoop:true, linebreaks:true });
-
-    doc.setData(dataForDocx);
-
-    try { doc.render(); }
-    catch(err){
-      console.error(err);
-      alert("Errore nel template Word: spesso i placeholder {{...}} sono spezzati da formattazione.");
-      return;
-    }
-
-    const out = doc.getZip().generate({
-      type:"blob",
-      mimeType:"application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-    });
-
-    const name = (input.azienda || "relazione").replace(/[^\w\-]+/g, "_");
-    saveAs(out, `${name}_audit.docx`);
   }
 
   // =========================
@@ -951,10 +1309,9 @@
   document.getElementById("atecoAnno").addEventListener("change", () => { updateDescrizioneAteco(); render(); });
 
   document.getElementById("btnPrint").addEventListener("click", () => window.print());
-  document.getElementById("btnWord").addEventListener("click", exportWordDocx);
 
   document.getElementById("btnReset").addEventListener("click", () => {
-    const ids = ["azienda","data","indirizzo","ateco","descrizioneateco","superficie","linee","ore","EErete","EEfer","gas","gasolio","PEE","Pgas","Pgasolio"];
+   const ids = ["azienda","data","indirizzo","ateco","descrizioneateco","superficie","linee","ore","veicoli","km","commento_generale","EErete","EEfer","gas","gasolio","PEE","Pgas","Pgasolio"];
     ids.forEach(id => document.getElementById(id).value = "");
     document.getElementById("atecoAnno").value = "2007";
     document.getElementById("riscaldato").value = "—";

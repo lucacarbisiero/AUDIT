@@ -265,7 +265,10 @@
 }
       
     }
-
+.sectionBlock{
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
 .pageTop{
   height: 30mm;              /* 3 cm */
   box-sizing: border-box;
@@ -771,6 +774,7 @@
 <div class="pageTop">
   <img class="pageLogo" src="logo.png" alt="Logo">
 </div>
+<div class="sectionBlock">
       <h2>Aree di intervento</h2>
       <table>
         <thead>
@@ -786,6 +790,7 @@
           {{INTERVENTI_ROWS}}
         </tbody>
       </table>
+</div>
 
       <div class="pageBreak"></div>
 <div class="pageTop">
@@ -1101,10 +1106,10 @@
             }},
             datalabels: {
               color: "#111",
-              font: { size: 12, weight: "700" },
+              font: { size: 9, weight: "600" },
               anchor: "end",
               align: "end",
-              offset: 14,
+              offset: 8,
               clamp: true,
               formatter: (value, ctx) => {
                 if (!value || value <= 0) return "";
@@ -1151,7 +1156,7 @@
               anchor: "end",
               align: "end",
               offset: 6,
-              font: { size: 12, weight: "700" },
+              font: { size: 10, weight: "600" },
               formatter: (v, ctx) => ctx.dataIndex === 3 ? [`${fmt1(v)} tep`, `risparmiate`] : `${fmt1(v)} tep`
             }
           },
@@ -1199,9 +1204,9 @@
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
           ctx.fillStyle = "#333";
-          ctx.font = "600 12px system-ui";
+          ctx.font = "600 10px system-ui";
           ctx.fillText("Costi [€]", x, y - 20);
-          ctx.font = "11px system-ui";
+          ctx.font = "10px system-ui";
           ctx.fillText(`EE: ${fmtInt(chart.data.datasets[0].data[0])}`, x, y - 4);
           ctx.fillText(`Gas: ${fmtInt(chart.data.datasets[0].data[1])}`, x, y + 10);
           ctx.fillText(`Gasolio: ${fmtInt(chart.data.datasets[0].data[2])}`, x, y + 24);
@@ -1500,6 +1505,7 @@
 </script>
 </body>
 </html>
+
 
 
 

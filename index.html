@@ -227,23 +227,24 @@
   }
 
   /* Logo nel “margine bianco” (sopra al testo) */
-  .printHeader{
-    display: block !important;
-    position: fixed;
-    top: 15mm;           /* logo a 1,5 cm dal bordo alto pagina */
-    left: 15mm;
-    
-    z-index: 9999;
-  }
-
-  .printHeader img{
-    height: 18px;
-    width: auto;
-  display: block;
-  }
-.printContent{
-  padding-top: 28mm;
+ .printHeader{
+  position: fixed !important;
+  top: 8mm !important;
+  left: 15mm !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  z-index: 99999 !important;
 }
+
+.printHeader img{
+  height: 14mm !important;
+  width: auto !important;
+  max-width: none !important;
+  display: block !important;
+}
+
   /* Doc: NIENTE padding-top (il margine pagina fa tutto) */
   .doc{
     max-width: none !important;
@@ -1478,6 +1479,7 @@
 </script>
 </body>
 </html>
+
 
 
 

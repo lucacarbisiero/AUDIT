@@ -257,29 +257,27 @@
         filter: none !important;
       }
 
-      .printHeader{
-  display: block !important;
-  position: fixed;
-  top: -30mm ;  
-  left: 0;
-  right: 0;
-  height: 30mm;        /* 3 cm */
-  box-sizing: border-box;
-  padding-left: 15mm;  /* allineato al margine pagina */
-  padding-right: 10mm;
-}
+   
 
-.printHeader img{
-  height: 15mm;        /* 1,5 cm */
-  width: auto;
-  display: block;
-  margin-top: 7.5mm;   /* centrato verticalmente */
+.pageTop{
+  break-inside: avoid;
+  page-break-inside: avoid;
 }
-
-.printContent{
-  padding-top: 30mm !important;  /* spazio iniziale 3 cm */
-}
+      
     }
+
+.pageTop{
+  height: 30mm;              /* 3 cm */
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;       /* centra verticalmente nel blocco */
+}
+
+.pageLogo{
+  height: 15mm;              /* 1,5 cm */
+  width: auto;
+}
+    
   </style>
 </head>
 
@@ -487,8 +485,8 @@
   // =========================
   const TEMPLATE = `
     <div class="printContent">
-    <div class="printHeader">
-  <img src="logo.png" alt="Logo" />
+    <div class="pageTop">
+  <img class="pageLogo" src="logo.png" alt="Logo">
 </div>
       <h1>AUDIT ENERGETICO</h1>
 
@@ -529,7 +527,9 @@
       </p>
 
       <div class="pageBreak"></div>
-
+<div class="pageTop">
+  <img class="pageLogo" src="logo.png" alt="Logo">
+</div>
       <h2>Dati generali</h2>
       <p>
         Il check-up considera i principali dati energetici disponibili dell’azienda, tra cui la superficie dello stabilimento, il numero di linee produttive, il consumo annuo di elettricità e gas/metano,
@@ -555,7 +555,9 @@
       </table>
 
       <div class="pageBreak"></div>
-
+<div class="pageTop">
+  <img class="pageLogo" src="logo.png" alt="Logo">
+</div>
       <h2>Metodologia</h2>
       <p>
         L’approccio adottato per il check-up energetico prevede la raccolta dei dati disponibili, l’osservazione diretta delle utenze principali (elettricità, gas, aria compressa, acqua e combustibili)
@@ -623,7 +625,9 @@
       </table>
 
       <div class="pageBreak"></div>
-
+<div class="pageTop">
+  <img class="pageLogo" src="logo.png" alt="Logo">
+</div>
       <h3>Energia da Fonti Rinnovabili (FER)</h3>
       <table>
         <thead>
@@ -690,7 +694,9 @@
       </div>
 
       <div class="pageBreak"></div>
-
+<div class="pageTop">
+  <img class="pageLogo" src="logo.png" alt="Logo">
+</div>
       <p>
         Di seguito si riportano alcuni KPI (key performance indicators) di carattere generale, utili per confronti a distanza di tempo con una baseline, obiettivi o con valori di benchmark.
         Il confronto di questi dati è da attenzionare poichè sono strettamente legati alla performance del sistema: creando appositi indicatori, anche di maggior dettaglio e specificità,
@@ -726,7 +732,9 @@
       </table>
 
       <div class="pageBreak"></div>
-
+<div class="pageTop">
+  <img class="pageLogo" src="logo.png" alt="Logo">
+</div>
       <h2>Analisi settoriale e opportunità</h2>
       <p>
         Durante il sopralluogo sono stati osservati i principali reparti dell’azienda, annotando il tipo di consumo energetico predominante, l’efficienza percepita e le note rilevanti per ciascun reparto.
@@ -757,7 +765,9 @@
       <p>{{Commento_generale_html}}</p>
 
       <div class="pageBreak"></div>
-
+<div class="pageTop">
+  <img class="pageLogo" src="logo.png" alt="Logo">
+</div>
       <h2>Aree di intervento</h2>
       <table>
         <thead>
@@ -775,7 +785,9 @@
       </table>
 
       <div class="pageBreak"></div>
-
+<div class="pageTop">
+  <img class="pageLogo" src="logo.png" alt="Logo">
+</div>
       <h2>6. Next steps</h2>
       <p>
         A seguito del sopralluogo e dell’analisi preliminare dei consumi energetici, si raccomanda di intervenire innanzitutto sulle inefficienze più facilmente individuabili,
@@ -1485,6 +1497,7 @@
 </script>
 </body>
 </html>
+
 
 
 

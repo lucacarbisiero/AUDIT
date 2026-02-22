@@ -185,6 +185,10 @@
     .panel.form h2:last-of-type,
     .panel.form .btns{ flex-shrink: 0; }
 
+.printHeader{
+  display: none;
+}
+    
     /* =========================
        PRINT
        ========================= */
@@ -192,7 +196,7 @@
 
       /* Margini REALI (valgono su OGNI pagina) */
       @page{
-        margin-top: 25mm;
+        margin-top: 0mm;
         margin-right: 10mm;
         margin-bottom: 20mm;
         margin-left: 15mm;
@@ -252,6 +256,29 @@
         transform: none !important;
         filter: none !important;
       }
+
+      .printHeader{
+  display: block !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 30mm;        /* 3 cm */
+  box-sizing: border-box;
+  padding-left: 15mm;  /* allineato al margine pagina */
+  padding-right: 10mm;
+}
+
+.printHeader img{
+  height: 15mm;        /* 1,5 cm */
+  width: auto;
+  display: block;
+  margin-top: 7.5mm;   /* centrato verticalmente */
+}
+
+.printContent{
+  padding-top: 30mm !important;  /* spazio iniziale 3 cm */
+}
     }
   </style>
 </head>
@@ -460,6 +487,9 @@
   // =========================
   const TEMPLATE = `
     <div class="printContent">
+    <div class="printHeader">
+  <img src="logo.png" alt="Logo" />
+</div>
       <h1>AUDIT ENERGETICO</h1>
 
       <table>
@@ -1455,3 +1485,4 @@
 </script>
 </body>
 </html>
+

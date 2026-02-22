@@ -227,22 +227,26 @@
   }
 
   /* Logo nel “margine bianco” (sopra al testo) */
-.printHeader{
-  display: block !important;
-  position: fixed !important;
-  top: 3mm !important;      /* dentro lo spazio bianco */
-  left: 15mm !important;    /* allineato al margine sinistro */
-  margin: 0 !important;
-  padding: 0 !important;
-  z-index: 999999 !important;
-}
+ .printHeader{
+    display: block !important;
+    position: fixed !important;
 
-.printHeader img{
-  height: 15mm !important; 
-  width: auto !important;
-  max-width: none !important;
-  display: block !important;
-}
+    top: 8mm !important;      /* distanza reale dal bordo foglio */
+    left: 15mm !important;    /* distanza reale dal bordo foglio */
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    z-index: 999999 !important;
+    pointer-events: none !important;
+  }
+
+  .printHeader img{
+    height: 15mm !important;   /* altezza esatta richiesta */
+    width: auto !important;
+    display: block !important;
+  }
+
 
   /* Doc: NIENTE padding-top (il margine pagina fa tutto) */
   .doc{
@@ -1481,6 +1485,7 @@
 </script>
 </body>
 </html>
+
 
 
 

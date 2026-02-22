@@ -227,16 +227,20 @@
   }
 
   /* Logo nel “margine bianco” (sopra al testo) */
- .printHeader{
-  position: absolute !important;
-  top: -20mm !important;
-  left: 0 !important;
+.printHeader{
   display: block !important;
+  position: fixed !important;
+  top: 3mm !important;      /* dentro lo spazio bianco */
+  left: 15mm !important;    /* allineato al margine sinistro */
+  margin: 0 !important;
+  padding: 0 !important;
+  z-index: 999999 !important;
 }
 
 .printHeader img{
-  height: 12mm !important;
+  height: 20mm !important;  /* come richiesto */
   width: auto !important;
+  max-width: none !important;
   display: block !important;
 }
 
@@ -268,6 +272,11 @@
     break-inside: avoid;
     page-break-inside: avoid;
   }
+  html, body, .wrap, .panel.preview, .doc, #docRoot, .printContent{
+  overflow: visible !important;
+  transform: none !important;
+  filter: none !important;
+}
 }  </style>
 </head>
 
@@ -1474,6 +1483,7 @@
 </script>
 </body>
 </html>
+
 
 
 

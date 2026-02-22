@@ -252,6 +252,12 @@
         transform: none !important;
         filter: none !important;
       }
+      .printLogo{
+  position: fixed;
+  top: 5mm;
+  left: 0;
+  height: 18mm;
+}
     }
   </style>
 </head>
@@ -460,6 +466,7 @@
   // =========================
   const TEMPLATE = `
     <div class="printContent">
+    <img src="logo.png" class="printLogo" alt="Logo" />
       <h1>AUDIT ENERGETICO</h1>
 
       <table>
@@ -1455,3 +1462,4 @@
 </script>
 </body>
 </html>
+

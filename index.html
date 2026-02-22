@@ -244,13 +244,16 @@
 
       /* Evita spezzature brutte */
       .chartCard,
-      table,
+      
       canvas,
       .nextStepsImg{
         break-inside: avoid;
         page-break-inside: avoid;
       }
-
+table{
+    break-inside: auto;
+    page-break-inside: auto;
+  }
       html, body, .wrap, .panel.preview, .doc, #docRoot, .printContent{
         overflow: visible !important;
         transform: none !important;
@@ -1578,6 +1581,7 @@ h2{ break-after: avoid; page-break-after: avoid; }
 </script>
 </body>
 </html>
+
 
 
 

@@ -280,6 +280,36 @@ h2 + table{
 .sectionBlock table{
   margin-top: 0 !important;
 }
+  /* ===== FORZA I 2 GRAFICI AFFIANCATI IN PDF ===== */
+
+  .charts2equal{
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10mm !important;
+    align-items: start !important;
+  }
+
+  .charts2equal .chartCard{
+    width: 100% !important;
+    min-width: 0 !important;         /* IMPORTANTISSIMO: evita che la grid vada a capo */
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .charts2equal .chartWrap{
+    width: 100% !important;
+  }
+
+  .charts2equal canvas{
+    width: 100% !important;
+  }
+
+        /* se la pagina è stretta, abbasso un po’ l’altezza dei canvas */
+  #chartEnergiaPrimaria,
+  #chartVettoriEnergetici{
+    height: 160px !important;
+  }
+      
     }
 h2{ break-after: avoid; page-break-after: avoid; }
 .pageTop{
@@ -1518,6 +1548,7 @@ h2{ break-after: avoid; page-break-after: avoid; }
 </script>
 </body>
 </html>
+
 
 
 

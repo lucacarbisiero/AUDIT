@@ -704,7 +704,7 @@ h2{ break-after: avoid; page-break-after: avoid; }
       </table>
 
      <p>
-
+<br><br><br><br>
      </p>
       <table>
         <thead>
@@ -818,7 +818,29 @@ h2{ break-after: avoid; page-break-after: avoid; }
 <div class="pageTop">
   <img class="pageLogo" src="logo.png" alt="Logo">
 </div>
-      <h2>Analisi settoriale e opportunità</h2>
+      
+      <h2>Aree di intervento</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Aree di intervento</th>
+            <th>Tipo</th>
+            <th class="center">Efficienza</th>
+            <th class="center">Intervento consigliato</th>
+            <th>Opportunità</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{INTERVENTI_ROWS}}
+        </tbody>
+      </table>
+</div>
+
+      <div class="pageBreak"></div>
+<div class="pageTop">
+  <img class="pageLogo" src="logo.png" alt="Logo">
+</div>
+<h2>Analisi settoriale e opportunità</h2>
       <p>
         Durante il sopralluogo sono stati osservati i principali reparti dell’azienda, annotando il tipo di consumo energetico predominante, l’efficienza percepita e le note rilevanti per ciascun reparto.
         L’analisi si basa su osservazioni visive e dati generali, finalizzata a evidenziare i reparti dove l’energia viene maggiormente utilizzata o dispersa, e dove eventuali interventi di ottimizzazione possono portare benefici immediati.
@@ -852,27 +874,6 @@ h2{ break-after: avoid; page-break-after: avoid; }
   <img class="pageLogo" src="logo.png" alt="Logo">
 </div>
 <div class="sectionBlock">
-      <h2>Aree di intervento</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Aree di intervento</th>
-            <th>Tipo</th>
-            <th class="center">Efficienza</th>
-            <th class="center">Intervento consigliato</th>
-            <th>Opportunità</th>
-          </tr>
-        </thead>
-        <tbody>
-          {{INTERVENTI_ROWS}}
-        </tbody>
-      </table>
-</div>
-
-      <div class="pageBreak"></div>
-<div class="pageTop">
-  <img class="pageLogo" src="logo.png" alt="Logo">
-</div>
       <h2>6. Next steps</h2>
       <p>
         A seguito del sopralluogo e dell’analisi preliminare dei consumi energetici, si raccomanda di approfondire le inefficienze più facilmente individuabili,
@@ -1582,6 +1583,7 @@ h2{ break-after: avoid; page-break-after: avoid; }
 </script>
 </body>
 </html>
+
 
 
 

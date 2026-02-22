@@ -195,7 +195,7 @@
 
   /* Margini REALI (valgono su OGNI pagina) */
   @page{
-    margin-top: 95mm;      /* testo a 6,5 cm dal bordo alto */
+    margin-top: 30mm;      /* testo a 6,5 cm dal bordo alto */
     margin-right: 10mm;
     margin-bottom: 20mm;
     margin-left: 15mm;
@@ -230,9 +230,9 @@
   .printHeader{
     display: block !important;
     position: fixed;
-    top: 20mm;           /* logo a 1,5 cm dal bordo alto pagina */
+    top: 15mm;           /* logo a 1,5 cm dal bordo alto pagina */
     left: 15mm;
-    right: 10mm;
+    
     z-index: 9999;
   }
 
@@ -240,7 +240,9 @@
     height: 45px;
     display:block;
   }
-
+.printContent{
+  padding-top: 35mm;
+}
   /* Doc: NIENTE padding-top (il margine pagina fa tutto) */
   .doc{
     max-width: none !important;
@@ -1475,6 +1477,7 @@
 </script>
 </body>
 </html>
+
 
 
 

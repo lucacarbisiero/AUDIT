@@ -263,12 +263,17 @@
   break-inside: avoid;
   page-break-inside: avoid;
 }
-      
-    }
-.sectionBlock{
-  break-inside: avoid;
-  page-break-inside: avoid;
+     /* evita che il titolo resti da solo a fine pagina */
+h2{ 
+  break-after: avoid;
+  page-break-after: avoid;
 }
+h2 + table{
+  break-before: avoid;
+  page-break-before: avoid;
+} 
+    }
+h2{ break-after: avoid; page-break-after: avoid; }
 .pageTop{
   height: 30mm;              /* 3 cm */
   box-sizing: border-box;
@@ -1270,7 +1275,7 @@
           responsive:true, maintainAspectRatio:false,
           plugins:{
             legend:{display:false},
-            datalabels:{ color:"#111", anchor:"end", align:"right", offset:6, font:{size:12, weight:"700"}, formatter:(v)=>String(v) }
+            datalabels:{ color:"#111", anchor:"end", align:"right", offset:4, font:{size:10, weight:"600"}, formatter:(v)=>String(v) }
           },
           scales:{ x:{beginAtZero:true, grid:{color:"#E6E6E6"}}, y:{grid:{display:false}} }
         }
@@ -1290,7 +1295,7 @@
             legend:{display:false},
             datalabels:{
               color:"#111",
-              font:{size:11, weight:"700"},
+              font:{size:9, weight:"600"},
               formatter:(v, ctx)=>{
                 if(!valid || v<=0) return "";
                 const pct = Math.round((v/valid)*100);
@@ -1505,6 +1510,7 @@
 </script>
 </body>
 </html>
+
 
 
 

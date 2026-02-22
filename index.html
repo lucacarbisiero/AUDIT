@@ -1124,11 +1124,11 @@ h2{ break-after: avoid; page-break-after: avoid; }
               align: "end",
               offset: 4,
               clamp: true,
-              formatter: (value) => {
+             formatter: (value, ctx) => {
                 if (!value || value <= 0) return "";
                 const lab = ctx.chart.data.labels[ctx.dataIndex];
                 const pct = Math.round((value / tot) * 100);
-                return `${pct}%`;
+                return [`${pct}%`, lab, `${fmt1(value)} tep`];
               }
             }
           }
@@ -1518,6 +1518,7 @@ h2{ break-after: avoid; page-break-after: avoid; }
 </script>
 </body>
 </html>
+
 
 
 

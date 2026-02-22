@@ -185,9 +185,6 @@
     .panel.form h2:last-of-type,
     .panel.form .btns{ flex-shrink: 0; }
 
-    /* Header logo (non stampa) */
-    #printHeader{ display:none; }
-
     /* =========================
        PRINT
        ========================= */
@@ -255,201 +252,171 @@
         transform: none !important;
         filter: none !important;
       }
-
-      /* ===== LOGO NEL MARGINE (Chrome) =====
-         In Chrome top:0 è l'inizio dell'area contenuto (sotto al margine).
-         Con top negativo lo sposti DENTRO il margine e non si sovrappone mai al testo. */
-      :root{ --logoH: 15mm; }
-
-      #printHeader{
-        display: block !important;
-        position: fixed;
-        top: -22mm;     /* dentro il margine superiore (25mm - 3mm) */
-        left: 15mm;     /* allinea col margine sinistro */
-        right: 10mm;    /* allinea col margine destro */
-        height: var(--logoH);
-        z-index: 9999;
-        box-sizing: border-box;
-        pointer-events: none;
-      }
-
-      #printHeader img{
-        height: 100%;
-        width: auto;
-        display: block;
-        object-fit: contain;
-      }
     }
   </style>
 </head>
 
 <body>
+<header>
+  <div><strong>Luca Carbisiero</strong></div>
+  <div class="sub">Benvenuto</div>
+</header>
 
-  <!-- Header SOLO PER STAMPA (ripetuto su ogni pagina) -->
-  <div id="printHeader">
-    <img src="logo.png" alt="Logo">
-  </div>
+<div class="wrap">
+  <!-- FORM -->
+  <section class="panel form" id="formPanel">
+    <div class="formContent">
+      <h2>Dati base</h2>
 
-  <header>
-    <div><strong>Luca Carbisiero</strong></div>
-    <div class="sub">Benvenuto</div>
-  </header>
+      <label>Società ({{azienda}})</label>
+      <input id="azienda" placeholder="Es. ABC S.r.l." />
 
-  <div class="wrap">
-    <!-- FORM -->
-    <section class="panel form" id="formPanel">
-      <div class="formContent">
-        <h2>Dati base</h2>
-
-        <label>Società ({{azienda}})</label>
-        <input id="azienda" placeholder="Es. ABC S.r.l." />
-
-        <div class="row">
-          <div>
-            <label>Data ({{data}})</label>
-            <input id="data" type="date" />
-          </div>
-          <div>
-            <label>Indirizzo del sito ({{indirizzo}})</label>
-            <input id="indirizzo" placeholder="Via..., Città" />
-          </div>
+      <div class="row">
+        <div>
+          <label>Data ({{data}})</label>
+          <input id="data" type="date" />
         </div>
-
-        <div class="row">
-          <div>
-            <label>Codice ATECO ({{ateco}})</label>
-            <input id="ateco" placeholder="Es. 80.10.00" />
-          </div>
-          <div>
-            <label>Anno ATECO</label>
-            <select id="atecoAnno">
-              <option value="2007">2007</option>
-              <option value="2025">2025</option>
-            </select>
-          </div>
+        <div>
+          <label>Indirizzo del sito ({{indirizzo}})</label>
+          <input id="indirizzo" placeholder="Via..., Città" />
         </div>
-
-        <label>Descrizione ATECO ({{descrizioneateco}})</label>
-        <input id="descrizioneateco" placeholder="Compilata automaticamente" />
-
-        <hr class="hr"/>
-
-        <h2>Dati generali</h2>
-        <div class="row">
-          <div>
-            <label>Superficie stabilimento [m²] ({{superficie}})</label>
-            <input id="superficie" type="number" step="1" />
-          </div>
-          <div>
-            <label>Numero linee produttive ({{linee}})</label>
-            <input id="linee" type="number" step="1" />
-          </div>
-        </div>
-
-        <div class="row">
-          <div>
-            <label>Ore di funzionamento annue ({{ore}})</label>
-            <input id="ore" type="number" step="1" />
-          </div>
-          <div>
-            <label>Ambiente riscaldato ({{riscaldato}})</label>
-            <select id="riscaldato">
-              <option value="—">—</option>
-              <option value="Sì">Sì</option>
-              <option value="No">No</option>
-            </select>
-          </div>
-        </div>
-
-        <hr class="hr"/>
-
-        <h2>Flotta aziendale</h2>
-        <div class="row">
-          <div>
-            <label>Numero veicoli flotta aziendale ({{veicoli}})</label>
-            <input id="veicoli" type="number" step="1" />
-          </div>
-          <div>
-            <label>Chilometraggio medio auto [km] ({{km}})</label>
-            <input id="km" type="number" step="1" />
-          </div>
-        </div>
-
-        <label>Commento generale ({{Commento_generale}})</label>
-        <textarea id="commento_generale" placeholder="Inserisci qui note generali..."></textarea>
-
-        <hr class="hr"/>
-
-        <h2>Consumi annui</h2>
-        <div class="row">
-          <div>
-            <label>Energia elettrica rete [kWh] ({{EErete}})</label>
-            <input id="EErete" type="number" step="0.01" />
-          </div>
-          <div>
-            <label>Energia elettrica FER [kWh] ({{EEfer}})</label>
-            <input id="EEfer" type="number" step="0.01" />
-          </div>
-        </div>
-
-        <div class="row">
-          <div>
-            <label>Consumo annuo gas [Smc] ({{gas}})</label>
-            <input id="gas" type="number" step="0.01" />
-          </div>
-          <div>
-            <label>Consumo annuo gasolio [l] ({{gasolio}})</label>
-            <input id="gasolio" type="number" step="0.01" />
-          </div>
-        </div>
-
-        <hr class="hr"/>
-
-        <h2>Tariffe</h2>
-        <div class="row">
-          <div>
-            <label>Tariffa energia elettrica [€/kWh] ({{PEE}})</label>
-            <input id="PEE" type="number" step="0.0001" />
-          </div>
-          <div>
-            <label>Tariffa gas [€/Smc] ({{Pgas}})</label>
-            <input id="Pgas" type="number" step="0.0001" />
-          </div>
-        </div>
-        <label>Tariffa gasolio [€/l] ({{Pgasolio}})</label>
-        <input id="Pgasolio" type="number" step="0.0001" />
-
-        <hr class="hr"/>
-
-        <h2>Aree di intervento (standard)</h2>
-        <div class="note">
-          Selezioni solo <b>Efficienza</b>. La checkbox “Intervento consigliato” si spunta automaticamente per <b>Media</b> o <b>Bassa</b>.
-          Il campo <b>Opportunità</b> si abilita solo se la checkbox è spuntata (altrimenti resta vuoto e non editabile).
-        </div>
-
-        <div class="intervForm" id="interventiForm"></div>
-
-        <hr class="hr"/>
       </div>
 
-      <h2>Export</h2>
-      <div class="btns">
-        <button class="primary" id="btnPrint">Stampa / Salva PDF</button>
-
-        <button id="btnExportJson">Esporta JSON</button>
-
-        <button id="btnImportJson">Importa JSON</button>
-        <input id="fileImportJson" type="file" accept="application/json" style="display:none" />
-
-        <button id="btnReset">Reset</button>
+      <div class="row">
+        <div>
+          <label>Codice ATECO ({{ateco}})</label>
+          <input id="ateco" placeholder="Es. 80.10.00" />
+        </div>
+        <div>
+          <label>Anno ATECO</label>
+          <select id="atecoAnno">
+            <option value="2007">2007</option>
+            <option value="2025">2025</option>
+          </select>
+        </div>
       </div>
-    </section>
 
-    <!-- PREVIEW -->
-    <section class="panel preview">
-      <div class="doc" id="docRoot"></div>
-    </section>
-  </div>
+      <label>Descrizione ATECO ({{descrizioneateco}})</label>
+      <input id="descrizioneateco" placeholder="Compilata automaticamente" />
+
+      <hr class="hr"/>
+
+      <h2>Dati generali</h2>
+      <div class="row">
+        <div>
+          <label>Superficie stabilimento [m²] ({{superficie}})</label>
+          <input id="superficie" type="number" step="1" />
+        </div>
+        <div>
+          <label>Numero linee produttive ({{linee}})</label>
+          <input id="linee" type="number" step="1" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>Ore di funzionamento annue ({{ore}})</label>
+          <input id="ore" type="number" step="1" />
+        </div>
+        <div>
+          <label>Ambiente riscaldato ({{riscaldato}})</label>
+          <select id="riscaldato">
+            <option value="—">—</option>
+            <option value="Sì">Sì</option>
+            <option value="No">No</option>
+          </select>
+        </div>
+      </div>
+
+      <hr class="hr"/>
+
+      <h2>Flotta aziendale</h2>
+      <div class="row">
+        <div>
+          <label>Numero veicoli flotta aziendale ({{veicoli}})</label>
+          <input id="veicoli" type="number" step="1" />
+        </div>
+        <div>
+          <label>Chilometraggio medio auto [km] ({{km}})</label>
+          <input id="km" type="number" step="1" />
+        </div>
+      </div>
+
+      <label>Commento generale ({{Commento_generale}})</label>
+      <textarea id="commento_generale" placeholder="Inserisci qui note generali..."></textarea>
+
+      <hr class="hr"/>
+
+      <h2>Consumi annui</h2>
+      <div class="row">
+        <div>
+          <label>Energia elettrica rete [kWh] ({{EErete}})</label>
+          <input id="EErete" type="number" step="0.01" />
+        </div>
+        <div>
+          <label>Energia elettrica FER [kWh] ({{EEfer}})</label>
+          <input id="EEfer" type="number" step="0.01" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>Consumo annuo gas [Smc] ({{gas}})</label>
+          <input id="gas" type="number" step="0.01" />
+        </div>
+        <div>
+          <label>Consumo annuo gasolio [l] ({{gasolio}})</label>
+          <input id="gasolio" type="number" step="0.01" />
+        </div>
+      </div>
+
+      <hr class="hr"/>
+
+      <h2>Tariffe</h2>
+      <div class="row">
+        <div>
+          <label>Tariffa energia elettrica [€/kWh] ({{PEE}})</label>
+          <input id="PEE" type="number" step="0.0001" />
+        </div>
+        <div>
+          <label>Tariffa gas [€/Smc] ({{Pgas}})</label>
+          <input id="Pgas" type="number" step="0.0001" />
+        </div>
+      </div>
+      <label>Tariffa gasolio [€/l] ({{Pgasolio}})</label>
+      <input id="Pgasolio" type="number" step="0.0001" />
+
+      <hr class="hr"/>
+
+      <h2>Aree di intervento (standard)</h2>
+      <div class="note">
+        Selezioni solo <b>Efficienza</b>. La checkbox “Intervento consigliato” si spunta automaticamente per <b>Media</b> o <b>Bassa</b>.
+        Il campo <b>Opportunità</b> si abilita solo se la checkbox è spuntata (altrimenti resta vuoto e non editabile).
+      </div>
+
+      <div class="intervForm" id="interventiForm"></div>
+
+      <hr class="hr"/>
+    </div>
+
+    <h2>Export</h2>
+    <div class="btns">
+      <button class="primary" id="btnPrint">Stampa / Salva PDF</button>
+
+      <button id="btnExportJson">Esporta JSON</button>
+
+      <button id="btnImportJson">Importa JSON</button>
+      <input id="fileImportJson" type="file" accept="application/json" style="display:none" />
+
+      <button id="btnReset">Reset</button>
+    </div>
+  </section>
+
+  <!-- PREVIEW -->
+  <section class="panel preview">
+    <div class="doc" id="docRoot"></div>
+  </section>
+</div>
 
 <script>
   // =========================

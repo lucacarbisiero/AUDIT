@@ -238,7 +238,7 @@
 }
 
 .printHeader img{
-  height: 20mm !important;  /* come richiesto */
+  height: 15mm !important; 
   width: auto !important;
   max-width: none !important;
   display: block !important;
@@ -253,10 +253,7 @@
     margin: 0 !important;
   }
 
-  /* Se vuoi: evita che il logo venga stampato “due volte” in caso di bug */
-  .printHeader + .printContent{
-    padding-top: 0 !important;
-  }
+
 
   /* Page break manuali */
   .pageBreak{
@@ -483,15 +480,15 @@
   // TEMPLATE (logo + wrapper printContent)
   // =========================
   const TEMPLATE = `
-    <div class="printHeader">
-      <img src="logo.png" alt="Logo" />
-    </div>
-
+    
     <div class="printContent">
       <h1>AUDIT ENERGETICO</h1>
 
       <table>
         <tbody>
+        <div class="printHeader">
+  <img src="logo.png" alt="Logo" />
+</div>
           <tr>
             <td><b>Società:</b></td><td>{{azienda}}</td>
             <td><b>Data:</b></td><td>{{data}}</td>
@@ -1483,6 +1480,7 @@
 </script>
 </body>
 </html>
+
 
 
 

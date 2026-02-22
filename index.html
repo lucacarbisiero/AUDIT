@@ -309,6 +309,36 @@ h2 + table{
   #chartVettoriEnergetici{
     height: 160px !important;
   }
+      /* ===== FORZA GRAFICI EFFICIENZA AFFIANCATI IN PDF ===== */
+
+.charts2{
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 10mm !important;
+  align-items: start !important;
+}
+
+.charts2 .chartCard{
+  width: 100% !important;
+  min-width: 0 !important;         /* fondamentale */
+  padding: 8px !important;
+  break-inside: avoid !important;
+  page-break-inside: avoid !important;
+}
+
+.charts2 .chartWrap{
+  width: 100% !important;
+}
+
+.charts2 canvas{
+  width: 100% !important;
+}
+
+#chartEffBar,
+#chartEffDonut{
+  height: 150px !important;
+}
+
       
     }
 h2{ break-after: avoid; page-break-after: avoid; }
@@ -1548,6 +1578,7 @@ h2{ break-after: avoid; page-break-after: avoid; }
 </script>
 </body>
 </html>
+
 
 
 

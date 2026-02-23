@@ -356,7 +356,10 @@ h2{ break-after: avoid; page-break-after: avoid; }
   height: 15mm;              /* 1,5 cm */
   width: auto;
 }
-    
+    /* Stato benchmark */
+.stato-ok{ color:#1b8a3a; font-weight:700; }
+.stato-warn{ color:#c58a00; font-weight:700; }
+.stato-bad{ color:#d11a2a; font-weight:800; }
   </style>
 </head>
 
@@ -959,9 +962,7 @@ h2{ break-after: avoid; page-break-after: avoid; }
 
   return s;
 }
-  function normAteco(code) { 
-  return String(code ?? "").trim().replace(",", "."); 
-}
+  
 
 function getAtecoInfo(anno, codice){
   const a = String(anno || "2007").trim();
@@ -1064,6 +1065,27 @@ function updateDescrizioneAteco() {
   // =========================
   // Calcoli
   // =========================
+  
+  // =========================
+// Calcoli
+// =========================
+
+function statoFrom(kpi, bench){
+  if (bench == null || !Number.isFinite(bench)) return "—";
+  if (!Number.isFinite(kpi)) return "—";
+
+  const soglia = bench * 1.1;
+
+  if (kpi > soglia) {
+    return `<span class="stato-bad">(!)</span>`;
+  }
+  if (kpi >= bench && kpi <= soglia) {
+    return `<span class="stato-warn">Allineato</span>`;
+  }
+  return `<span class="stato-ok">OK</span>`;
+}
+
+
   function compute(input) {
     const EErete_kWh = num(input.EErete);
     const EEfer_kWh  = num(input.EEfer);
@@ -1104,12 +1126,12 @@ function updateDescrizioneAteco() {
 
     const EEtot = EErete_kWh + EEfer_kWh;
 
-    const kpi_ee  = superficieNum > 0 ? (EEtot / superficieNum) : 0;
-    const kpi_gas = superficieNum > 0 ? (gas_smc / superficieNum) : 0;
-    const kpi_gasolio =
-      (kmNum > 0 && veicoliNum > 0)
-        ? (gasolio_l / (kmNum * veicoliNum)) * 100
-        : 0;
+    const kpi_ee_num  = superficieNum > 0 ? (EEtot / superficieNum) : NaN;
+const kpi_gas_num = superficieNum > 0 ? (gas_smc / superficieNum) : NaN;
+const kpi_gasolio_num =
+  (kmNum > 0 && veicoliNum > 0)
+    ? (gasolio_l / (kmNum * veicoliNum)) * 100
+    : NaN;
 // ---- BENCHMARK da ATECO_MAP ----
 const annoA = String(input.atecoAnno || "2007").trim();
 const codA = normAteco(input.ateco);
@@ -1180,16 +1202,16 @@ const statoFrom = (kpi, bench) => {
       costogasolio: fmt2(costogasolio),
       costotot: fmt2(costotot),
 
-      kpi_ee: fmt2(kpi_ee),
-      kpi_gas: fmt2(kpi_gas),
-      kpi_gasolio: fmt4(kpi_gasolio),
+     kpi_ee: Number.isFinite(kpi_ee_num) ? fmt2(kpi_ee_num) : "—",
+kpi_gas: Number.isFinite(kpi_gas_num) ? fmt2(kpi_gas_num) : "—",
+kpi_gasolio: Number.isFinite(kpi_gasolio_num) ? fmt4(kpi_gasolio_num) : "—",
 bench_ee: (bench_ee_num == null || !Number.isFinite(bench_ee_num)) ? "—" : fmt2(bench_ee_num),
 bench_gas: (bench_gas_num == null || !Number.isFinite(bench_gas_num)) ? "—" : fmt2(bench_gas_num),
 bench_gasolio: (bench_gasolio_num == null || !Number.isFinite(bench_gasolio_num)) ? "—" : fmt2(bench_gasolio_num),
 
-stato_ee: statoFrom(kpi_ee, bench_ee_num),
-stato_gas: statoFrom(kpi_gas, bench_gas_num),
-stato_gasolio: statoFrom(kpi_gasolio, bench_gasolio_num),
+stato_ee: statoFrom(kpi_ee_num, bench_ee_num),
+stato_gas: statoFrom(kpi_gas_num, bench_gas_num),
+stato_gasolio: statoFrom(kpi_gasolio_num, bench_gasolio_num),
       Commento_generale_html: (input.Commento_generale || "").replaceAll("\n","<br/>"),
 
       _raw: {
@@ -1670,6 +1692,7 @@ stato_gasolio: statoFrom(kpi_gasolio, bench_gasolio_num),
 </script>
 </body>
 </html>
+
 
 
 

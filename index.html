@@ -938,6 +938,27 @@ h2{ break-after: avoid; page-break-after: avoid; }
   // =========================
   // ATECO lookup
   // =========================
+  
+  function normAteco(code){
+  let s = String(code ?? "").trim();
+
+  // virgola -> punto
+  s = s.replace(/,/g, ".");
+
+  // trasforma separatori comuni in punto (spazio, -, /, \, ecc.)
+  s = s.replace(/[\s\-\/\\]+/g, ".");
+
+  // lascia solo cifre e punti (se vuoi supportare lettere tipo "A", vedi nota sotto)
+  s = s.replace(/[^0-9.]/g, "");
+
+  // comprime punti multipli
+  s = s.replace(/\.+/g, ".");
+
+  // toglie punto iniziale/finale
+  s = s.replace(/^\./, "").replace(/\.$/, "");
+
+  return s;
+}
   function normAteco(code) { 
   return String(code ?? "").trim().replace(",", "."); 
 }
@@ -949,22 +970,21 @@ function getAtecoInfo(anno, codice){
 
   const rec = (window.ATECO_MAP && window.ATECO_MAP[key]) ? window.ATECO_MAP[key] : null;
 
-  // Compatibilità: se nel tuo file ci sono ancora righe "vecchie" (valore stringa)
-  if (typeof v === "string") {
-    return { descrizione: v, kwh_m2: null, smc_m2: null, l_100_km: null };
+  // Compatibilità: se la mappa contiene ancora stringhe (vecchio formato)
+  if (typeof rec === "string") {
+    return { descrizione: rec, kwh_m2: null, smc_m2: null, l_100_km: null };
   }
 
   // Nuovo formato: oggetto con descrizione + benchmark
-  if (v && typeof v === "object") {
+  if (rec && typeof rec === "object") {
     return {
-      descrizione: v.descrizione ?? "",
-      kwh_m2: v.kwh_m2 ?? null,
-      smc_m2: v.smc_m2 ?? null,
-      l_100_km: v.l_100_km ?? null
+      descrizione: rec.descrizione ?? "",
+      kwh_m2: rec.kwh_m2 ?? null,
+      smc_m2: rec.smc_m2 ?? null,
+      l_100_km: rec.l_100_km ?? null
     };
   }
 
-  // Nessuna corrispondenza
   return { descrizione: "", kwh_m2: null, smc_m2: null, l_100_km: null };
 }
 
@@ -1650,6 +1670,7 @@ stato_gasolio: statoFrom(kpi_gasolio, bench_gasolio_num),
 </script>
 </body>
 </html>
+
 
 
 

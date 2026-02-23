@@ -559,7 +559,25 @@ h2{ break-after: avoid; page-break-after: avoid; }
     { area:"Monitoraggio", tipo:"Elettrico" },
     { area:"Altro", tipo:"" }
   ];
-
+// % area intervento (in forma decimale)
+const PCT_AREA = {
+  "Motori elettrici": 0.02,
+  "Applicazione inverter": 0.035,
+  "Aria compressa": 0.05,
+  "Centrale termica": 0.04,
+  "Centrale frigo": 0.035,
+  "Uffici": 0.02,
+  "Illuminazione": 0.04,
+  "Fotovoltaico": 0.12,    // * (asterisco solo descrittivo)
+  "Cogenerazione": 0.14,   // * (asterisco solo descrittivo)
+  "Carrelli elevatori": 0.01,
+  "Involucro edilizio": 0.03,
+  "HVAC / UTA": 0.025,
+  "Rete elettrica": 0.01,
+  "Flotta aziendale": 0.05,
+  "Monitoraggio": 0.045,   // nel tuo elenco: "Monitoraggio energetico"
+  "Altro": 0.015
+};
   const interventiState = INTERVENTI_STANDARD.map(() => ({ eff:"N.A.", intervento:false, opportunita:"" }));
 
   // =========================
@@ -879,7 +897,24 @@ h2{ break-after: avoid; page-break-after: avoid; }
 
       <h3>Conclusioni</h3>
       <p>{{Commento_generale_html}}</p>
+      <p><br><br></p>
+<h3>Risparmi stimati</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Area di intervento</th>
+      <th>Tipo</th>
+      <th class="center">Risparmio stimato</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{RISPARMI_ROWS}}
+  </tbody>
+</table>
 
+<p class="muted">
+  I risparmi sono calcolati statisticamente sulla base di interventi analoghi e possono non riflettere univocamente il caso in esame.
+</p>
       <div class="pageBreak"></div>
 <div class="pageTop">
   <img class="pageLogo" src="logo.png" alt="Logo">
@@ -1217,7 +1252,10 @@ stato_gasolio: statoFrom(kpi_gasolio_num, bench_gasolio_num),
       _raw: {
         Eerete_tep, EEfer_tep, gas_tep, gasolio_tep,
         costoEE, costogas, costogasolio,
-        effCounts: counts, effValid: valid
+        effCounts: counts, effValid: valid,
+        EErete_kWh, gas_smc, gasolio_l,
+  PEE, Pgas, Pgasolio,
+  costotot
       }
     };
   }
@@ -1241,7 +1279,75 @@ stato_gasolio: statoFrom(kpi_gasolio_num, bench_gasolio_num),
       `;
     }).join("");
   }
+function buildRisparmiRowsHTML(calc){
+  const r = calc._raw;
 
+  const EE = Number(r.EErete_kWh) || 0;
+  const GAS = Number(r.gas_smc) || 0;
+  const GASOLIO = Number(r.gasolio_l) || 0;
+
+  const PEE = Number(r.PEE) || 0;
+  const PGAS = Number(r.Pgas) || 0;
+  const PGASOLIO = Number(r.Pgasolio) || 0;
+
+  const costoTot = (Number(r.costoEE)||0) + (Number(r.costogas)||0) + (Number(r.costogasolio)||0);
+
+  let totalRisparmio = 0;
+
+  const rows = INTERVENTI_STANDARD
+    .map((it, idx) => ({ it, st: interventiState[idx] }))
+    .filter(x => x.st && (x.st.eff === "Media" || x.st.eff === "Bassa"))
+    .map(({it}) => {
+      const pct = PCT_AREA[it.area] ?? 0;
+
+      // base costi per tipo (come da tue formule)
+      let base = 0;
+      const tipo = (it.tipo || "").trim();
+
+      if (tipo === "Elettrico") {
+        base = PEE * EE;
+      } else if (tipo === "Termico") {
+        base = PGAS * GAS;
+      } else if (tipo === "Elettrico / Termico") {
+        base = (PGAS * GAS) + (PEE * EE);
+      } else if (tipo === "Gasolio") {
+        base = PGASOLIO * GASOLIO;
+      } else {
+        // se tipo vuoto/altro: non calcolo
+        base = 0;
+      }
+
+      const risp = base * pct;
+      totalRisparmio += risp;
+
+      return `
+        <tr>
+          <td>${safe(it.area)}</td>
+          <td>${safe(it.tipo)}</td>
+          <td class="right">${fmt2(risp)} €</td>
+        </tr>
+      `;
+    }).join("");
+
+  const pctTot = (costoTot > 0) ? (totalRisparmio / costoTot) * 100 : 0;
+
+  const footer = `
+    <tr>
+      <th colspan="2" class="right">TOTALE RISPARMIO</th>
+      <th class="right">${fmt2(totalRisparmio)} € <span class="muted">(${fmt1(pctTot)}%)</span></th>
+    </tr>
+  `;
+
+  // Se non ci sono righe (nessuna Media/Bassa), mostro una riga informativa + totali a zero
+  if (!rows) {
+    return `
+      <tr><td colspan="3" class="center muted">Nessuna area con efficienza Media o Bassa.</td></tr>
+      ${footer}
+    `;
+  }
+
+  return rows + footer;
+}
   // =========================
   // Charts
   // =========================
@@ -1529,8 +1635,9 @@ stato_gasolio: statoFrom(kpi_gasolio_num, bench_gasolio_num),
     const input = getFormData();
     const calc = compute(input);
 
-    const html = TEMPLATE.replace("{{INTERVENTI_ROWS}}", buildInterventiRowsHTML());
-    docRoot.innerHTML = applyTemplate(html, calc);
+    let html = TEMPLATE.replace("{{INTERVENTI_ROWS}}", buildInterventiRowsHTML());
+html = html.replace("{{RISPARMI_ROWS}}", buildRisparmiRowsHTML(calc));
+docRoot.innerHTML = applyTemplate(html, calc);
 
     destroyCharts();
     renderCharts(calc);
@@ -1692,6 +1799,7 @@ stato_gasolio: statoFrom(kpi_gasolio_num, bench_gasolio_num),
 </script>
 </body>
 </html>
+
 
 
 

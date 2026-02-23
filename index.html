@@ -26,7 +26,6 @@
 
   <style>
     :root { --b:#ddd; --bg:#fafafa; --txt:#111; --muted:#666; }
-
     html, body { height: 100%; }
 
     body{
@@ -92,8 +91,8 @@
       line-height:1;
     }
     button.primary{ background:#111; color:#fff; border-color:#111; }
-    button.ghost{ background:#fff; }
     button.small{ padding:8px 10px; font-size:13px; }
+
     .note{ color:var(--muted); font-size:12px; margin-top:10px; line-height:1.35; }
     .hr{ border:0; border-top:1px solid #eee; margin: 14px 0; }
 
@@ -121,7 +120,7 @@
     /* Interventi - form */
     .intervForm{ border:1px solid #eee; border-radius:12px; padding:10px; }
 
-    /* >>> MODIFICA #2: area molto più larga (circa 4x) <<< */
+    /* area più larga */
     .iRow{
       display:grid;
       grid-template-columns: 4.6fr 1.2fr 1.1fr 0.7fr 1fr;
@@ -192,7 +191,6 @@
       padding-right: 8px;
     }
     .panel.preview{ overflow-y: auto; }
-
     .formContent{
       flex: 1;
       overflow-y: auto;
@@ -208,22 +206,13 @@
     .stato-giallo{ color:#a36b00; font-weight:700; }
     .stato-rosso{ color:#8b0000; font-weight:700; }
 
-    .stato-ok{ color:#1b8a3a; font-weight:700; }
-    .stato-warn{ color:#c58a00; font-weight:700; }
-    .stato-bad{ color:#d11a2a; font-weight:800; }
+    /* Fullscreen form */
+    body.fullForm .wrap{ grid-template-columns: 1fr !important; }
+    body.fullForm .panel.preview{ display:none !important; }
 
-    /* ===== MODIFICA #1: fullscreen pannello sinistro ===== */
-    body.fullForm .wrap{
-      grid-template-columns: 1fr !important;
-    }
-    body.fullForm .panel.preview{
-      display:none !important;
-    }
-
-    /* ===== Modal (Carica progetto) ===== */
+    /* Modal */
     .modalBackdrop{
-      position:fixed;
-      inset:0;
+      position:fixed; inset:0;
       background: rgba(0,0,0,0.35);
       display:none;
       align-items:center;
@@ -266,65 +255,20 @@
     .projMeta{ font-size:12px; color:var(--muted); margin-top:2px; }
     .projName{ font-weight:600; }
 
-    /* =========================
-       PRINT
-       ========================= */
+    /* PRINT */
     @media print {
+      @page{ margin-top: 30mm; margin-right: 10mm; margin-bottom: 20mm; margin-left: 15mm; }
 
-      @page{
-        margin-top: 30mm;
-        margin-right: 10mm;
-        margin-bottom: 20mm;
-        margin-left: 15mm;
-      }
+      header, #formPanel, .panel.form{ display: none !important; }
+      .wrap{ grid-template-columns: 1fr !important; padding: 0 !important; height: auto !important; }
+      body{ background:#fff !important; overflow: visible !important; }
+      .panel.preview{ border: 0 !important; padding: 0 !important; overflow: visible !important; }
+      .doc{ max-width: none !important; border: 0 !important; border-radius: 0 !important; padding: 0 !important; margin: 0 !important; }
 
-      header,
-      #formPanel,
-      .panel.form{
-        display: none !important;
-      }
+      .pageBreak{ break-before: page; page-break-before: always; }
 
-      .wrap{
-        grid-template-columns: 1fr !important;
-        padding: 0 !important;
-        height: auto !important;
-      }
-
-      body{
-        background:#fff !important;
-        overflow: visible !important;
-      }
-
-      .panel.preview{
-        border: 0 !important;
-        padding: 0 !important;
-        overflow: visible !important;
-      }
-
-      .doc{
-        max-width: none !important;
-        border: 0 !important;
-        border-radius: 0 !important;
-        padding: 0 !important;
-        margin: 0 !important;
-      }
-
-      .pageBreak{
-        break-before: page;
-        page-break-before: always;
-      }
-
-      .chartCard,
-      canvas,
-      .nextStepsImg{
-        break-inside: avoid;
-        page-break-inside: avoid;
-      }
-
-      table{
-        break-inside: auto;
-        page-break-inside: auto;
-      }
+      .chartCard, canvas, .nextStepsImg{ break-inside: avoid; page-break-inside: avoid; }
+      table{ break-inside: auto; page-break-inside: auto; }
 
       html, body, .wrap, .panel.preview, .doc, #docRoot, .printContent{
         overflow: visible !important;
@@ -340,28 +284,10 @@
         display: flex;
         align-items: center;
       }
+      .pageLogo{ height: 15mm; width: auto; }
 
-      .pageLogo{
-        height: 15mm;
-        width: auto;
-      }
-
-      h2{
-        break-after: avoid;
-        page-break-after: avoid;
-      }
-      h2 + table{
-        break-before: avoid;
-        page-break-before: avoid;
-      }
-
-      .sectionBlock h2{
-        margin-top: 0 !important;
-        margin-bottom: 6px !important;
-      }
-      .sectionBlock table{
-        margin-top: 0 !important;
-      }
+      h2{ break-after: avoid; page-break-after: avoid; }
+      h2 + table{ break-before: avoid; page-break-before: avoid; }
 
       .charts2equal{
         display: grid !important;
@@ -369,21 +295,13 @@
         gap: 10mm !important;
         align-items: start !important;
       }
-
       .charts2equal .chartCard{
         width: 100% !important;
         min-width: 0 !important;
         break-inside: avoid !important;
         page-break-inside: avoid !important;
       }
-
-      .charts2equal .chartWrap{ width: 100% !important; }
-      .charts2equal canvas{ width: 100% !important; }
-
-      #chartEnergiaPrimaria,
-      #chartVettoriEnergetici{
-        height: 160px !important;
-      }
+      #chartEnergiaPrimaria, #chartVettoriEnergetici{ height: 160px !important; }
 
       .charts2{
         display: grid !important;
@@ -391,7 +309,6 @@
         gap: 10mm !important;
         align-items: start !important;
       }
-
       .charts2 .chartCard{
         width: 100% !important;
         min-width: 0 !important;
@@ -399,14 +316,7 @@
         break-inside: avoid !important;
         page-break-inside: avoid !important;
       }
-
-      .charts2 .chartWrap{ width: 100% !important; }
-      .charts2 canvas{ width: 100% !important; }
-
-      #chartEffBar,
-      #chartEffDonut{
-        height: 240px !important;
-      }
+      #chartEffBar, #chartEffDonut{ height: 240px !important; }
     }
   </style>
 </head>
@@ -417,8 +327,6 @@
     <div><strong>Luca Carbisiero</strong></div>
     <div class="sub">Benvenuto</div>
   </div>
-
-  <!-- MODIFICA #1: tasto fullscreen sempre accessibile -->
   <div class="hdrRight">
     <button class="small" id="btnToggleFull" title="Espandi / riduci il pannello sinistro">Schermo intero</button>
   </div>
@@ -469,17 +377,26 @@
           <label>Superficie stabilimento [m²] ({{superficie}})</label>
           <input id="superficie" type="number" step="1" />
         </div>
+
+        <!-- MODIFICA: driver energetico + UM -->
         <div>
-          <label>Numero linee produttive ({{linee}})</label>
-          <input id="linee" type="number" step="1" />
+          <label>Driver Energetico ({{driver}})</label>
+          <input id="driver" type="number" step="0.01" placeholder="Es. pezzi/anno, ton/anno, ore, ecc. (valore numerico)" />
         </div>
       </div>
 
       <div class="row">
         <div>
+          <label>UM Driver Energetico ({{driver_um}})</label>
+          <input id="driver_um" placeholder="Es. pezzi, ton, ore, m³..." />
+        </div>
+        <div>
           <label>Ore di funzionamento annue ({{ore}})</label>
           <input id="ore" type="number" step="1" />
         </div>
+      </div>
+
+      <div class="row">
         <div>
           <label>Ambiente riscaldato ({{riscaldato}})</label>
           <select id="riscaldato">
@@ -488,6 +405,7 @@
             <option value="No">No</option>
           </select>
         </div>
+        <div><!-- spacer --></div>
       </div>
 
       <hr class="hr"/>
@@ -561,10 +479,8 @@
       <hr class="hr"/>
     </div>
 
-    <!-- MODIFICA #5: rinominata Export -> Proprietà -->
     <h2>Proprietà</h2>
 
-    <!-- MODIFICA #4: gestione progetti -->
     <div class="btns">
       <button class="primary" id="btnPrint">Stampa / Salva PDF</button>
       <button id="btnNuovoProj">Nuovo progetto</button>
@@ -572,13 +488,11 @@
       <button id="btnSalvaProj">Salva progetto</button>
     </div>
 
-    <!-- MODIFICA #3: Excel import/export -->
     <div class="btns" style="margin-top:8px;">
       <button id="btnExportExcel">Esporta Excel</button>
       <button id="btnImportExcel">Importa Excel</button>
       <input id="fileImportExcel" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" style="display:none" />
 
-      <!-- mantengo JSON (se ti serve ancora) -->
       <button id="btnExportJson">Esporta JSON</button>
       <button id="btnImportJson">Importa JSON</button>
       <input id="fileImportJson" type="file" accept="application/json" style="display:none" />
@@ -605,9 +519,7 @@
       <div class="modalTitle">Carica progetto</div>
       <button class="small" id="btnCloseProjModal">Chiudi</button>
     </div>
-    <div class="note" style="margin:0 0 10px;">
-      Seleziona un progetto salvato per caricarlo.
-    </div>
+    <div class="note" style="margin:0 0 10px;">Seleziona un progetto salvato per caricarlo.</div>
     <div class="projList" id="projList"></div>
   </div>
 </div>
@@ -647,7 +559,6 @@
     { area:"Altro", tipo:"" }
   ];
 
-  // % area intervento (in forma decimale)
   const PCT_AREA = {
     "Motori elettrici": 0.015,
     "Applicazione inverter": 0.02,
@@ -674,9 +585,10 @@
   // =========================
   const TEMPLATE = `
     <div class="printContent">
-    <div class="pageTop">
-      <img class="pageLogo" src="logo.png" alt="Logo">
-    </div>
+      <div class="pageTop">
+        <img class="pageLogo" src="logo.png" alt="Logo">
+      </div>
+
       <h1>AUDIT ENERGETICO</h1>
 
       <table>
@@ -731,7 +643,8 @@
       <table>
         <tbody>
           <tr><td>Superficie stabilimento [m2]:</td><td class="right">{{superficie}}</td></tr>
-          <tr><td>Numero linee produttive:</td><td class="right">{{linee}}</td></tr>
+          <tr><td>Driver energetico:</td><td class="right">{{driver}}</td></tr>
+          <tr><td>UM driver energetico:</td><td class="right">{{driver_um}}</td></tr>
           <tr><td>Ore di funzionamento annue:</td><td class="right">{{ore}}</td></tr>
           <tr><td>Energia elettrica rete [kWh]:</td><td class="right">{{EErete}}</td></tr>
           <tr><td>Energia elettrica FER [kWh]:</td><td class="right">{{EEfer}}</td></tr>
@@ -883,20 +796,22 @@
           <canvas id="chartCostiConsumi" height="260"></canvas>
         </div>
       </div>
-      <!-- BUG FIX: chiusura chartCard aggiunta -->
+      <!-- BUG FIX: chiusura chartCard OK -->
 
       <div class="pageBreak"></div>
       <div class="pageTop">
         <img class="pageLogo" src="logo.png" alt="Logo">
       </div>
 
-      <h2>Benchmark settoriali</h2>
+      <!-- MODIFICA: titolo sezione -->
+      <h2>Indicatori di prestazione</h2>
       <p>
         Di seguito si riportano alcuni KPI (key performance indicators) di carattere generale, utili per confronti a distanza di tempo con una baseline, obiettivi o con valori di benchmark.
         Il confronto di questi dati è da attenzionare poichè sono strettamente legati alla performance del sistema: creando appositi indicatori, anche di maggior dettaglio e specificità,
         e monitorandoli sistematicamente nel tempo è possibile prendere decisioni strategiche e valutare l'efficienza dell'azienda.
       </p>
 
+      <h3>Indicatori generali</h3>
       <table>
         <thead>
           <tr>
@@ -932,10 +847,32 @@
         </tbody>
       </table>
 
-      <!-- MODIFICA #6: dicitura sotto benchmark -->
       <p class="muted">
         I benchmark di settore utilizzati sono indicativi e preliminari; potrebbero discostarsi dai valori ufficiali e servono solo come riferimento iniziale per il confronto dei KPI.
       </p>
+
+      <h3>Indicatori specifici</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Indicatore</th>
+            <th class="center">KPI azienda</th>
+            <th class="center">Unità</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Energia elettrica totale</td>
+            <td class="right">{{kpi_ee_spec}}</td>
+            <td class="center">kWh/({{UM_show}})</td>
+          </tr>
+          <tr>
+            <td>Gas</td>
+            <td class="right">{{kpi_gas_spec}}</td>
+            <td class="center">Smc/({{UM_show}})</td>
+          </tr>
+        </tbody>
+      </table>
 
       <div class="pageBreak"></div>
       <div class="pageTop">
@@ -1064,7 +1001,6 @@
   function fmtInt(n){ return Number(n).toLocaleString("it-IT", { maximumFractionDigits: 0 }); }
   function fmt1(n){ return Number(n).toLocaleString("it-IT", { minimumFractionDigits: 1, maximumFractionDigits: 1 }); }
   function fmt2(n){ return Number(n).toLocaleString("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
-  // FIX: 4 decimali reali
   function fmt4(n){ return Number(n).toLocaleString("it-IT", { minimumFractionDigits: 4, maximumFractionDigits: 4 }); }
   function fmtPct0(n){ return `${Math.round(n)}%`; }
 
@@ -1115,7 +1051,6 @@
     const codice = normAteco(document.getElementById("ateco").value);
     const anno = String(document.getElementById("atecoAnno").value || "").trim();
     const out = document.getElementById("descrizioneateco");
-
     const info = getAtecoInfo(anno, codice);
     out.value = info.descrizione || "";
   }
@@ -1192,12 +1127,8 @@
 
     const soglia = benchNum * 1.1;
 
-    if (kpiNum > soglia) {
-      return `<span class="stato-rosso">Sopra benchmark</span>`;
-    }
-    if (kpiNum >= benchNum && kpiNum <= soglia) {
-      return `<span class="stato-giallo">Allineato con benchmark</span>`;
-    }
+    if (kpiNum > soglia) return `<span class="stato-rosso">Sopra benchmark</span>`;
+    if (kpiNum >= benchNum && kpiNum <= soglia) return `<span class="stato-giallo">Allineato con benchmark</span>`;
     return `<span class="stato-verde">Sotto benchmark</span>`;
   }
 
@@ -1214,6 +1145,10 @@
     const superficieNum = num(input.superficie);
     const veicoliNum    = num(input.veicoli);
     const kmNum         = num(input.km);
+
+    const driverNum     = num(input.driver);
+    const driverUM      = String(input.driver_um || "").trim();
+    const UM_show       = driverUM || "UM";
 
     const fEE      = 0.187e-3;
     const fGas     = 0.825e-3;
@@ -1241,6 +1176,7 @@
 
     const EEtot = EErete_kWh + EEfer_kWh;
 
+    // indicatori generali (per superficie)
     const kpi_ee_num  = superficieNum > 0 ? (EEtot / superficieNum) : NaN;
     const kpi_gas_num = superficieNum > 0 ? (gas_smc / superficieNum) : NaN;
     const kpi_gasolio_num =
@@ -1248,12 +1184,15 @@
         ? (gasolio_l / (kmNum * veicoliNum)) * 100
         : NaN;
 
-    // ---- BENCHMARK da ATECO_MAP ----
+    // indicatori specifici (per driver)
+    const kpi_ee_spec_num  = driverNum > 0 ? (EEtot / driverNum) : NaN;
+    const kpi_gas_spec_num = driverNum > 0 ? (gas_smc / driverNum) : NaN;
+
+    // benchmark ATECO
     const annoA = String(input.atecoAnno || "2007").trim();
     const codA = normAteco(input.ateco);
 
     let info = getAtecoInfo(annoA, codA);
-
     if ((!info.descrizione && (info.kwh_m2 == null && info.smc_m2 == null && info.l_100_km == null)) && codA) {
       const p2 = codA.slice(0,2);
       info = getAtecoInfo(annoA, p2) || info;
@@ -1278,7 +1217,10 @@
       riscaldato: input.riscaldato || "—",
 
       superficie: input.superficie || "—",
-      linee: input.linee || "—",
+      driver: input.driver || "—",
+      driver_um: input.driver_um || "—",
+      UM_show,
+
       ore: input.ore || "—",
 
       veicoli: input.veicoli ? fmtInt(veicoliNum) : "—",
@@ -1309,6 +1251,7 @@
       costogasolio: fmt2(costogasolio),
       costotot: fmt2(costotot),
 
+      // indicatori generali
       kpi_ee: Number.isFinite(kpi_ee_num) ? fmt2(kpi_ee_num) : "—",
       kpi_gas: Number.isFinite(kpi_gas_num) ? fmt2(kpi_gas_num) : "—",
       kpi_gasolio: Number.isFinite(kpi_gasolio_num) ? fmt4(kpi_gasolio_num) : "—",
@@ -1320,6 +1263,10 @@
       stato_ee: statoBenchmark(kpi_ee_num, bench_ee_num),
       stato_gas: statoBenchmark(kpi_gas_num, bench_gas_num),
       stato_gasolio: statoBenchmark(kpi_gasolio_num, bench_gasolio_num),
+
+      // indicatori specifici
+      kpi_ee_spec: Number.isFinite(kpi_ee_spec_num) ? fmt2(kpi_ee_spec_num) : "—",
+      kpi_gas_spec: Number.isFinite(kpi_gas_spec_num) ? fmt2(kpi_gas_spec_num) : "—",
 
       Commento_generale_html: (input.Commento_generale || "").replaceAll("\n","<br/>"),
 
@@ -1335,7 +1282,7 @@
   }
 
   // =========================
-  // Interventi preview
+  // Interventi preview + risparmi
   // =========================
   function buildInterventiRowsHTML() {
     return INTERVENTI_STANDARD.map((it, idx) => {
@@ -1379,17 +1326,10 @@
       let base = 0;
       const tipo = (it.tipo || "").trim();
 
-      if (tipo === "Elettrico") {
-        base = PEE * EE;
-      } else if (tipo === "Termico") {
-        base = PGAS * GAS;
-      } else if (tipo === "Elettrico / Termico") {
-        base = (PGAS * GAS) + (PEE * EE);
-      } else if (tipo === "Gasolio") {
-        base = PGASOLIO * GASOLIO;
-      } else {
-        base = 0;
-      }
+      if (tipo === "Elettrico") base = PEE * EE;
+      else if (tipo === "Termico") base = PGAS * GAS;
+      else if (tipo === "Elettrico / Termico") base = (PGAS * GAS) + (PEE * EE);
+      else if (tipo === "Gasolio") base = PGASOLIO * GASOLIO;
 
       const risp = base * pct;
       totalRisparmio += risp;
@@ -1425,7 +1365,6 @@
   // Charts
   // =========================
   Chart.register(ChartDataLabels);
-
   let chartCostiConsumi=null, chartEffBar=null, chartEffDonut=null, chartEnergiaPrimaria=null, chartVettoriEnergetici=null;
 
   function destroyCharts(){
@@ -1685,7 +1624,9 @@
       descrizioneateco: safe(document.getElementById("descrizioneateco").value),
 
       superficie: safe(document.getElementById("superficie").value),
-      linee: safe(document.getElementById("linee").value),
+      driver: safe(document.getElementById("driver").value),
+      driver_um: safe(document.getElementById("driver_um").value),
+
       ore: safe(document.getElementById("ore").value),
       riscaldato: safe(document.getElementById("riscaldato").value),
 
@@ -1700,6 +1641,7 @@
 
       veicoli: safe(document.getElementById("veicoli").value),
       km: safe(document.getElementById("km").value),
+
       Commento_generale: safe(document.getElementById("commento_generale").value),
     };
   }
@@ -1717,8 +1659,63 @@
   }
 
   // =========================
-  // Export/Import JSON (come prima)
+  // Progetti / JSON / Excel
   // =========================
+  const LS_KEY = "audit_projects_v1";
+
+  function readProjects(){
+    try{
+      const raw = localStorage.getItem(LS_KEY);
+      const obj = raw ? JSON.parse(raw) : {};
+      return (obj && typeof obj === "object") ? obj : {};
+    }catch(e){
+      return {};
+    }
+  }
+  function writeProjects(obj){
+    localStorage.setItem(LS_KEY, JSON.stringify(obj));
+  }
+
+  function buildProjectPayload(){
+    return {
+      version: 1,
+      saved_at: new Date().toISOString(),
+      form: {
+        azienda: document.getElementById("azienda").value ?? "",
+        data: document.getElementById("data").value ?? "",
+        indirizzo: document.getElementById("indirizzo").value ?? "",
+        ateco: document.getElementById("ateco").value ?? "",
+        atecoAnno: document.getElementById("atecoAnno").value ?? "2007",
+        descrizioneateco: document.getElementById("descrizioneateco").value ?? "",
+
+        superficie: document.getElementById("superficie").value ?? "",
+        driver: document.getElementById("driver").value ?? "",
+        driver_um: document.getElementById("driver_um").value ?? "",
+
+        ore: document.getElementById("ore").value ?? "",
+        riscaldato: document.getElementById("riscaldato").value ?? "—",
+
+        veicoli: document.getElementById("veicoli")?.value ?? "",
+        km: document.getElementById("km")?.value ?? "",
+        commento_generale: document.getElementById("commento_generale")?.value ?? "",
+
+        EErete: document.getElementById("EErete").value ?? "",
+        EEfer: document.getElementById("EEfer").value ?? "",
+        gas: document.getElementById("gas").value ?? "",
+        gasolio: document.getElementById("gasolio").value ?? "",
+
+        PEE: document.getElementById("PEE").value ?? "",
+        Pgas: document.getElementById("Pgas").value ?? "",
+        Pgasolio: document.getElementById("Pgasolio").value ?? ""
+      },
+      interventiState: interventiState.map(s => ({
+        eff: s.eff,
+        intervento: !!s.intervento,
+        opportunita: s.opportunita ?? ""
+      }))
+    };
+  }
+
   function downloadJSON(filename, obj){
     const blob = new Blob([JSON.stringify(obj, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -1732,8 +1729,7 @@
   }
 
   function exportAuditJSON(){
-    const payload = buildProjectPayload();
-    downloadJSON("audit.json", payload);
+    downloadJSON("audit.json", buildProjectPayload());
   }
 
   function applyAuditJSON(payload){
@@ -1755,7 +1751,9 @@
     setVal("descrizioneateco", f.descrizioneateco);
 
     setVal("superficie", f.superficie);
-    setVal("linee", f.linee);
+    setVal("driver", f.driver);
+    setVal("driver_um", f.driver_um);
+
     setVal("ore", f.ore);
     setVal("riscaldato", f.riscaldato ?? "—");
 
@@ -1786,12 +1784,8 @@
     render();
   }
 
-  // =========================
-  // MODIFICA #3: Excel import/export
-  // =========================
-
+  // Excel: definizioni campi (tutti)
   function getAllInputFieldDefs(){
-    // elenco campi "form" (tutti, anche vuoti)
     const defs = [
       { section:"Dati base", label:"Società", id:"azienda" },
       { section:"Dati base", label:"Data", id:"data" },
@@ -1801,7 +1795,8 @@
       { section:"Dati base", label:"Descrizione ATECO", id:"descrizioneateco" },
 
       { section:"Dati generali", label:"Superficie stabilimento [m²]", id:"superficie" },
-      { section:"Dati generali", label:"Numero linee produttive", id:"linee" },
+      { section:"Dati generali", label:"Driver energetico", id:"driver" },
+      { section:"Dati generali", label:"UM driver energetico", id:"driver_um" },
       { section:"Dati generali", label:"Ore di funzionamento annue", id:"ore" },
       { section:"Dati generali", label:"Ambiente riscaldato", id:"riscaldato" },
 
@@ -1820,11 +1815,9 @@
       { section:"Note", label:"Commento generale", id:"commento_generale" }
     ];
 
-    // aggiungo interventi come “campi”
     INTERVENTI_STANDARD.forEach((it, idx) => {
       defs.push({ section:"Aree di intervento", label:`${it.area} - Efficienza`, key:`interventi.${idx}.eff` });
       defs.push({ section:"Aree di intervento", label:`${it.area} - Opportunità`, key:`interventi.${idx}.opportunita` });
-      // intervento è auto: lo esportiamo comunque per trasparenza
       defs.push({ section:"Aree di intervento", label:`${it.area} - Intervento consigliato`, key:`interventi.${idx}.intervento` });
     });
 
@@ -1868,13 +1861,11 @@
         return;
       }
       if (field === "opportunita"){
-        // scrivo solo se intervento true
         if (st.intervento) st.opportunita = String(value ?? "");
         return;
       }
       if (field === "intervento"){
-        // è auto, quindi ignoro in import
-        return;
+        return; // auto
       }
     }
   }
@@ -1908,10 +1899,8 @@
     if (!ws) throw new Error("Foglio Excel non trovato");
 
     const data = XLSX.utils.sheet_to_json(ws, { defval:"" });
-    // atteso: colonne Sezione, Campo, ID, Chiave, Valore
     const defs = getAllInputFieldDefs();
 
-    // indicizzo per id e per key
     const byId = new Map(defs.filter(d=>d.id).map(d=>[d.id, d]));
     const byKey = new Map(defs.filter(d=>d.key).map(d=>[d.key, d]));
 
@@ -1929,65 +1918,8 @@
     render();
   }
 
-  // =========================
-  // MODIFICA #4: Progetti (nuovo / salva / carica)
-  // =========================
-  const LS_KEY = "audit_projects_v1";
-
-  function readProjects(){
-    try{
-      const raw = localStorage.getItem(LS_KEY);
-      const obj = raw ? JSON.parse(raw) : {};
-      return (obj && typeof obj === "object") ? obj : {};
-    }catch(e){
-      return {};
-    }
-  }
-
-  function writeProjects(obj){
-    localStorage.setItem(LS_KEY, JSON.stringify(obj));
-  }
-
-  function buildProjectPayload(){
-    return {
-      version: 1,
-      saved_at: new Date().toISOString(),
-      form: {
-        azienda: document.getElementById("azienda").value ?? "",
-        data: document.getElementById("data").value ?? "",
-        indirizzo: document.getElementById("indirizzo").value ?? "",
-        ateco: document.getElementById("ateco").value ?? "",
-        atecoAnno: document.getElementById("atecoAnno").value ?? "2007",
-        descrizioneateco: document.getElementById("descrizioneateco").value ?? "",
-
-        superficie: document.getElementById("superficie").value ?? "",
-        linee: document.getElementById("linee").value ?? "",
-        ore: document.getElementById("ore").value ?? "",
-        riscaldato: document.getElementById("riscaldato").value ?? "—",
-
-        veicoli: document.getElementById("veicoli")?.value ?? "",
-        km: document.getElementById("km")?.value ?? "",
-        commento_generale: document.getElementById("commento_generale")?.value ?? "",
-
-        EErete: document.getElementById("EErete").value ?? "",
-        EEfer: document.getElementById("EEfer").value ?? "",
-        gas: document.getElementById("gas").value ?? "",
-        gasolio: document.getElementById("gasolio").value ?? "",
-
-        PEE: document.getElementById("PEE").value ?? "",
-        Pgas: document.getElementById("Pgas").value ?? "",
-        Pgasolio: document.getElementById("Pgasolio").value ?? ""
-      },
-      interventiState: interventiState.map(s => ({
-        eff: s.eff,
-        intervento: !!s.intervento,
-        opportunita: s.opportunita ?? ""
-      }))
-    };
-  }
-
   function resetAll(){
-    const ids = ["azienda","data","indirizzo","ateco","descrizioneateco","superficie","linee","ore","veicoli","km","commento_generale","EErete","EEfer","gas","gasolio","PEE","Pgas","Pgasolio"];
+    const ids = ["azienda","data","indirizzo","ateco","descrizioneateco","superficie","driver","driver_um","ore","veicoli","km","commento_generale","EErete","EEfer","gas","gasolio","PEE","Pgas","Pgasolio"];
     ids.forEach(id => document.getElementById(id).value = "");
     document.getElementById("atecoAnno").value = "2007";
     document.getElementById("riscaldato").value = "—";
@@ -2055,7 +1987,7 @@
           const projects = readProjects();
           delete projects[name];
           writeProjects(projects);
-          openProjectModal(); // refresh
+          openProjectModal();
         });
       });
     }
@@ -2067,9 +1999,6 @@
     document.getElementById("projModal").classList.remove("open");
   }
 
-  // =========================
-  // MODIFICA #1: Fullscreen toggle
-  // =========================
   function toggleFullForm(){
     const on = document.body.classList.toggle("fullForm");
     const b = document.getElementById("btnToggleFull");
@@ -2090,7 +2019,6 @@
 
   document.getElementById("btnPrint").addEventListener("click", () => window.print());
 
-  // JSON import/export
   document.getElementById("btnExportJson").addEventListener("click", exportAuditJSON);
 
   const fileImportJson = document.getElementById("fileImportJson");
@@ -2109,13 +2037,10 @@
     }
   });
 
-  // Reset
   document.getElementById("btnReset").addEventListener("click", resetAll);
 
-  // Fullscreen
   document.getElementById("btnToggleFull").addEventListener("click", toggleFullForm);
 
-  // Progetti
   document.getElementById("btnNuovoProj").addEventListener("click", () => {
     if(confirm("Creare un nuovo progetto? I dati non salvati andranno persi.")){
       resetAll();
@@ -2128,7 +2053,6 @@
     if (e.target.id === "projModal") closeProjectModal();
   });
 
-  // Excel
   document.getElementById("btnExportExcel").addEventListener("click", exportExcel);
 
   const fileImportExcel = document.getElementById("fileImportExcel");

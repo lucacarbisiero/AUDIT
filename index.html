@@ -943,8 +943,11 @@ h2{ break-after: avoid; page-break-after: avoid; }
 }
 
 function getAtecoInfo(anno, codice){
-  const key = `${anno}|${codice}`;
-  const v = window.ATECO_MAP ? window.ATECO_MAP[key] : null;
+  const a = String(anno || "2007").trim();
+  const c = normAteco(codice);
+  const key = `${a}|${c}`;
+
+  const rec = (window.ATECO_MAP && window.ATECO_MAP[key]) ? window.ATECO_MAP[key] : null;
 
   // Compatibilità: se nel tuo file ci sono ancora righe "vecchie" (valore stringa)
   if (typeof v === "string") {
@@ -1647,6 +1650,7 @@ stato_gasolio: statoFrom(kpi_gasolio, bench_gasolio_num),
 </script>
 </body>
 </html>
+
 
 
 

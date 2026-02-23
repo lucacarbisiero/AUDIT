@@ -576,20 +576,20 @@ h2{ break-after: avoid; page-break-after: avoid; }
   ];
 // % area intervento (in forma decimale)
 const PCT_AREA = {
-  "Motori elettrici": 0.02,
-  "Applicazione inverter": 0.035,
-  "Aria compressa": 0.05,
-  "Centrale termica": 0.04,
+  "Motori elettrici": 0.015,
+  "Applicazione inverter": 0.02,
+  "Aria compressa": 0.04,
+  "Centrale termica": 0.025,
   "Centrale frigo": 0.035,
   "Uffici": 0.02,
-  "Illuminazione": 0.04,
-  "Fotovoltaico": 0.12,    // * (asterisco solo descrittivo)
-  "Cogenerazione": 0.14,   // * (asterisco solo descrittivo)
-  "Carrelli elevatori": 0.01,
+  "Illuminazione": 0.03,
+  "Fotovoltaico": 0.20,    // * (asterisco solo descrittivo)
+  "Cogenerazione": 0.24,   // * (asterisco solo descrittivo)
+  "Carrelli elevatori": 0.005,
   "Involucro edilizio": 0.03,
-  "HVAC / UTA": 0.025,
-  "Rete elettrica": 0.01,
-  "Flotta aziendale": 0.05,
+  "HVAC / UTA": 0.02,
+  "Rete elettrica": 0.005,
+  "Flotta aziendale": 0.03,
   "Monitoraggio": 0.045,   // nel tuo elenco: "Monitoraggio energetico"
   "Altro": 0.015
 };
@@ -1207,11 +1207,7 @@ const bench_gas_num     = (info.smc_m2 == null) ? null : Number(info.smc_m2);
 const bench_gasolio_num = (info.l_100_km == null) ? null : Number(info.l_100_km);
 
 // stato: confronto KPI vs benchmark (puoi cambiare etichette)
-const statoFrom = (kpi, bench) => {
-  if (bench == null || !Number.isFinite(bench)) return "—";
-  if (!Number.isFinite(kpi)) return "—";
-  return (kpi <= bench) ? "OK" : "Sopra benchmark";
-};
+
     const counts = { Alta:0, Media:0, Bassa:0, "N.A.":0 };
     interventiState.forEach(s => { counts[s.eff] = (counts[s.eff] ?? 0) + 1; });
     const valid = counts.Alta + counts.Media + counts.Bassa;
@@ -1265,9 +1261,9 @@ bench_ee: (bench_ee_num == null || !Number.isFinite(bench_ee_num)) ? "—" : fmt
 bench_gas: (bench_gas_num == null || !Number.isFinite(bench_gas_num)) ? "—" : fmt2(bench_gas_num),
 bench_gasolio: (bench_gasolio_num == null || !Number.isFinite(bench_gasolio_num)) ? "—" : fmt2(bench_gasolio_num),
 
-stato_ee: statoFrom(kpi_ee_num, bench_ee_num),
-stato_gas: statoFrom(kpi_gas_num, bench_gas_num),
-stato_gasolio: statoFrom(kpi_gasolio_num, bench_gasolio_num),
+stato_ee: statoBenchmark(kpi_ee_num, bench_ee_num),
+stato_gas: statoBenchmark(kpi_gas_num, bench_gas_num),
+stato_gasolio: statoBenchmark(kpi_gasolio_num, bench_gasolio_num),
       Commento_generale_html: (input.Commento_generale || "").replaceAll("\n","<br/>"),
 
       _raw: {
@@ -1820,6 +1816,7 @@ docRoot.innerHTML = applyTemplate(html, calc);
 </script>
 </body>
 </html>
+
 
 
 

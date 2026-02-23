@@ -188,6 +188,21 @@
 .printHeader{
   display: none;
 }
+
+    .stato-verde{
+  color:#1f7a3a;
+  font-weight:700;
+}
+
+.stato-giallo{
+  color:#a36b00;
+  font-weight:700;
+}
+
+.stato-rosso{
+  color:#8b0000;
+  font-weight:700;
+}
     
     /* =========================
        PRINT
@@ -1108,19 +1123,22 @@ function updateDescrizioneAteco() {
 // Calcoli
 // =========================
 
-function statoFrom(kpi, bench){
-  if (bench == null || !Number.isFinite(bench)) return "—";
-  if (!Number.isFinite(kpi)) return "—";
+function statoBenchmark(kpiNum, benchNum){
 
-  const soglia = bench * 1.1;
+  if (benchNum == null || !Number.isFinite(benchNum)) return "—";
+  if (kpiNum == null || !Number.isFinite(kpiNum)) return "—";
 
-  if (kpi > soglia) {
-    return `<span class="stato-bad">(!)</span>`;
+  const soglia = benchNum * 1.1;
+
+  if (kpiNum > soglia) {
+    return `<span class="stato-rosso">Sopra benchmark</span>`;
   }
-  if (kpi >= bench && kpi <= soglia) {
-    return `<span class="stato-warn">Allineato</span>`;
+
+  if (kpiNum >= benchNum && kpiNum <= soglia) {
+    return `<span class="stato-giallo">Allineato con benchmark</span>`;
   }
-  return `<span class="stato-ok">OK</span>`;
+
+  return `<span class="stato-verde">Sotto benchmark</span>`;
 }
 
 
@@ -1802,6 +1820,7 @@ docRoot.innerHTML = applyTemplate(html, calc);
 </script>
 </body>
 </html>
+
 
 
 

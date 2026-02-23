@@ -612,7 +612,7 @@ h2{ break-after: avoid; page-break-after: avoid; }
 </div>
       <h2>Dati generali</h2>
       <p>
-        Il check-up considera i principali dati energetici disponibili dell’azienda, tra cui la superficie del sito, eventuali dati di produzione, il consumo annuo di elettricità e gas/metano,
+        Il check-up considera i principali dati energetici disponibili dell’azienda, tra cui la superficie del sito, il consumo annuo di elettricità e gas/metano,
         le ore di funzionamento e le tariffe energetiche applicate. Questi dati servono a fornire un quadro generale dell’impegno energetico dell’azienda e delle possibili aree di intervento.
         L'output del presente report è prodotto sulla base di interviste al personale aziendale e analisi delle fatture dei fornitori di energia.
       </p>
@@ -640,7 +640,7 @@ h2{ break-after: avoid; page-break-after: avoid; }
       <h2>Metodologia</h2>
       <p>
         L’approccio adottato per il check-up energetico prevede la raccolta dei dati disponibili, l’osservazione diretta delle utenze principali (elettricità, gas, aria compressa, acqua e combustibili)
-        e l’individuazione di perdite o inefficienze evidenti. A differenza della diagnosi energetica, che è un’analisi approfondita con misurazioni dettagliate,
+        e l’individuazione di perdite o inefficienze evidenti. A differenza della diagnosi energetica, che è un’analisi approfondita con misurazioni dettagliate rapportate alla produzione,
         l'audit energetico si presenta come un'indagine orientata a evidenziare criticità e a sondare le opportunità di miglioramento.
         Gli indicatori energetici principali, come kWh/m² o kWh per unità prodotta, vengono calcolati utilizzando dati di consumo storici e rilevazioni semplificate durante il sopralluogo.
       </p>
@@ -792,6 +792,8 @@ h2{ break-after: avoid; page-break-after: avoid; }
           <tr>
             <th>Indicatore</th>
             <th class="center">KPI azienda</th>
+             <th class="center">Benchmark di settore</th>
+    <th class="center">Stato</th>
             <th class="center">Unità</th>
           </tr>
         </thead>
@@ -799,16 +801,22 @@ h2{ break-after: avoid; page-break-after: avoid; }
           <tr>
             <td>Energia elettrica totale</td>
             <td class="right">{{kpi_ee}}</td>
+             <td class="right">{{bench_ee}}</td>
+  <td class="center">{{stato_ee}}</td>
             <td class="center">kWh/m²</td>
           </tr>
           <tr>
             <td>Gas</td>
             <td class="right">{{kpi_gas}}</td>
+             <td class="right">{{bench_gas}}</td>
+  <td class="center">{{stato_gas}}</td>
             <td class="center">Smc/m²</td>
           </tr>
           <tr>
             <td>Gasolio</td>
             <td class="right">{{kpi_gasolio}}</td>
+             <td class="right">{{bench_gasolio}}</td>
+  <td class="center">{{stato_gasolio}}</td>
             <td class="center">l/100 km</td>
           </tr>
         </tbody>
@@ -843,7 +851,7 @@ h2{ break-after: avoid; page-break-after: avoid; }
 <h2>Analisi settoriale e opportunità</h2>
       <p>
         Durante il sopralluogo sono stati osservati i principali reparti dell’azienda, annotando il tipo di consumo energetico predominante, l’efficienza percepita e le note rilevanti per ciascun reparto.
-        L’analisi si basa su osservazioni visive e dati generali, finalizzata a evidenziare i reparti dove l’energia viene maggiormente utilizzata o dispersa, e dove eventuali interventi di ottimizzazione possono portare benefici immediati.
+        L’analisi si basa su osservazioni visive e dati generali, finalizzata a evidenziare le aree dove l’energia viene maggiormente utilizzata o dispersa, e dove eventuali interventi di ottimizzazione possono portare benefici immediati.
       </p>
       <p>
         Il check-up include l’individuazione delle perdite o degli sprechi evidenti, come ad esempio: perdite di aria compressa, consumi elettrici eccessivi dovuti a cablaggi o motori inefficienti,
@@ -930,14 +938,41 @@ h2{ break-after: avoid; page-break-after: avoid; }
   // =========================
   // ATECO lookup
   // =========================
-  function normAteco(code) { return String(code ?? "").trim().replace(",", "."); }
-  function updateDescrizioneAteco() {
-    const codice = normAteco(document.getElementById("ateco").value);
-    const anno = String(document.getElementById("atecoAnno").value || "").trim();
-    const out = document.getElementById("descrizioneateco");
-    const key = `${anno}|${codice}`;
-    out.value = (window.ATECO_MAP && window.ATECO_MAP[key]) ? window.ATECO_MAP[key] : "";
+  function normAteco(code) { 
+  return String(code ?? "").trim().replace(",", "."); 
+}
+
+function getAtecoInfo(anno, codice){
+  const key = `${anno}|${codice}`;
+  const v = window.ATECO_MAP ? window.ATECO_MAP[key] : null;
+
+  // Compatibilità: se nel tuo file ci sono ancora righe "vecchie" (valore stringa)
+  if (typeof v === "string") {
+    return { descrizione: v, kwh_m2: null, smc_m2: null, l_100_km: null };
   }
+
+  // Nuovo formato: oggetto con descrizione + benchmark
+  if (v && typeof v === "object") {
+    return {
+      descrizione: v.descrizione ?? "",
+      kwh_m2: v.kwh_m2 ?? null,
+      smc_m2: v.smc_m2 ?? null,
+      l_100_km: v.l_100_km ?? null
+    };
+  }
+
+  // Nessuna corrispondenza
+  return { descrizione: "", kwh_m2: null, smc_m2: null, l_100_km: null };
+}
+
+function updateDescrizioneAteco() {
+  const codice = normAteco(document.getElementById("ateco").value);
+  const anno = String(document.getElementById("atecoAnno").value || "").trim();
+  const out = document.getElementById("descrizioneateco");
+
+  const info = getAtecoInfo(anno, codice);
+  out.value = info.descrizione || "";
+}
 
   // =========================
   // Interventi form
@@ -1052,7 +1087,30 @@ h2{ break-after: avoid; page-break-after: avoid; }
       (kmNum > 0 && veicoliNum > 0)
         ? (gasolio_l / (kmNum * veicoliNum)) * 100
         : 0;
+// ---- BENCHMARK da ATECO_MAP ----
+const annoA = String(input.atecoAnno || "2007").trim();
+const codA = normAteco(input.ateco);
 
+// prova lookup “esatto”
+let info = getAtecoInfo(annoA, codA);
+
+// (opzionale ma consigliato) fallback: se non trovi il codice completo, prova le prime 2 cifre
+if ((!info.descrizione && (info.kwh_m2 == null && info.smc_m2 == null && info.l_100_km == null)) && codA) {
+  const p2 = codA.slice(0,2);          // es. "52"
+  info = getAtecoInfo(annoA, p2) || info;
+}
+
+// valori benchmark (numerici)
+const bench_ee_num      = (info.kwh_m2 == null) ? null : Number(info.kwh_m2);
+const bench_gas_num     = (info.smc_m2 == null) ? null : Number(info.smc_m2);
+const bench_gasolio_num = (info.l_100_km == null) ? null : Number(info.l_100_km);
+
+// stato: confronto KPI vs benchmark (puoi cambiare etichette)
+const statoFrom = (kpi, bench) => {
+  if (bench == null || !Number.isFinite(bench)) return "—";
+  if (!Number.isFinite(kpi)) return "—";
+  return (kpi <= bench) ? "OK" : "Sopra benchmark";
+};
     const counts = { Alta:0, Media:0, Bassa:0, "N.A.":0 };
     interventiState.forEach(s => { counts[s.eff] = (counts[s.eff] ?? 0) + 1; });
     const valid = counts.Alta + counts.Media + counts.Bassa;
@@ -1102,7 +1160,13 @@ h2{ break-after: avoid; page-break-after: avoid; }
       kpi_ee: fmt2(kpi_ee),
       kpi_gas: fmt2(kpi_gas),
       kpi_gasolio: fmt4(kpi_gasolio),
+bench_ee: (bench_ee_num == null || !Number.isFinite(bench_ee_num)) ? "—" : fmt2(bench_ee_num),
+bench_gas: (bench_gas_num == null || !Number.isFinite(bench_gas_num)) ? "—" : fmt2(bench_gas_num),
+bench_gasolio: (bench_gasolio_num == null || !Number.isFinite(bench_gasolio_num)) ? "—" : fmt2(bench_gasolio_num),
 
+stato_ee: statoFrom(kpi_ee, bench_ee_num),
+stato_gas: statoFrom(kpi_gas, bench_gas_num),
+stato_gasolio: statoFrom(kpi_gasolio, bench_gasolio_num),
       Commento_generale_html: (input.Commento_generale || "").replaceAll("\n","<br/>"),
 
       _raw: {
@@ -1583,6 +1647,7 @@ h2{ break-after: avoid; page-break-after: avoid; }
 </script>
 </body>
 </html>
+
 
 
 

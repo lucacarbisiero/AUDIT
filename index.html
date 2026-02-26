@@ -1848,9 +1848,9 @@ function parsePctInput(str){ // "3,5" o "3.5" o "1.234,5"
       gas: fmtInt(gas_smc),
       gasolio: fmtInt(gasolio_l),
 
-      PEE: input.PEE ? fmt2(PEE) : "—",
-      Pgas: input.Pgas ? fmt2(Pgas) : "—",
-      Pgasolio: input.Pgasolio ? fmt2(Pgasolio) : "—",
+      PEE: input.PEE ? fmt3(PEE) : "—",
+      Pgas: input.Pgas ? fmt3(Pgas) : "—",
+      Pgasolio: input.Pgasolio ? fmt3(Pgasolio) : "—",
 
       Eerete_tep: fmt1(Eerete_tep),
       EEfer_tep: fmt1(EEfer_tep),
@@ -2940,6 +2940,7 @@ document.getElementById("show_kpi_gas_spec").addEventListener("change", render);
 </script>
 </body>
 </html>
+
 
 
 

@@ -278,14 +278,12 @@
     .projItem:last-child{ border-bottom:0; }
     .projMeta{ font-size:12px; color:var(--muted); margin-top:2px; }
     .projName{ font-weight:600; }
-    .chartLegend{
+.chartLegend{
   display:flex;
-  flex-wrap:wrap;
+  gap:14px;
   justify-content:center;
-  align-items:center;
-  gap: 10px 16px; /* riga/colonna */
-  margin-top: 8px;
-  padding: 6px 8px;
+  flex-wrap:wrap;
+  margin-top:10px;
 }
 
 .chartLegend .lgItem{
@@ -295,13 +293,14 @@
   font-size:12px;
   color:#333;
   white-space:nowrap;
+
+  /* barra colorata stampabile */
+  border-left: 14px solid #000;
+  padding-left: 8px;
 }
 
 .chartLegend .lgSwatch{
-  width:14px;
-  height:10px;
-  border-radius:3px;
-  display:inline-block;
+  display:none;
 }
 
     /* PRINT */
@@ -515,11 +514,10 @@
     width: 100% !important;
     max-width: 100% !important;
   }
-  .chartLegend .lgSwatch{
+  *{
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
-  *{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
 .nextStepsGrid{
   display: grid;
@@ -1159,6 +1157,7 @@
   <div class="chartWrap donut">
     <canvas id="chartEnergiaPrimaria" height="220"></canvas>
   </div>
+  <div id="legendEnergiaPrimaria" class="chartLegend"></div>
 
   <!-- ✅ LEGENDA ORIZZONTALE QUI SOTTO -->
   <div id="legendEnergiaPrimaria" class="chartLegend"></div>
@@ -2064,6 +2063,37 @@ const htmlLegendPlugin = {
     });
   }
 };
+
+  function buildHtmlLegend(chart, legendContainerId){
+  const el = document.getElementById(legendContainerId);
+  if(!el) return;
+
+  // pulizia
+  el.innerHTML = "";
+
+  const items = chart.options.plugins.legend.labels.generateLabels(chart);
+
+  items.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "lgItem";
+
+    // ✅ colore stampabile (barra a sinistra)
+    div.style.borderLeftColor = item.fillStyle;
+
+    // testo
+    div.textContent = item.text;
+
+    el.appendChild(div);
+  });
+}
+
+const htmlLegendPlugin = {
+  id: "htmlLegendPlugin",
+  afterUpdate(chart, args, opts){
+    if(!opts || !opts.containerId) return;
+    buildHtmlLegend(chart, opts.containerId);
+  }
+};
   function renderCharts(calc){
     const r = calc._raw;
 
@@ -2910,6 +2940,7 @@ document.getElementById("show_kpi_gas_spec").addEventListener("change", render);
 </script>
 </body>
 </html>
+
 
 
 

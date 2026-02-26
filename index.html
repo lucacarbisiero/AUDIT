@@ -1524,78 +1524,85 @@
     return (eff === "Media" || eff === "Bassa");
   }
 
-  function renderInterventiForm() {
-    interventiForm.innerHTML = "";
-    INTERVENTI_STANDARD.forEach((it, idx) => {
-      const st = interventiState[idx];
+ function renderInterventiForm() {
+  interventiForm.innerHTML = "";
+  INTERVENTI_STANDARD.forEach((it, idx) => {
+    const st = interventiState[idx];
 
-      const wrap = document.createElement("div");
-      wrap.className = "iRow";
-      wrap.innerHTML = `
-        <div>
-          <label style="margin-top:0;">Area</label>
-          <input value="${safe(it.area)}" disabled />
-        </div>
+    const wrap = document.createElement("div");
+    wrap.className = "iRow";
+    wrap.innerHTML = `
       <div>
-  <label style="margin-top:0;">Tipo</label>
-  ${
-    it.area === "Altro"
-    ? `
-      <select data-tipo="${idx}">
-        <option value="">—</option>
-        <option value="Elettrico" ${st.tipo_override==="Elettrico"?"selected":""}>Elettrico</option>
-        <option value="Termico" ${st.tipo_override==="Termico"?"selected":""}>Termico</option>
-        <option value="Gasolio" ${st.tipo_override==="Gasolio"?"selected":""}>Gasolio</option>
-      </select>
-    `
-    : `<input value="${safe(it.tipo)}" disabled />`
-  }
-</div>
-        <div>
-          <label style="margin-top:0;">Efficienza</label>
-          <select data-eff="${idx}">
-            <option ${st.eff==="Alta"?"selected":""} value="Alta">Alta</option>
-            <option ${st.eff==="Media"?"selected":""} value="Media">Media</option>
-            <option ${st.eff==="Bassa"?"selected":""} value="Bassa">Bassa</option>
-            <option ${st.eff==="N.A."?"selected":""} value="N.A.">N.A.</option>
-          </select>
-        </div>
-        <div>
-          <label style="margin-top:0;">Intervento</label>
-          <div class="inlineChk" title="Spuntato automaticamente per Media o Bassa">
-            <input type="checkbox" data-chk="${idx}" ${st.intervento ? "checked" : ""} disabled />
-          </div>
-        </div>
-        <div style="grid-column:1/-1;">
-          <label>Opportunità</label>
-          <textarea data-op="${idx}" placeholder="Scrivi qui..." ${st.intervento ? "" : "disabled"}>${safe(st.opportunita)}</textarea>
-        </div>
-      `;
-      interventiForm.appendChild(wrap);
+        <label style="margin-top:0;">Area</label>
+        <input value="${safe(it.area)}" disabled />
+      </div>
 
-      wrap.querySelector(`select[data-eff="${idx}"]`).addEventListener("change", (e) => {
-        const eff = e.target.value;
-        st.eff = eff;
-        st.intervento = computeInterventoAuto(eff);
-        if (!st.intervento) st.opportunita = "";
-        renderInterventiForm();
-        renderRisparmiPctForm(); // <-- aggiorna maschera %
-        render();
-      });
+      <div>
+        <label style="margin-top:0;">Tipo</label>
+        ${
+          it.area === "Altro"
+          ? `
+            <select data-tipo="${idx}">
+              <option value="">—</option>
+              <option value="Elettrico" ${st.tipo_override==="Elettrico"?"selected":""}>Elettrico</option>
+              <option value="Termico" ${st.tipo_override==="Termico"?"selected":""}>Termico</option>
+              <option value="Gasolio" ${st.tipo_override==="Gasolio"?"selected":""}>Gasolio</option>
+            </select>
+          `
+          : `<input value="${safe(it.tipo)}" disabled />`
+        }
+      </div>
 
-      wrap.querySelector(`textarea[data-op="${idx}"]`).addEventListener("input", (e) => {
-        st.opportunita = e.target.value;
-        render();
-      });
-    });
-    if (it.area === "Altro") {
-  wrap.querySelector(`select[data-tipo="${idx}"]`)
-    .addEventListener("change", (e) => {
-      st.tipo_override = e.target.value;
+      <div>
+        <label style="margin-top:0;">Efficienza</label>
+        <select data-eff="${idx}">
+          <option ${st.eff==="Alta"?"selected":""} value="Alta">Alta</option>
+          <option ${st.eff==="Media"?"selected":""} value="Media">Media</option>
+          <option ${st.eff==="Bassa"?"selected":""} value="Bassa">Bassa</option>
+          <option ${st.eff==="N.A."?"selected":""} value="N.A.">N.A.</option>
+        </select>
+      </div>
+
+      <div>
+        <label style="margin-top:0;">Intervento</label>
+        <div class="inlineChk" title="Spuntato automaticamente per Media o Bassa">
+          <input type="checkbox" data-chk="${idx}" ${st.intervento ? "checked" : ""} disabled />
+        </div>
+      </div>
+
+      <div style="grid-column:1/-1;">
+        <label>Opportunità</label>
+        <textarea data-op="${idx}" placeholder="Scrivi qui..." ${st.intervento ? "" : "disabled"}>${safe(st.opportunita)}</textarea>
+      </div>
+    `;
+    interventiForm.appendChild(wrap);
+
+    // listener Efficienza
+    wrap.querySelector(`select[data-eff="${idx}"]`).addEventListener("change", (e) => {
+      const eff = e.target.value;
+      st.eff = eff;
+      st.intervento = computeInterventoAuto(eff);
+      if (!st.intervento) st.opportunita = "";
+      renderInterventiForm();
+      renderRisparmiPctForm();
       render();
     });
+
+    // listener Opportunità
+    wrap.querySelector(`textarea[data-op="${idx}"]`).addEventListener("input", (e) => {
+      st.opportunita = e.target.value;
+      render();
+    });
+
+    // ✅ listener Tipo SOLO per Altro (qui è nel punto giusto)
+    if (it.area === "Altro") {
+      wrap.querySelector(`select[data-tipo="${idx}"]`).addEventListener("change", (e) => {
+        st.tipo_override = e.target.value;
+        render();
+      });
+    }
+  });
 }
-  }
 
   // =========================
   // Maschera % risparmio (edit)
@@ -1606,11 +1613,27 @@
     const v = (Number(x) || 0) * 100;
     return v.toLocaleString("it-IT", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
   }
-  function parsePctInput(str){ // "3,5" oppure "3.5" -> 0.035
-    const s = String(str ?? "").trim();
-    const n = Number(s.replace(/\./g, "").replace(",", "."));
-    return Number.isFinite(n) ? (n / 100) : 0;
+function parsePctInput(str){ // "3,5" o "3.5" o "1.234,5"
+  let s = String(str ?? "").trim();
+  if (!s) return 0;
+
+  const hasComma = s.includes(",");
+  const hasDot = s.includes(".");
+
+  if (hasComma && hasDot) {
+    // formato it: "1.234,5" => togli punti migliaia, virgola decimale
+    s = s.replace(/\./g, "").replace(",", ".");
+  } else if (hasComma) {
+    // "3,5" => "3.5"
+    s = s.replace(",", ".");
+  } else {
+    // solo punto: "3.5" resta "3.5" (non lo trattare come migliaia)
+    // niente
   }
+
+  const n = Number(s);
+  return Number.isFinite(n) ? (n / 100) : 0;
+}
 
   function renderRisparmiPctForm(){
     if(!risparmiPctForm) return;
@@ -1905,7 +1928,7 @@
       return `
         <tr>
           <td>${safe(it.area)}</td>
-          <td>${safe(it.tipo)}</td>
+         <td>${safe(it.area === "Altro" ? (st.tipo_override || "") : it.tipo)}</td>
           <td class="right">${fmt2(risp)} €</td>
         </tr>
       `;
@@ -2809,6 +2832,7 @@ document.getElementById("show_kpi_gas_spec").addEventListener("change", render);
 </script>
 </body>
 </html>
+
 
 
 

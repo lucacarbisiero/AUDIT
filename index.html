@@ -515,6 +515,11 @@
     width: 100% !important;
     max-width: 100% !important;
   }
+  .chartLegend .lgSwatch{
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  *{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
 .nextStepsGrid{
   display: grid;
@@ -2905,6 +2910,7 @@ document.getElementById("show_kpi_gas_spec").addEventListener("change", render);
 </script>
 </body>
 </html>
+
 
 
 

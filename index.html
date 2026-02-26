@@ -716,7 +716,7 @@
           <input id="gas" type="number" step="0.01" />
         </div>
         <div>
-          <label>Consumo annuo gasolio [l] ({{gasolio}})</label>
+          <label>Consumo annuo gasolio/benzina [l] ({{gasolio}})</label>
           <input id="gasolio" type="number" step="0.01" />
         </div>
       </div>
@@ -734,7 +734,7 @@
           <input id="Pgas" type="number" step="0.0001" />
         </div>
       </div>
-      <label>Tariffa gasolio [€/l] ({{Pgasolio}})</label>
+      <label>Tariffa carburante [€/l] ({{Pgasolio}})</label>
       <input id="Pgasolio" type="number" step="0.0001" />
 
       <hr class="hr"/>
@@ -991,7 +991,7 @@
           <tr><td>Energia elettrica rete [kWh]:</td><td class="right">{{EErete}}</td></tr>
           <tr><td>Energia elettrica FER [kWh]:</td><td class="right">{{EEfer}}</td></tr>
           <tr><td>Consumo annuo gas [Smc]:</td><td class="right">{{gas}}</td></tr>
-          <tr><td>Consumo annuo gasolio [l]:</td><td class="right">{{gasolio}}</td></tr>
+          <tr><td>Consumo annuo gasolio/benzina [l]:</td><td class="right">{{gasolio}}</td></tr>
           <tr><td>Tariffa energetica [€/kWh]:</td><td class="right">{{PEE}}</td></tr>
           <tr><td>Tariffa energetica [€/Smc]:</td><td class="right">{{Pgas}}</td></tr>
           <tr><td>Tariffa energetica [€/l]:</td><td class="right">{{Pgasolio}}</td></tr>
@@ -1052,7 +1052,7 @@
             <td class="center">0,825 x 10<sup>-3</sup></td>
           </tr>
           <tr>
-            <td>Gasolio</td>
+            <td>Gasolio/Benzina</td>
             <td></td><td></td>
             <td class="right">{{gasolio}}</td>
             <td class="right">{{gasolio_tep}}</td>
@@ -1128,7 +1128,7 @@
         <tbody>
           <tr><td>Energia Elettrica</td><td class="right">{{PEE}}</td><td class="right">{{EErete}}</td><td class="right">{{costoEE}} €</td></tr>
           <tr><td>Gas</td><td class="right">{{Pgas}}</td><td class="right">{{gas}}</td><td class="right">{{costogas}} €</td></tr>
-          <tr><td>Gasolio</td><td class="right">{{Pgasolio}}</td><td class="right">{{gasolio}}</td><td class="right">{{costogasolio}} €</td></tr>
+          <tr><td>Carburante</td><td class="right">{{Pgasolio}}</td><td class="right">{{gasolio}}</td><td class="right">{{costogasolio}} €</td></tr>
           <tr><th>TOTALE</th><th></th><th></th><th class="right">{{costotot}} €</th></tr>
         </tbody>
       </table>
@@ -1913,7 +1913,7 @@
 
     const epEl = document.getElementById("chartEnergiaPrimaria");
     if (epEl){
-      const labels = ["Energia Elettrica rete", "Gas", "Gasolio"];
+      const labels = ["Energia Elettrica rete", "Gas", "Carburante"];
       const data = [r.Eerete_tep, r.gas_tep, r.gasolio_tep];
       const tot = data.reduce((a,b)=>a+(b||0),0) || 1;
 
@@ -2434,11 +2434,11 @@ ambiente_riscaldato: safe(document.getElementById("ambiente_riscaldato").value),
       { section:"Consumi annui", label:"Energia elettrica rete [kWh]", id:"EErete" },
       { section:"Consumi annui", label:"Energia elettrica FER [kWh]", id:"EEfer" },
       { section:"Consumi annui", label:"Consumo annuo gas [Smc]", id:"gas" },
-      { section:"Consumi annui", label:"Consumo annuo gasolio [l]", id:"gasolio" },
+      { section:"Consumi annui", label:"Consumo annuo carburante [l]", id:"gasolio" },
 
       { section:"Tariffe", label:"Tariffa energia elettrica [€/kWh]", id:"PEE" },
       { section:"Tariffe", label:"Tariffa gas [€/Smc]", id:"Pgas" },
-      { section:"Tariffe", label:"Tariffa gasolio [€/l]", id:"Pgasolio" },
+      { section:"Tariffe", label:"Tariffa carburante [€/l]", id:"Pgasolio" },
 
       { section:"Note", label:"Commento generale", id:"commento_generale" }
     ];
@@ -2735,5 +2735,6 @@ ambiente_riscaldato: safe(document.getElementById("ambiente_riscaldato").value),
 </script>
 </body>
 </html>
+
 
 

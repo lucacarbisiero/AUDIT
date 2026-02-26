@@ -278,6 +278,31 @@
     .projItem:last-child{ border-bottom:0; }
     .projMeta{ font-size:12px; color:var(--muted); margin-top:2px; }
     .projName{ font-weight:600; }
+    .chartLegend{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  align-items:center;
+  gap: 10px 16px; /* riga/colonna */
+  margin-top: 8px;
+  padding: 6px 8px;
+}
+
+.chartLegend .lgItem{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:12px;
+  color:#333;
+  white-space:nowrap;
+}
+
+.chartLegend .lgSwatch{
+  width:14px;
+  height:10px;
+  border-radius:3px;
+  display:inline-block;
+}
 
     /* PRINT */
 @media print {
@@ -1125,11 +1150,14 @@
       <h3>RIEPILOGO CONSUMI E COSTI</h3>
       <div class="charts2equal">
         <div class="chartCard">
-          <div class="chartTitle">Energia primaria [tep]</div>
-          <div class="chartWrap donut">
-            <canvas id="chartEnergiaPrimaria" height="220"></canvas>
-          </div>
-        </div>
+  <div class="chartTitle">Energia primaria [tep]</div>
+  <div class="chartWrap donut">
+    <canvas id="chartEnergiaPrimaria" height="220"></canvas>
+  </div>
+
+  <!-- ✅ LEGENDA ORIZZONTALE QUI SOTTO -->
+  <div id="legendEnergiaPrimaria" class="chartLegend"></div>
+</div>
 
         <div class="chartCard">
           <div class="chartTitle">Principali vettori energetici [tep]</div>
@@ -2002,7 +2030,35 @@ function buildKpiSpecRowsHTML(calc) {
     if(chartEnergiaPrimaria){ chartEnergiaPrimaria.destroy(); chartEnergiaPrimaria=null; }
     if(chartVettoriEnergetici){ chartVettoriEnergetici.destroy(); chartVettoriEnergetici=null; }
   }
+// ✅ HTML Legend plugin (scrive la legenda in una DIV)
+const htmlLegendPlugin = {
+  id: "htmlLegend",
+  afterUpdate(chart, args, options) {
+    const container = document.getElementById(options.containerID);
+    if (!container) return;
 
+    container.innerHTML = "";
+
+    const items = chart.options.plugins.legend.labels.generateLabels(chart);
+    items.forEach(item => {
+      const el = document.createElement("div");
+      el.className = "lgItem";
+      el.innerHTML = `
+        <span class="lgSwatch" style="background:${item.fillStyle}"></span>
+        <span>${item.text}</span>
+      `;
+
+      // opzionale: click per nascondere/mostrare lo spicchio
+      el.style.cursor = "pointer";
+      el.onclick = () => {
+        chart.toggleDataVisibility(item.index);
+        chart.update();
+      };
+
+      container.appendChild(el);
+    });
+  }
+};
   function renderCharts(calc){
     const r = calc._raw;
 
@@ -2014,6 +2070,7 @@ function buildKpiSpecRowsHTML(calc) {
 
       chartEnergiaPrimaria = new Chart(epEl, {
         type: "doughnut",
+        plugins: [htmlLegendPlugin], // ✅ questa riga
         data: { labels, datasets: [{
           data,
           backgroundColor: [ENERGY_COL.ee, ENERGY_COL.gas, ENERGY_COL.gasolio],
@@ -2036,41 +2093,43 @@ function buildKpiSpecRowsHTML(calc) {
   }
 },
           radius: "88%", 
-      plugins: {
-  legend: {
-    display: true,
-    position: "bottom"
-  },
+     plugins: {
+  // ❌ spegni la legenda nativa
+  legend: { display: false },
+
+  // ✅ attiva la legenda HTML nella DIV sotto
+  htmlLegend: { containerID: "legendEnergiaPrimaria" },
 
   tooltip: {
     callbacks: {
-      label: function(context) {
-        const value = context.raw || 0;
-        const pct = tot > 0 ? Math.round((value / tot) * 100) : 0;
-        return `${context.label}: ${fmt1(value)} tep (${pct}%)`;
+      label: (ctx) => {
+        const v = ctx.parsed || 0;
+        const pct = Math.round((v / tot) * 100);
+        return `${ctx.label}: ${fmt1(v)} tep (${pct}%)`;
       }
     }
   },
 
+  // ✅ SUL GRAFICO: SOLO %
   datalabels: {
     color: "#111",
-    font: { size: 12 },
+    font: { size: 13, weight: "700" },
     anchor: "end",
     align: "end",
     offset: 12,
     clamp: true,
     clip: false,
 
-    // ✅ mostra solo spicchi >= 7%
+    // mostra etichetta solo se lo spicchio è "abbastanza grande"
     display: (ctx) => {
       const value = ctx.dataset.data[ctx.dataIndex] || 0;
       const pct = tot > 0 ? value / tot : 0;
-      return pct >= 0.07;
+      return pct >= 0.05; // 5% (puoi mettere 0.03 se vuoi più etichette)
     },
 
-    formatter: (value, ctx) => {
+    formatter: (value) => {
       if (!value || value <= 0) return "";
-      const pct = tot > 0 ? Math.round((value / tot) * 100) : 0;
+      const pct = Math.round((value / tot) * 100);
       return `${pct}%`;
     }
   }
@@ -2846,6 +2905,7 @@ document.getElementById("show_kpi_gas_spec").addEventListener("change", render);
 </script>
 </body>
 </html>
+
 
 
 

@@ -1,4 +1,4 @@
-<!doctype html>
+  <!doctype html>
 <html lang="it">
 <head>
   <meta charset="utf-8" />
@@ -618,15 +618,19 @@
           <input id="driver_um" placeholder="Es. pezzi, ton, ore, m³..." />
         </div>
         <div>
-          <label>Numero ospiti totale ({{ospiti}})</label>
-          <input id="ospiti" type="number" step="1" />
+         <label>Ore lavorative ({{ore_lavorative}})</label>
+    <input id="ore_lavorative" type="number" step="1" min="0" />
         </div>
       </div>
 
       <div class="row">
         <div>
-          <label>Numero stanze totali ({{stanze}})</label>
-          <input id="stanze" type="number" step="1" />
+              <label>Ambiente riscaldato ({{ambiente_riscaldato}})</label>
+    <select id="ambiente_riscaldato">
+      <option value="">—</option>
+      <option value="Si">Si</option>
+      <option value="No">No</option>
+    </select>
         </div>
         <div><!-- spacer --></div>
       </div>
@@ -979,8 +983,8 @@
           <tr><td>Superficie stabilimento [m2]:</td><td class="right">{{superficie}}</td></tr>
           <tr><td>Driver energetico:</td><td class="right">{{driver}}</td></tr>
           <tr><td>UM driver energetico:</td><td class="right">{{driver_um}}</td></tr>
-          <tr><td>Numero ospiti totale:</td><td class="right">{{ospiti}}</td></tr>
-          <tr><td>Numero stanze totali:</td><td class="right">{{stanze}}</td></tr>
+         <tr><td>Ore lavorative:</td><td class="right">{{ore_lavorative}}</td></tr>
+<tr><td>Ambiente riscaldato:</td><td class="right">{{ambiente_riscaldato}}</td></tr>
           <tr><td>Regione:</td><td class="right">{{regione}}</td></tr>
           <tr><td>Fascia climatica:</td><td class="right">{{fascia_climatica}}</td></tr>
           <tr><td>Gradi giorno medi regionali:</td><td class="right">{{gradi_giorno}}</td></tr>
@@ -1668,8 +1672,8 @@
     const driverUM      = String(input.driver_um || "").trim();
     const UM_show       = driverUM || "UM";
 
-    const ospitiNum = num(input.ospiti);
-    const stanzeNum = num(input.stanze);
+    const oreLavorativeNum = num(input.ore_lavorative);
+    const ambRiscaldato = String(input.ambiente_riscaldato || "").trim();
 
     const regione = String(input.regione || "").trim();
     const fasciaCl = String(input.fascia_climatica || "").trim();
@@ -1742,8 +1746,8 @@
       driver_um: input.driver_um || "—",
       UM_show,
 
-      ospiti: input.ospiti ? fmtInt(ospitiNum) : "—",
-      stanze: input.stanze ? fmtInt(stanzeNum) : "—",
+      ore_lavorative: input.ore_lavorative ? fmtInt(oreLavorativeNum) : "—",
+      ambiente_riscaldato: ambRiscaldato || "—",
 
       regione: regione || "—",
       fascia_climatica: fasciaCl || "—",
@@ -2213,8 +2217,8 @@
       driver: safe(document.getElementById("driver").value),
       driver_um: safe(document.getElementById("driver_um").value),
 
-      ospiti: safe(document.getElementById("ospiti").value),
-      stanze: safe(document.getElementById("stanze").value),
+      ore_lavorative: safe(document.getElementById("ore_lavorative").value),
+ambiente_riscaldato: safe(document.getElementById("ambiente_riscaldato").value),
 
       regione: safe(document.getElementById("regione").value),
       fascia_climatica: safe(document.getElementById("fascia_climatica").value),
@@ -2282,8 +2286,8 @@
         driver: document.getElementById("driver").value ?? "",
         driver_um: document.getElementById("driver_um").value ?? "",
 
-        ospiti: document.getElementById("ospiti")?.value ?? "",
-        stanze: document.getElementById("stanze")?.value ?? "",
+        ore_lavorative: document.getElementById("ore_lavorative")?.value ?? "",
+        ambiente_riscaldato: document.getElementById("ambiente_riscaldato")?.value ?? "",
 
         regione: document.getElementById("regione")?.value ?? "",
         fascia_climatica: document.getElementById("fascia_climatica")?.value ?? "",
@@ -2353,8 +2357,8 @@
     setVal("driver", f.driver);
     setVal("driver_um", f.driver_um);
 
-    setVal("ospiti", f.ospiti);
-    setVal("stanze", f.stanze);
+    setVal("ore_lavorative", f.ore_lavorative);
+    setVal("ambiente_riscaldato", f.ambiente_riscaldato);
 
     setVal("regione", f.regione);
     updateClimaFromRegione();
@@ -2417,8 +2421,8 @@
       { section:"Dati generali", label:"Superficie stabilimento [m²]", id:"superficie" },
       { section:"Dati generali", label:"Driver energetico", id:"driver" },
       { section:"Dati generali", label:"UM driver energetico", id:"driver_um" },
-      { section:"Dati generali", label:"Numero ospiti totale", id:"ospiti" },
-      { section:"Dati generali", label:"Numero stanze totali", id:"stanze" },
+      { section:"Dati generali", label:"Ore lavorative", id:"ore_lavorative" },
+      { section:"Dati generali", label:"Ambiente riscaldato", id:"ambiente_riscaldato" },
 
       { section:"Dati climatici", label:"Regione", id:"regione" },
       { section:"Dati climatici", label:"Fascia climatica", id:"fascia_climatica" },
@@ -2550,7 +2554,7 @@
     const ids = [
       "azienda","data","indirizzo","ateco","descrizioneateco",
       "superficie","driver","driver_um",
-      "ospiti","stanze",
+      "ore_lavorative","ambiente_riscaldato",
       "regione","fascia_climatica","gradi_giorno",
       "veicoli","km","commento_generale",
       "EErete","EEfer","gas","gasolio",
@@ -2731,4 +2735,5 @@
 </script>
 </body>
 </html>
+
 

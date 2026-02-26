@@ -147,7 +147,31 @@
     .chartCard{ border:1px solid #eee; border-radius:14px; padding:12px; background:#fff; margin: 8px 0 12px; }
     .chartTitle{ font-size:16px; font-weight:600; text-align:center; margin: 6px 0 8px; }
     .chartWrap{ position:relative; width:100%; }
-    .chartWrap.donut{ max-width: 560px; margin: 0 auto; }
+    .chartWrap.donut{
+  max-width: 320px;      /* <-- più piccolo */
+  aspect-ratio: 1 / 1;   /* <-- crea box quadrata */
+  margin: 0 auto;
+}
+
+/* ===== Donut costi vs consumi (rettangolare) ===== */
+.chartWrap.donut.donut75{
+  max-width: 520px;
+  width: 100%;
+  aspect-ratio: 2 / 1;   /* 520 x 260 */
+  margin: 0 auto;
+}
+
+.chartWrap.donut.donut75 canvas{
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+    
+.chartWrap.donut canvas{
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
 
     .charts2{ display:grid; grid-template-columns: 2fr 1fr; gap: 14px; align-items:start; }
     .charts2equal{ display:grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items:start; }
@@ -256,68 +280,272 @@
     .projName{ font-weight:600; }
 
     /* PRINT */
-    @media print {
-      @page{ margin-top: 30mm; margin-right: 10mm; margin-bottom: 20mm; margin-left: 15mm; }
+@media print {
+  @page{
+    margin-top: 30mm;
+    margin-right: 10mm;
+    margin-bottom: 20mm;
+    margin-left: 15mm;
+  }
 
-      header, #formPanel, .panel.form{ display: none !important; }
-      .wrap{ grid-template-columns: 1fr !important; padding: 0 !important; height: auto !important; }
-      body{ background:#fff !important; overflow: visible !important; }
-      .panel.preview{ border: 0 !important; padding: 0 !important; overflow: visible !important; }
-      .doc{ max-width: none !important; border: 0 !important; border-radius: 0 !important; padding: 0 !important; margin: 0 !important; }
+  header, #formPanel, .panel.form{ display:none !important; }
 
-      .pageBreak{ break-before: page; page-break-before: always; }
+  body{
+    background:#fff !important;
+    overflow: visible !important;
+  }
 
-      .chartCard, canvas, .nextStepsImg{ break-inside: avoid; page-break-inside: avoid; }
-      table{ break-inside: auto; page-break-inside: auto; }
+  .wrap{
+    grid-template-columns: 1fr !important;
+    padding: 0 !important;
+    height: auto !important;
+  }
 
-      html, body, .wrap, .panel.preview, .doc, #docRoot, .printContent{
-        overflow: visible !important;
-        transform: none !important;
-        filter: none !important;
-      }
+  .panel.preview{
+    border: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
 
-      .pageTop{
-        break-inside: avoid;
-        page-break-inside: avoid;
-        height: 30mm;
-        box-sizing: border-box;
-        display: flex;
-        align-items: center;
-      }
-      .pageLogo{ height: 15mm; width: auto; }
+  .doc{
+    max-width: none !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
 
-      h2{ break-after: avoid; page-break-after: avoid; }
-      h2 + table{ break-before: avoid; page-break-before: avoid; }
+  html, body, .wrap, .panel.preview, .doc, #docRoot, .printContent{
+    overflow: visible !important;
+    transform: none !important;
+    filter: none !important;
+  }
 
-      .charts2equal{
-        display: grid !important;
-        grid-template-columns: 1fr 1fr !important;
-        gap: 10mm !important;
-        align-items: start !important;
-      }
-      .charts2equal .chartCard{
-        width: 100% !important;
-        min-width: 0 !important;
-        break-inside: avoid !important;
-        page-break-inside: avoid !important;
-      }
-      #chartEnergiaPrimaria, #chartVettoriEnergetici{ height: 160px !important; }
+  .pageBreak{ break-before: page; page-break-before: always; }
 
-      .charts2{
-        display: grid !important;
-        grid-template-columns: 1fr 1fr !important;
-        gap: 10mm !important;
-        align-items: start !important;
-      }
-      .charts2 .chartCard{
-        width: 100% !important;
-        min-width: 0 !important;
-        padding: 8px !important;
-        break-inside: avoid !important;
-        page-break-inside: avoid !important;
-      }
-      #chartEffBar, #chartEffDonut{ height: 240px !important; }
-    }
+  .chartCard, canvas, .nextStepsImg{
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  table{
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+
+  .pageTop{
+    break-inside: avoid;
+    page-break-inside: avoid;
+    height: 30mm;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+  }
+  .pageLogo{ height: 15mm; width: auto; }
+
+  h2{ break-after: avoid; page-break-after: avoid; }
+  h2 + table{ break-before: avoid; page-break-before: avoid; }
+
+  /* =========================
+     CHARTS2EQUAL (Energia primaria + Vettori)
+     ========================= */
+  .charts2equal{
+    display:grid !important;
+    grid-template-columns: minmax(0,1fr) minmax(0,1fr) !important;
+    gap: 6mm !important;
+    align-items:start !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .charts2equal .chartCard{
+    width:100% !important;
+    min-width:0 !important;
+    padding:8px !important;
+    box-sizing:border-box !important;
+    overflow:hidden !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+ .costiConsumiBlock .chartCard{
+    overflow: visible !important;
+  }
+  .costiConsumiBlock .chartWrap{
+    overflow: visible !important;
+  }
+  /* Donut (Energia primaria) quadrato */
+  .charts2equal .chartCard:first-child .chartWrap.donut{
+    width: 220px !important;
+    height: 220px !important;
+    aspect-ratio: 1 / 1 !important;
+    margin: 0 auto !important;
+  }
+  .charts2equal .chartCard:first-child .chartWrap.donut canvas{
+    width:100% !important;
+    height:100% !important;
+    display:block !important;
+  }
+
+  /* Bar (Vettori) a tutta altezza */
+  .charts2equal .chartCard:nth-child(2) .chartWrap{
+    height: 220px !important;
+    min-height: 220px !important;
+    width: 100% !important;
+  }
+  #chartVettoriEnergetici{
+    width:100% !important;
+    height:100% !important;
+    display:block !important;
+  }
+
+  /* =========================
+     BLOCCO costi + grafico
+     ========================= */
+  .costiConsumiBlock{
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Donut costi vs consumi quadrato */
+.chartWrap.donut.donut75{
+  width: 520px !important;
+  height: 260px !important;
+  max-width: 520px !important;
+  aspect-ratio: auto !important;
+}
+  .chartWrap.donut.donut75 canvas,
+ #chartCostiConsumi{
+    width:100% !important;
+    height:100% !important;
+  }
+
+  /* =========================
+     CHARTS2 (Efficienza: bar + donut)
+     ========================= */
+  .charts2{
+    display:grid !important;
+    grid-template-columns: minmax(0,1fr) minmax(0,1fr) !important;
+    gap: 6mm !important;
+    align-items:start !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .charts2 .chartCard{
+    width:100% !important;
+    min-width:0 !important;
+    padding:8px !important;
+    box-sizing:border-box !important;
+    overflow:hidden !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Bar a sinistra: stessa altezza del donut (200px) */
+  .charts2 .chartCard:first-child .chartWrap{
+    height: 200px !important;
+    min-height: 200px !important;
+    width: 100% !important;
+  }
+  #chartEffBar{
+    width:100% !important;
+    height:100% !important;
+    display:block !important;
+  }
+
+  /* Donut a destra: box quadrato */
+  .charts2 .chartCard:nth-child(2) .chartWrap.donut{
+    width: 200px !important;
+    height: 200px !important;
+    aspect-ratio: 1 / 1 !important;
+    margin: 0 auto !important;
+  }
+  .charts2 .chartCard:nth-child(2) .chartWrap.donut canvas{
+    width:100% !important;
+    height:100% !important;
+    display:block !important;
+  }
+
+  canvas{ max-width:100% !important; }
+    .nextStepsGrid{
+    grid-template-columns: 1.2fr 1fr !important; /* più immagine */
+    gap: 8mm !important;
+  }
+
+.nextStepsFigure{
+    border: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+  }
+.nextStepsCaption{
+    display: none !important;
+  }
+  .nextStepsCallout{
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* evita che l’immagine diventi troppo piccola in stampa */
+  .nextStepsImg{
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+.nextStepsGrid{
+  display: grid;
+  grid-template-columns: 1.2fr 1fr; /* prima 1.35 / 0.85 -> ora più immagine */
+  gap: 16px;
+  align-items: start;
+  margin-top: 10px;
+}
+
+.nextStepsFigure{
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+}
+
+.nextStepsImg{
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  border-radius: 12px;
+}
+
+.nextStepsCaption{
+  display: none !important;
+}
+
+.nextStepsCallout{
+  margin-top: 14px;
+  padding: 12px 14px;
+  border: 1px solid #e8e8e8;
+  border-left: 4px solid #7E57C2; /* brand */
+  border-radius: 12px;
+  background: #fafafa;
+}
+
+.nextStepsCallout p{
+  margin: 0;
+}
+
+@media (max-width: 980px){
+  .nextStepsGrid{ grid-template-columns: 1fr; }
+}
+/* ===== FIX: il bar deve riempire il box ===== */
+.charts2 .chartCard:first-child .chartWrap{
+  height: 240px;          /* o 260px se vuoi più alto */
+}
+
+#chartEffBar{
+  width: 100% !important;
+  height: 100% !important; /* <-- fondamentale */
+  display: block;
+}
+    
   </style>
 </head>
 
@@ -378,7 +606,6 @@
           <input id="superficie" type="number" step="1" />
         </div>
 
-        <!-- MODIFICA: driver energetico + UM -->
         <div>
           <label>Driver Energetico ({{driver}})</label>
           <input id="driver" type="number" step="0.01" placeholder="Es. pezzi/anno, ton/anno, ore, ecc. (valore numerico)" />
@@ -391,19 +618,59 @@
           <input id="driver_um" placeholder="Es. pezzi, ton, ore, m³..." />
         </div>
         <div>
-          <label>Ore di funzionamento annue ({{ore}})</label>
-          <input id="ore" type="number" step="1" />
+          <label>Numero ospiti totale ({{ospiti}})</label>
+          <input id="ospiti" type="number" step="1" />
         </div>
       </div>
 
       <div class="row">
         <div>
-          <label>Ambiente riscaldato ({{riscaldato}})</label>
-          <select id="riscaldato">
-            <option value="—">—</option>
-            <option value="Sì">Sì</option>
-            <option value="No">No</option>
+          <label>Numero stanze totali ({{stanze}})</label>
+          <input id="stanze" type="number" step="1" />
+        </div>
+        <div><!-- spacer --></div>
+      </div>
+
+      <hr class="hr"/>
+
+      <h2>Dati climatici</h2>
+      <div class="row">
+        <div>
+          <label>Regione ({{regione}})</label>
+          <select id="regione">
+            <option value="">—</option>
+            <option value="Abruzzo">Abruzzo</option>
+            <option value="Basilicata">Basilicata</option>
+            <option value="Calabria">Calabria</option>
+            <option value="Campania">Campania</option>
+            <option value="Emilia-Romagna">Emilia-Romagna</option>
+            <option value="Friuli-Venezia Giulia">Friuli-Venezia Giulia</option>
+            <option value="Lazio">Lazio</option>
+            <option value="Liguria">Liguria</option>
+            <option value="Lombardia">Lombardia</option>
+            <option value="Marche">Marche</option>
+            <option value="Molise">Molise</option>
+            <option value="Piemonte">Piemonte</option>
+            <option value="Puglia">Puglia</option>
+            <option value="Sardegna">Sardegna</option>
+            <option value="Sicilia">Sicilia</option>
+            <option value="Toscana">Toscana</option>
+            <option value="Trentino-Alto Adige">Trentino-Alto Adige</option>
+            <option value="Umbria">Umbria</option>
+            <option value="Valle d'Aosta">Valle d'Aosta</option>
+            <option value="Veneto">Veneto</option>
           </select>
+        </div>
+        <div>
+          <label>Fascia climatica ({{fascia_climatica}})</label>
+          <input id="fascia_climatica" readonly />
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>Gradi giorno medi regionali ({{gradi_giorno}})</label>
+          <input id="gradi_giorno" readonly />
         </div>
         <div><!-- spacer --></div>
       </div>
@@ -476,6 +743,15 @@
 
       <div class="intervForm" id="interventiForm"></div>
 
+      <!-- NUOVO: Maschera percentuali risparmio -->
+      <hr class="hr"/>
+      <h2>Risparmi stimati - percentuali</h2>
+      <div class="note">
+        Valori di default: <b>Bassa</b> = tabella base, <b>Media</b> = Bassa × 0,7.
+        Qui puoi modificarli manualmente (solo per le aree con efficienza Media/Bassa).
+      </div>
+      <div class="intervForm" id="risparmiPctForm"></div>
+
       <hr class="hr"/>
     </div>
 
@@ -538,6 +814,47 @@
   }
 
   // =========================
+  // CLIMA (medie regionali)
+  // =========================
+  // Valori medi regionali calcolati come media dei GG comunali (DPR 412/1993 - Allegato A) raggruppati per regione.
+  const CLIMA_REGIONE = {
+    "Abruzzo": { fascia: "E", gg: 2207 },
+    "Basilicata": { fascia: "D", gg: 2050 },
+    "Calabria": { fascia: "D", gg: 1591 },
+    "Campania": { fascia: "D", gg: 1594 },
+    "Emilia-Romagna": { fascia: "E", gg: 2570 },
+    "Friuli-Venezia Giulia": { fascia: "E", gg: 2535 },
+    "Lazio": { fascia: "D", gg: 1760 },
+    "Liguria": { fascia: "D", gg: 1510 },
+    "Lombardia": { fascia: "E", gg: 2662 },
+    "Marche": { fascia: "E", gg: 2240 },
+    "Molise": { fascia: "E", gg: 2144 },
+    "Piemonte": { fascia: "E", gg: 2797 },
+    "Puglia": { fascia: "D", gg: 1642 },
+    "Sardegna": { fascia: "C", gg: 1279 },
+    "Sicilia": { fascia: "C", gg: 1341 },
+    "Toscana": { fascia: "E", gg: 2168 },
+    "Trentino-Alto Adige": { fascia: "E", gg: 2846 },
+    "Umbria": { fascia: "E", gg: 2218 },
+    "Valle d'Aosta": { fascia: "F", gg: 3570 },
+    "Veneto": { fascia: "E", gg: 2420 }
+  };
+
+  function updateClimaFromRegione(){
+    const reg = String(document.getElementById("regione").value || "").trim();
+    const fasciaEl = document.getElementById("fascia_climatica");
+    const ggEl = document.getElementById("gradi_giorno");
+
+    if (!reg || !CLIMA_REGIONE[reg]){
+      fasciaEl.value = "";
+      ggEl.value = "";
+      return;
+    }
+    fasciaEl.value = CLIMA_REGIONE[reg].fascia;
+    ggEl.value = String(CLIMA_REGIONE[reg].gg);
+  }
+
+  // =========================
   // INTERVENTI STANDARD
   // =========================
   const INTERVENTI_STANDARD = [
@@ -559,6 +876,7 @@
     { area:"Altro", tipo:"" }
   ];
 
+  // % base (prima: statiche). Ora diventano la CLASSE "Bassa".
   const PCT_AREA = {
     "Motori elettrici": 0.015,
     "Applicazione inverter": 0.02,
@@ -579,6 +897,22 @@
   };
 
   const interventiState = INTERVENTI_STANDARD.map(() => ({ eff:"N.A.", intervento:false, opportunita:"" }));
+
+  // =========================
+  // % RISPARMIO (default + override)
+  // =========================
+  function defaultPctBassaForArea(area){
+    return PCT_AREA[area] ?? 0;
+  }
+  function defaultPctMediaFromBassa(pBassa){
+    return (Number(pBassa) || 0) * 0.7;
+  }
+
+  // percentuali per ogni intervento (indice come INTERVENTI_STANDARD)
+  const risparmioPctState = INTERVENTI_STANDARD.map(it => {
+    const b = defaultPctBassaForArea(it.area);
+    return { bassa: b, media: defaultPctMediaFromBassa(b) };
+  });
 
   // =========================
   // TEMPLATE
@@ -636,7 +970,7 @@
       <h2>Dati generali</h2>
       <p>
         Il check-up considera i principali dati energetici disponibili dell’azienda, tra cui la superficie del sito, il consumo annuo di elettricità e gas/metano,
-        le ore di funzionamento e le tariffe energetiche applicate. Questi dati servono a fornire un quadro generale dell’impegno energetico dell’azienda e delle possibili aree di intervento.
+        i dati generali di struttura e le tariffe energetiche applicate. Questi dati servono a fornire un quadro generale dell’impegno energetico dell’azienda e delle possibili aree di intervento.
         L'output del presente report è prodotto sulla base di interviste al personale aziendale e analisi delle fatture dei fornitori di energia.
       </p>
 
@@ -645,7 +979,11 @@
           <tr><td>Superficie stabilimento [m2]:</td><td class="right">{{superficie}}</td></tr>
           <tr><td>Driver energetico:</td><td class="right">{{driver}}</td></tr>
           <tr><td>UM driver energetico:</td><td class="right">{{driver_um}}</td></tr>
-          <tr><td>Ore di funzionamento annue:</td><td class="right">{{ore}}</td></tr>
+          <tr><td>Numero ospiti totale:</td><td class="right">{{ospiti}}</td></tr>
+          <tr><td>Numero stanze totali:</td><td class="right">{{stanze}}</td></tr>
+          <tr><td>Regione:</td><td class="right">{{regione}}</td></tr>
+          <tr><td>Fascia climatica:</td><td class="right">{{fascia_climatica}}</td></tr>
+          <tr><td>Gradi giorno medi regionali:</td><td class="right">{{gradi_giorno}}</td></tr>
           <tr><td>Energia elettrica rete [kWh]:</td><td class="right">{{EErete}}</td></tr>
           <tr><td>Energia elettrica FER [kWh]:</td><td class="right">{{EEfer}}</td></tr>
           <tr><td>Consumo annuo gas [Smc]:</td><td class="right">{{gas}}</td></tr>
@@ -653,9 +991,10 @@
           <tr><td>Tariffa energetica [€/kWh]:</td><td class="right">{{PEE}}</td></tr>
           <tr><td>Tariffa energetica [€/Smc]:</td><td class="right">{{Pgas}}</td></tr>
           <tr><td>Tariffa energetica [€/l]:</td><td class="right">{{Pgasolio}}</td></tr>
-          <tr><td>Ambiente di produzione riscaldato:</td><td class="right">{{riscaldato}}</td></tr>
         </tbody>
       </table>
+
+        
 
       <div class="pageBreak"></div>
       <div class="pageTop">
@@ -728,7 +1067,7 @@
         </tbody>
       </table>
 
-      <p><br><br><br><br></p>
+      <p><br><br><br></p>
 
       <table>
         <thead>
@@ -750,7 +1089,7 @@
           </tr>
         </tbody>
       </table>
-
+ <div class="note">FER = Fonte di Energia Rinnovabile.</div>
       <div class="pageBreak"></div>
       <div class="pageTop">
         <img class="pageLogo" src="logo.png" alt="Logo">
@@ -775,7 +1114,7 @@
 
       <p class="muted">(*) Il tep rappresenta la quantità di energia rilasciata dalla combustione di una Tonnellata Equivalente di Petrolio grezzo.</p>
       <p class="muted">(**) L'energia FER deriva da Fonti Energetiche Rinnovabili, come impianti fotovoltaici o idroelettrici.</p>
-
+<div class="costiConsumiBlock">
       <p>Di seguito si riportano i costi associati ai consumi energetici:</p>
 
       <table>
@@ -792,18 +1131,16 @@
 
       <div class="chartCard">
         <div class="chartTitle">Confronto costi vs consumi energetici</div>
-        <div class="chartWrap donut">
-          <canvas id="chartCostiConsumi" height="260"></canvas>
+          <div class="chartWrap donut donut75">
+          <canvas id="chartCostiConsumi" width="220" height="220"></canvas>
         </div>
       </div>
-      <!-- BUG FIX: chiusura chartCard OK -->
-
+  </div>
       <div class="pageBreak"></div>
       <div class="pageTop">
         <img class="pageLogo" src="logo.png" alt="Logo">
       </div>
 
-      <!-- MODIFICA: titolo sezione -->
       <h2>Indicatori di prestazione</h2>
       <p>
         Di seguito si riportano alcuni KPI (key performance indicators) di carattere generale, utili per confronti a distanza di tempo con una baseline, obiettivi o con valori di benchmark.
@@ -914,13 +1251,13 @@
         <div class="chartCard">
           <div class="chartTitle">Efficienza rilevata</div>
           <div class="chartWrap">
-            <canvas id="chartEffBar" height="220"></canvas>
+            <canvas id="chartEffBar"></canvas>
           </div>
         </div>
         <div class="chartCard">
           <div class="chartTitle">&nbsp;</div>
           <div class="chartWrap donut">
-            <canvas id="chartEffDonut" height="220"></canvas>
+            <canvas id="chartEffDonut"></canvas>
           </div>
         </div>
       </div>
@@ -956,37 +1293,58 @@
         <img class="pageLogo" src="logo.png" alt="Logo">
       </div>
 
-      <div class="sectionBlock">
-        <h2>6. Next steps</h2>
-        <p>
-          A seguito del sopralluogo e dell’analisi preliminare dei consumi energetici, si raccomanda di approfondire le inefficienze più facilmente individuabili,
-          quali perdite di aria compressa, dispersioni energetiche e utilizzi non ottimali delle apparecchiature. Queste aree consentono di ottenere riduzioni di costo rapide,
-          con investimenti limitati e tempi di ritorno contenuti.
-        </p>
-        <p>
-          Un fattore determinante per una gestione efficace dell’energia è l’adozione di un sistema di monitoraggio strutturato dei consumi, in grado di fornire dati affidabili,
-          continui e confrontabili nel tempo. Il presidio dei principali indicatori di prestazione energetica (EnPI) permette di controllare una voce di costo strategica,
-          individuare tempestivamente eventuali anomalie e valutare in modo oggettivo l’impatto economico degli interventi di efficientamento.
-        </p>
-        <p>
-          Il valore del sistema di monitoraggio non si esaurisce nel breve periodo: pur venendo installato oggi, esso costituisce un asset informativo a lungo termine.
-          La creazione di uno storico dei consumi e di una base dati solida rappresenta un elemento essenziale per supportare decisioni future,
-          quali investimenti, ampliamenti produttivi o nuove linee di business, consentendo di stimarne in modo affidabile gli impatti energetici ed economici.
-        </p>
-        <p>
-          Il monitoraggio dei consumi deve essere parte integrante di un approccio strutturato di energy management, orientato al controllo continuo delle prestazioni energetiche
-          e alla riduzione stabile dei costi operativi. Una gestione dell’energia basata su dati misurabili consente di migliorare la prevedibilità dei costi
-          e di supportare la pianificazione strategica nel medio e lungo periodo.
-        </p>
-        <p>
-          Si evidenzia infine che il presente check-up energetico ha carattere orientativo e non sostituisce una diagnosi energetica approfondita.
-          Qualora l’azienda intenda disporre di una visione completa dei flussi energetici e di una quantificazione puntuale dei benefici economici degli interventi,
-          è fortemente consigliato procedere con una diagnosi energetica strutturata, considerata uno strumento fondamentale per una gestione consapevole ed efficace dell’energia.
-        </p>
+      <div class="sectionBlock nextSteps">
+  <h2>6. Next steps</h2>
 
-        <img class="nextStepsImg" src="next_steps.png" alt="Next steps" />
-      </div>
+  <p>
+    A seguito del sopralluogo e dell’analisi preliminare dei consumi energetici, si raccomanda di approfondire le
+    inefficienze più facilmente individuabili, quali perdite di aria compressa, dispersioni energetiche e utilizzi non
+    ottimali delle apparecchiature. Queste aree consentono di ottenere riduzioni di costo rapide, con investimenti
+    limitati e tempi di ritorno contenuti.
+  </p>
+
+  <div class="nextStepsGrid">
+    <div class="nextStepsText">
+      <p>
+        Un fattore determinante per una gestione efficace dell’energia è l’adozione di un sistema di monitoraggio
+        strutturato dei consumi, in grado di fornire dati affidabili, continui e confrontabili nel tempo. Il presidio dei
+        principali indicatori di prestazione energetica (EnPI) permette di controllare una voce di costo strategica,
+        individuare tempestivamente eventuali anomalie e valutare in modo oggettivo l’impatto economico degli
+        interventi di efficientamento.
+      </p>
+
+      <p>
+        Il valore del sistema di monitoraggio non si esaurisce nel breve periodo: pur venendo installato oggi, esso
+        costituisce un asset informativo a lungo termine. La creazione di uno storico dei consumi e di una base dati
+        solida rappresenta un elemento essenziale per supportare decisioni future, quali investimenti, ampliamenti
+        produttivi o nuove linee di business, consentendo di stimarne in modo affidabile gli impatti energetici ed
+        economici.
+      </p>
+
+      <p>
+        Il monitoraggio dei consumi deve essere parte integrante di un approccio strutturato di energy management,
+        orientato al controllo continuo delle prestazioni energetiche e alla riduzione stabile dei costi operativi. Una
+        gestione dell’energia basata su dati misurabili consente di migliorare la prevedibilità dei costi e di supportare
+        la pianificazione strategica nel medio e lungo periodo.
+      </p>
     </div>
+
+    <figure class="nextStepsFigure">
+      <img class="nextStepsImg" src="next_steps.png" alt="Next steps" />
+      <figcaption class="nextStepsCaption">Schema delle fasi operative consigliate.</figcaption>
+    </figure>
+  </div>
+
+  <div class="nextStepsCallout">
+    <p>
+      Si evidenzia infine che il presente check-up energetico ha carattere orientativo e non sostituisce una diagnosi
+      energetica approfondita. Qualora l’azienda intenda disporre di una visione completa dei flussi energetici e di una
+      quantificazione puntuale dei benefici economici degli interventi, è fortemente consigliato procedere con una
+      diagnosi energetica strutturata, considerata uno strumento fondamentale per una gestione consapevole ed efficace
+      dell’energia.
+    </p>
+  </div>
+</div>
   `;
 
   // =========================
@@ -998,10 +1356,24 @@
       .replaceAll('"', "&quot;").replaceAll("'", "&#039;");
   }
   function num(v){ const n = Number(String(v ?? "").replace(",", ".")); return Number.isFinite(n) ? n : 0; }
-  function fmtInt(n){ return Number(n).toLocaleString("it-IT", { maximumFractionDigits: 0 }); }
-  function fmt1(n){ return Number(n).toLocaleString("it-IT", { minimumFractionDigits: 1, maximumFractionDigits: 1 }); }
-  function fmt2(n){ return Number(n).toLocaleString("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
-  function fmt4(n){ return Number(n).toLocaleString("it-IT", { minimumFractionDigits: 4, maximumFractionDigits: 4 }); }
+
+  // --- FORMAT NUMERI (aggiornati) ---
+  function fmtInt(n){
+    return Number(n).toLocaleString("it-IT", { maximumFractionDigits: 0, useGrouping: true });
+  }
+  function fmt1(n){
+    return Number(n).toLocaleString("it-IT", { minimumFractionDigits: 1, maximumFractionDigits: 1, useGrouping: true });
+  }
+  function fmt2(n){
+    return Number(n).toLocaleString("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping: true });
+  }
+  function fmt4(n){
+    return Number(n).toLocaleString("it-IT", { minimumFractionDigits: 4, maximumFractionDigits: 4, useGrouping: true });
+  }
+  // Specifici: 1 decimale + separatore migliaia
+  function fmtSpec1(n){
+    return Number(n).toLocaleString("it-IT", { minimumFractionDigits: 1, maximumFractionDigits: 1, useGrouping: true });
+  }
   function fmtPct0(n){ return `${Math.round(n)}%`; }
 
   function applyTemplate(html, data) {
@@ -1026,22 +1398,92 @@
 
   function getAtecoInfo(anno, codice){
     const a = String(anno || "2007").trim();
-    const c = normAteco(codice);
-    const key = `${a}|${c}`;
+    const c0 = normAteco(codice);
 
-    const rec = (window.ATECO_MAP && window.ATECO_MAP[key]) ? window.ATECO_MAP[key] : null;
-
-    if (typeof rec === "string") {
-      return { descrizione: rec, kwh_m2: null, smc_m2: null, l_100_km: null };
+    function normalizeRec(rec){
+      if (typeof rec === "string") {
+        return { descrizione: rec, kwh_m2: null, smc_m2: null, l_100_km: null };
+      }
+      if (rec && typeof rec === "object") {
+        return {
+          descrizione: rec.descrizione ?? "",
+          kwh_m2: rec.kwh_m2 ?? null,
+          smc_m2: rec.smc_m2 ?? null,
+          l_100_km: rec.l_100_km ?? null
+        };
+      }
+      return null;
     }
 
-    if (rec && typeof rec === "object") {
-      return {
-        descrizione: rec.descrizione ?? "",
-        kwh_m2: rec.kwh_m2 ?? null,
-        smc_m2: rec.smc_m2 ?? null,
-        l_100_km: rec.l_100_km ?? null
+    function getRec(year, code){
+      const key = `${year}|${code}`;
+      return (window.ATECO_MAP && window.ATECO_MAP[key]) ? window.ATECO_MAP[key] : null;
+    }
+
+    function buildCandidates(code){
+      const out = [];
+      const push = (x) => { if (x && !out.includes(x)) out.push(x); };
+
+      const raw = String(code || "").trim();
+      if (!raw) return out;
+
+      // Normalizza a formato XX.XX.XX (se mancano gruppi o zeri finali)
+      const normalizeTo6 = (c) => {
+        const parts = String(c || "").split(".").filter(Boolean);
+        while (parts.length < 3) parts.push("00");
+        const p = parts.slice(0,3).map(s => {
+          const t = String(s).replace(/\D/g,"");
+          if (!t) return "00";
+          return (t.length === 1) ? ("0" + t) : t;
+        });
+        return p.join(".");
       };
+
+      // 1) versione "così com'è"
+      push(raw);
+
+      // 2) versione XX.XX.XX (molto comune nelle tabelle ATECO)
+      const v6 = normalizeTo6(raw);
+      push(v6);
+
+      // 3) genera anche varianti via potatura (es.: 80.10.00 -> 80.10.0 -> 80.10 -> 80)
+      let cur = raw;
+      while (cur.includes(".")) {
+        if (/\.0+$/.test(cur)){
+          cur = cur.replace(/\.0+$/, "");
+          push(cur);
+          push(normalizeTo6(cur));
+          continue;
+        }
+        cur = cur.replace(/\.[^.]+$/, "");
+        push(cur);
+        push(normalizeTo6(cur));
+      }
+
+      // 4) fallback minimo: prime 2 cifre
+      push(raw.slice(0,2));
+      return out;
+    }
+
+    if (!c0) return { descrizione: "", kwh_m2: null, smc_m2: null, l_100_km: null };
+
+    const candidates = buildCandidates(c0);
+
+    // 1) prova stesso anno
+    for (const c of candidates){
+      const rec = getRec(a, c);
+      const norm = normalizeRec(rec);
+      if (norm) return norm;
+    }
+
+    // 2) ultimo tentativo: prova l'altro anno (utile se il codice inserito è del vecchio ATECO)
+    const other = (a === "2025") ? "2007" : (a === "2007" ? "2025" : null);
+    if (other){
+      for (const c of candidates){
+        const rec = getRec(other, c);
+        const norm = normalizeRec(rec);
+        if (norm) return norm;
+      }
     }
 
     return { descrizione: "", kwh_m2: null, smc_m2: null, l_100_km: null };
@@ -1108,11 +1550,87 @@
         st.intervento = computeInterventoAuto(eff);
         if (!st.intervento) st.opportunita = "";
         renderInterventiForm();
+        renderRisparmiPctForm(); // <-- aggiorna maschera %
         render();
       });
 
       wrap.querySelector(`textarea[data-op="${idx}"]`).addEventListener("input", (e) => {
         st.opportunita = e.target.value;
+        render();
+      });
+    });
+  }
+
+  // =========================
+  // Maschera % risparmio (edit)
+  // =========================
+  const risparmiPctForm = document.getElementById("risparmiPctForm");
+
+  function fmtPctInput(x){ // 0.03 -> "3,0"
+    const v = (Number(x) || 0) * 100;
+    return v.toLocaleString("it-IT", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  }
+  function parsePctInput(str){ // "3,5" oppure "3.5" -> 0.035
+    const s = String(str ?? "").trim();
+    const n = Number(s.replace(/\./g, "").replace(",", "."));
+    return Number.isFinite(n) ? (n / 100) : 0;
+  }
+
+  function renderRisparmiPctForm(){
+    if(!risparmiPctForm) return;
+
+    const selected = INTERVENTI_STANDARD
+      .map((it, idx) => ({ it, idx, st: interventiState[idx] }))
+      .filter(x => x.st && (x.st.eff === "Media" || x.st.eff === "Bassa"));
+
+    risparmiPctForm.innerHTML = "";
+
+    if(selected.length === 0){
+      risparmiPctForm.innerHTML = `<div class="note">Nessuna area con efficienza Media o Bassa: nessuna percentuale da configurare.</div>`;
+      return;
+    }
+
+    selected.forEach(({it, idx, st}) => {
+      const wrap = document.createElement("div");
+      wrap.className = "iRow";
+
+      const effKey = (st.eff === "Bassa") ? "bassa" : "media";
+      const current = risparmioPctState[idx]?.[effKey] ?? 0;
+
+      wrap.innerHTML = `
+        <div>
+          <label style="margin-top:0;">Area</label>
+          <input value="${safe(it.area)}" disabled />
+        </div>
+        <div>
+          <label style="margin-top:0;">Efficienza</label>
+          <input value="${safe(st.eff)}" disabled />
+        </div>
+        <div>
+          <label style="margin-top:0;">% risparmio (${safe(st.eff)})</label>
+          <input type="text" inputmode="decimal" data-pct="${idx}" value="${safe(fmtPctInput(current))}" />
+          <div class="note" style="margin-top:6px;">Inserisci una % (es. 3,5)</div>
+        </div>
+        <div>
+          <label style="margin-top:0;">Default</label>
+          <button class="small" data-resetpct="${idx}">Ripristina</button>
+        </div>
+        <div></div>
+      `;
+      risparmiPctForm.appendChild(wrap);
+
+      wrap.querySelector(`input[data-pct="${idx}"]`).addEventListener("input", (e) => {
+        const val = parsePctInput(e.target.value);
+        if (!risparmioPctState[idx]) risparmioPctState[idx] = { bassa:0, media:0 };
+        risparmioPctState[idx][effKey] = val;
+        render();
+      });
+
+      wrap.querySelector(`button[data-resetpct="${idx}"]`).addEventListener("click", () => {
+        const b = defaultPctBassaForArea(it.area);
+        risparmioPctState[idx].bassa = b;
+        risparmioPctState[idx].media = defaultPctMediaFromBassa(b);
+        renderRisparmiPctForm();
         render();
       });
     });
@@ -1149,6 +1667,13 @@
     const driverNum     = num(input.driver);
     const driverUM      = String(input.driver_um || "").trim();
     const UM_show       = driverUM || "UM";
+
+    const ospitiNum = num(input.ospiti);
+    const stanzeNum = num(input.stanze);
+
+    const regione = String(input.regione || "").trim();
+    const fasciaCl = String(input.fascia_climatica || "").trim();
+    const ggNum = num(input.gradi_giorno);
 
     const fEE      = 0.187e-3;
     const fGas     = 0.825e-3;
@@ -1193,10 +1718,7 @@
     const codA = normAteco(input.ateco);
 
     let info = getAtecoInfo(annoA, codA);
-    if ((!info.descrizione && (info.kwh_m2 == null && info.smc_m2 == null && info.l_100_km == null)) && codA) {
-      const p2 = codA.slice(0,2);
-      info = getAtecoInfo(annoA, p2) || info;
-    }
+
 
     const bench_ee_num      = (info.kwh_m2 == null) ? null : Number(info.kwh_m2);
     const bench_gas_num     = (info.smc_m2 == null) ? null : Number(info.smc_m2);
@@ -1214,14 +1736,18 @@
       indirizzo: input.indirizzo || "—",
       ateco: input.ateco || "—",
       descrizioneateco: input.descrizioneateco || "—",
-      riscaldato: input.riscaldato || "—",
 
       superficie: input.superficie || "—",
       driver: input.driver || "—",
       driver_um: input.driver_um || "—",
       UM_show,
 
-      ore: input.ore || "—",
+      ospiti: input.ospiti ? fmtInt(ospitiNum) : "—",
+      stanze: input.stanze ? fmtInt(stanzeNum) : "—",
+
+      regione: regione || "—",
+      fascia_climatica: fasciaCl || "—",
+      gradi_giorno: (ggNum > 0) ? fmtInt(ggNum) : "—",
 
       veicoli: input.veicoli ? fmtInt(veicoliNum) : "—",
       km: input.km ? fmtInt(kmNum) : "—",
@@ -1264,9 +1790,9 @@
       stato_gas: statoBenchmark(kpi_gas_num, bench_gas_num),
       stato_gasolio: statoBenchmark(kpi_gasolio_num, bench_gasolio_num),
 
-      // indicatori specifici
-      kpi_ee_spec: Number.isFinite(kpi_ee_spec_num) ? fmt2(kpi_ee_spec_num) : "—",
-      kpi_gas_spec: Number.isFinite(kpi_gas_spec_num) ? fmt2(kpi_gas_spec_num) : "—",
+      // indicatori specifici (FIX: 1 decimale + separatore migliaia)
+      kpi_ee_spec: Number.isFinite(kpi_ee_spec_num) ? fmtSpec1(kpi_ee_spec_num) : "—",
+      kpi_gas_spec: Number.isFinite(kpi_gas_spec_num) ? fmtSpec1(kpi_gas_spec_num) : "—",
 
       Commento_generale_html: (input.Commento_generale || "").replaceAll("\n","<br/>"),
 
@@ -1317,11 +1843,14 @@
     let totalRisparmio = 0;
 
     const selected = INTERVENTI_STANDARD
-      .map((it, idx) => ({ it, st: interventiState[idx] }))
+      .map((it, idx) => ({ it, idx, st: interventiState[idx] }))
       .filter(x => x.st && (x.st.eff === "Media" || x.st.eff === "Bassa"));
 
-    const rows = selected.map(({it}) => {
-      const pct = PCT_AREA[it.area] ?? 0;
+    const rows = selected.map(({it, idx, st}) => {
+      const pct =
+        (st.eff === "Bassa") ? (risparmioPctState[idx]?.bassa ?? 0) :
+        (st.eff === "Media") ? (risparmioPctState[idx]?.media ?? 0) :
+        0;
 
       let base = 0;
       const tipo = (it.tipo || "").trim();
@@ -1397,9 +1926,17 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          cutout: "55%",
+                    cutout: "62%",
           rotation: -90 * (Math.PI/180),
-          layout: { padding: 40 },
+         layout: {
+  padding: {
+    top: 40,
+    bottom: 40,
+    left: 70,
+    right: 70
+  }
+},
+          radius: "88%", 
           plugins: {
             legend: { display: false },
             tooltip: { callbacks: {
@@ -1411,11 +1948,12 @@
             }},
             datalabels: {
               color: "#111",
-              font: { size: 7, weight: "600" },
+              font: { size: 14 },
               anchor: "end",
               align: "end",
-              offset: 4,
+              offset: 14,
               clamp: true,
+              clip: false,
               formatter: (value, ctx) => {
                 if (!value || value <= 0) return "";
                 const lab = ctx.chart.data.labels[ctx.dataIndex];
@@ -1460,8 +1998,9 @@
               color: "#333",
               anchor: "end",
               align: "end",
+              clip: false,
               offset: 3,
-              font: { size: 9, weight: "600" },
+              font: { size: 12, weight: "700" },
               formatter: (v, ctx) => ctx.dataIndex === 3 ? [`${fmt1(v)} tep`, `risparmiate`] : `${fmt1(v)} tep`
             }
           },
@@ -1509,9 +2048,9 @@
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
           ctx.fillStyle = "#333";
-          ctx.font = "600 10px system-ui";
+          ctx.font = "700 11px system-ui";
           ctx.fillText("Costi [€]", x, y - 20);
-          ctx.font = "10px system-ui";
+          ctx.font = "11px system-ui";
           ctx.fillText(`EE: ${fmtInt(chart.data.datasets[0].data[0])}`, x, y - 4);
           ctx.fillText(`Gas: ${fmtInt(chart.data.datasets[0].data[1])}`, x, y + 10);
           ctx.fillText(`Gasolio: ${fmtInt(chart.data.datasets[0].data[2])}`, x, y + 24);
@@ -1530,34 +2069,45 @@
           ]
         },
         options:{
-          responsive:true,
-          maintainAspectRatio:false,
-          rotation:-90*(Math.PI/180),
-          layout:{ padding: 12 },
-          radius:"95%",
-          cutout:"42%",
-          plugins:{
-            legend:{display:false},
-            tooltip:{ callbacks:{
-              label:(ctx)=>{
-                const v = ctx.parsed || 0;
-                const isOuter = ctx.datasetIndex===1;
-                return isOuter ? `${ctx.label}: ${fmt1(v)} tep` : `${ctx.label}: ${fmt2(v)} €`;
-              }
-            }},
-            datalabels:{
-              display:(ctx)=>ctx.datasetIndex===1,
-              color:"#777",
-              font:{size:9, weight:"600"},
-              anchor:"end", align:"end", offset:14,
-              formatter:(value, ctx)=>{
-                if(!value || value<=0) return "";
-                const lab = ctx.chart.data.labels[ctx.dataIndex];
-                return [`Consumi [tep]`, lab, fmt1(value)];
-              }
-            }
-          }
-        }
+  responsive:true,
+  maintainAspectRatio:false,
+
+  layout:{ 
+    padding:{ top: 18, bottom: 18, left: 130, right: 130 } 
+  },
+
+  radius: "88%",
+  cutout: "52%",
+  rotation: -90*(Math.PI/180),
+
+  plugins:{
+    legend:{display:false},
+
+    datalabels:{
+      display:(ctx)=> ctx.datasetIndex===1 && 
+                      (ctx.dataIndex===0 || ctx.dataIndex===1),
+
+      color:"#111",
+      font:{ size: 13, weight:"700" },
+
+      anchor:"end",
+      align:(ctx)=> (ctx.dataIndex===0 ? "right" : "left"),
+      offset: 18,
+
+      clip: false,
+      clamp: true,
+
+      textAlign:(ctx)=> 
+        (ctx.dataIndex===0 ? "right" : "left"),
+
+      formatter:(value, ctx)=>{
+        if(!value || value<=0) return "";
+        const lab = ctx.chart.data.labels[ctx.dataIndex];
+        return ["Consumi [tep]", lab, fmt1(value)];
+      }
+    }
+  }
+}
       });
     }
 
@@ -1569,33 +2119,69 @@
     if(bEl){
       chartEffBar = new Chart(bEl,{
         type:"bar",
-        data:{ labels:["Bassa","Media","Alta"], datasets:[{ data:[bassa, media, alta], backgroundColor:[EFF_COL.bassa, EFF_COL.media, EFF_COL.alta], borderRadius:6 }]},
-        options:{
-          indexAxis:"y",
-          responsive:true, maintainAspectRatio:false,
-          plugins:{
-            legend:{display:false},
-            datalabels:{ color:"#111", anchor:"end", align:"right", offset:4, font:{size:10, weight:"600"}, formatter:(v)=>String(v) }
-          },
-          scales:{ x:{beginAtZero:true, grid:{color:"#E6E6E6"}}, y:{grid:{display:false}} }
-        }
+        data:{ labels:["Bassa","Media","Alta"], datasets:[{ data:[bassa, media, alta], backgroundColor:[EFF_COL.bassa, EFF_COL.media, EFF_COL.alta], borderRadius:10, 
+  categoryPercentage: 0.95, 
+  barPercentage: 0.95,
+                                                          barThickness: 42,
+                                                          maxBarThickness: 52}]},
+        options: {
+  indexAxis: "y",
+  responsive: true,
+  maintainAspectRatio: false,
+
+  layout: { padding: { right: 28 } }, // spazio per le etichette
+
+  plugins: {
+    legend: { display: false },
+    datalabels: {
+      color: "#111",
+      anchor: "end",
+      align: "end",
+      offset: 10,
+      clip: false,
+      clamp: true,
+      font: { size: 16, weight: "700" },
+      formatter: (v) => String(v)
+    }
+  },
+
+  scales: {
+    x: {
+      beginAtZero: true,
+      grace: "20%",
+      ticks: { font: { size: 14, weight: "600" } },
+      grid: { color: "#E6E6E6" }
+    },
+    y: {
+      grid: { display: false },
+      ticks: { font: { size: 15, weight: "600" } } // <-- QUI dentro y
+    }
+  }
+}
       });
     }
-
+  // FIX stampa: evita stretch del testo (canvas scalato)
+  bEl.removeAttribute("width");
+  bEl.removeAttribute("height");
+  bEl.style.width = "100%";
+  bEl.style.height = "100%";
     const dEl = document.getElementById("chartEffDonut");
     if(dEl){
       chartEffDonut = new Chart(dEl,{
         type:"doughnut",
         data:{ labels:["Bassa","Media","Alta"], datasets:[{ data:[bassa, media, alta], backgroundColor:[EFF_COL.bassa, EFF_COL.media, EFF_COL.alta], borderColor:"#fff", borderWidth:6 }]},
         options:{
-          responsive:true, maintainAspectRatio:false,
-          cutout:"60%",
+          responsive:true,
+              maintainAspectRatio:true,
+    aspectRatio:1,
+          cutout:"70%",
+           radius:"88%",  
           rotation:-90*(Math.PI/180),
           plugins:{
             legend:{display:false},
             datalabels:{
               color:"#111",
-              font:{size:9, weight:"600"},
+              font:{size:12, weight:"600"},
               formatter:(v, ctx)=>{
                 if(!valid || v<=0) return "";
                 const pct = Math.round((v/valid)*100);
@@ -1627,8 +2213,12 @@
       driver: safe(document.getElementById("driver").value),
       driver_um: safe(document.getElementById("driver_um").value),
 
-      ore: safe(document.getElementById("ore").value),
-      riscaldato: safe(document.getElementById("riscaldato").value),
+      ospiti: safe(document.getElementById("ospiti").value),
+      stanze: safe(document.getElementById("stanze").value),
+
+      regione: safe(document.getElementById("regione").value),
+      fascia_climatica: safe(document.getElementById("fascia_climatica").value),
+      gradi_giorno: safe(document.getElementById("gradi_giorno").value),
 
       EErete: safe(document.getElementById("EErete").value),
       EEfer: safe(document.getElementById("EEfer").value),
@@ -1692,8 +2282,12 @@
         driver: document.getElementById("driver").value ?? "",
         driver_um: document.getElementById("driver_um").value ?? "",
 
-        ore: document.getElementById("ore").value ?? "",
-        riscaldato: document.getElementById("riscaldato").value ?? "—",
+        ospiti: document.getElementById("ospiti")?.value ?? "",
+        stanze: document.getElementById("stanze")?.value ?? "",
+
+        regione: document.getElementById("regione")?.value ?? "",
+        fascia_climatica: document.getElementById("fascia_climatica")?.value ?? "",
+        gradi_giorno: document.getElementById("gradi_giorno")?.value ?? "",
 
         veicoli: document.getElementById("veicoli")?.value ?? "",
         km: document.getElementById("km")?.value ?? "",
@@ -1712,6 +2306,11 @@
         eff: s.eff,
         intervento: !!s.intervento,
         opportunita: s.opportunita ?? ""
+      })),
+      // NUOVO: percentuali risparmio
+      risparmioPctState: risparmioPctState.map(p => ({
+        bassa: Number(p.bassa) || 0,
+        media: Number(p.media) || 0
       }))
     };
   }
@@ -1754,8 +2353,13 @@
     setVal("driver", f.driver);
     setVal("driver_um", f.driver_um);
 
-    setVal("ore", f.ore);
-    setVal("riscaldato", f.riscaldato ?? "—");
+    setVal("ospiti", f.ospiti);
+    setVal("stanze", f.stanze);
+
+    setVal("regione", f.regione);
+    updateClimaFromRegione();
+    setVal("fascia_climatica", f.fascia_climatica);
+    setVal("gradi_giorno", f.gradi_giorno);
 
     setVal("veicoli", f.veicoli);
     setVal("km", f.km);
@@ -1779,8 +2383,24 @@
       });
     }
 
+    // NUOVO: carica percentuali risparmio (se assenti, fallback ai default)
+    if (Array.isArray(payload.risparmioPctState)) {
+      payload.risparmioPctState.forEach((p, i) => {
+        if(!risparmioPctState[i]) return;
+        risparmioPctState[i].bassa = Number(p.bassa) || 0;
+        risparmioPctState[i].media = Number(p.media) || 0;
+      });
+    } else {
+      INTERVENTI_STANDARD.forEach((it, i) => {
+        const b = defaultPctBassaForArea(it.area);
+        risparmioPctState[i].bassa = b;
+        risparmioPctState[i].media = defaultPctMediaFromBassa(b);
+      });
+    }
+
     updateDescrizioneAteco();
     renderInterventiForm();
+    renderRisparmiPctForm();
     render();
   }
 
@@ -1797,8 +2417,12 @@
       { section:"Dati generali", label:"Superficie stabilimento [m²]", id:"superficie" },
       { section:"Dati generali", label:"Driver energetico", id:"driver" },
       { section:"Dati generali", label:"UM driver energetico", id:"driver_um" },
-      { section:"Dati generali", label:"Ore di funzionamento annue", id:"ore" },
-      { section:"Dati generali", label:"Ambiente riscaldato", id:"riscaldato" },
+      { section:"Dati generali", label:"Numero ospiti totale", id:"ospiti" },
+      { section:"Dati generali", label:"Numero stanze totali", id:"stanze" },
+
+      { section:"Dati climatici", label:"Regione", id:"regione" },
+      { section:"Dati climatici", label:"Fascia climatica", id:"fascia_climatica" },
+      { section:"Dati climatici", label:"Gradi giorno medi regionali", id:"gradi_giorno" },
 
       { section:"Flotta aziendale", label:"Numero veicoli flotta aziendale", id:"veicoli" },
       { section:"Flotta aziendale", label:"Chilometraggio medio auto [km]", id:"km" },
@@ -1819,6 +2443,8 @@
       defs.push({ section:"Aree di intervento", label:`${it.area} - Efficienza`, key:`interventi.${idx}.eff` });
       defs.push({ section:"Aree di intervento", label:`${it.area} - Opportunità`, key:`interventi.${idx}.opportunita` });
       defs.push({ section:"Aree di intervento", label:`${it.area} - Intervento consigliato`, key:`interventi.${idx}.intervento` });
+
+      // (non richiesto: % risparmio in Excel) -> lasciato fuori per compatibilità con tuo Excel attuale
     });
 
     return defs;
@@ -1914,19 +2540,42 @@
     });
 
     updateDescrizioneAteco();
+    updateClimaFromRegione();
     renderInterventiForm();
+    renderRisparmiPctForm();
     render();
   }
 
   function resetAll(){
-    const ids = ["azienda","data","indirizzo","ateco","descrizioneateco","superficie","driver","driver_um","ore","veicoli","km","commento_generale","EErete","EEfer","gas","gasolio","PEE","Pgas","Pgasolio"];
-    ids.forEach(id => document.getElementById(id).value = "");
+    const ids = [
+      "azienda","data","indirizzo","ateco","descrizioneateco",
+      "superficie","driver","driver_um",
+      "ospiti","stanze",
+      "regione","fascia_climatica","gradi_giorno",
+      "veicoli","km","commento_generale",
+      "EErete","EEfer","gas","gasolio",
+      "PEE","Pgas","Pgasolio"
+    ];
+    ids.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = "";
+    });
+
     document.getElementById("atecoAnno").value = "2007";
-    document.getElementById("riscaldato").value = "—";
 
     interventiState.forEach(s => { s.eff="N.A."; s.intervento=false; s.opportunita=""; });
+
+    // reset % risparmio ai default
+    INTERVENTI_STANDARD.forEach((it, i) => {
+      const b = defaultPctBassaForArea(it.area);
+      risparmioPctState[i].bassa = b;
+      risparmioPctState[i].media = defaultPctMediaFromBassa(b);
+    });
+
     renderInterventiForm();
+    renderRisparmiPctForm();
     updateDescrizioneAteco();
+    updateClimaFromRegione();
     render();
   }
 
@@ -2011,11 +2660,14 @@
   document.querySelectorAll("#formPanel input, #formPanel textarea, #formPanel select")
     .forEach(el => el.addEventListener("input", () => {
       if(el.id==="ateco" || el.id==="atecoAnno") updateDescrizioneAteco();
+      if(el.id==="regione") updateClimaFromRegione();
       render();
     }));
 
   document.getElementById("ateco").addEventListener("input", () => { updateDescrizioneAteco(); render(); });
   document.getElementById("atecoAnno").addEventListener("change", () => { updateDescrizioneAteco(); render(); });
+
+  document.getElementById("regione").addEventListener("change", () => { updateClimaFromRegione(); render(); });
 
   document.getElementById("btnPrint").addEventListener("click", () => window.print());
 
@@ -2072,8 +2724,11 @@
 
   // init
   renderInterventiForm();
+  renderRisparmiPctForm();
   updateDescrizioneAteco();
+  updateClimaFromRegione();
   render();
 </script>
 </body>
 </html>
+

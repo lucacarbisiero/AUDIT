@@ -2036,31 +2036,45 @@ function buildKpiSpecRowsHTML(calc) {
   }
 },
           radius: "88%", 
-          plugins: {
-            legend: { display: false },
-            tooltip: { callbacks: {
-              label: (ctx) => {
-                const v = ctx.parsed || 0;
-                const pct = Math.round((v / tot) * 100);
-                return `${ctx.label}: ${fmt1(v)} tep (${pct}%)`;
-              }
-            }},
-            datalabels: {
-              color: "#111",
-              font: { size: 14 },
-              anchor: "end",
-              align: "end",
-              offset: 14,
-              clamp: true,
-              clip: false,
-              formatter: (value, ctx) => {
-                if (!value || value <= 0) return "";
-                const lab = ctx.chart.data.labels[ctx.dataIndex];
-                const pct = Math.round((value / tot) * 100);
-                return [`${pct}%`, lab, `${fmt1(value)} tep`];
-              }
-            }
-          }
+      plugins: {
+  legend: {
+    display: true,
+    position: "bottom"
+  },
+
+  tooltip: {
+    callbacks: {
+      label: function(context) {
+        const value = context.raw || 0;
+        const pct = tot > 0 ? Math.round((value / tot) * 100) : 0;
+        return `${context.label}: ${fmt1(value)} tep (${pct}%)`;
+      }
+    }
+  },
+
+  datalabels: {
+    color: "#111",
+    font: { size: 12 },
+    anchor: "end",
+    align: "end",
+    offset: 12,
+    clamp: true,
+    clip: false,
+
+    // ✅ mostra solo spicchi >= 7%
+    display: (ctx) => {
+      const value = ctx.dataset.data[ctx.dataIndex] || 0;
+      const pct = tot > 0 ? value / tot : 0;
+      return pct >= 0.07;
+    },
+
+    formatter: (value, ctx) => {
+      if (!value || value <= 0) return "";
+      const pct = tot > 0 ? Math.round((value / tot) * 100) : 0;
+      return `${pct}%`;
+    }
+  }
+}
         }
       });
     }
@@ -2832,6 +2846,7 @@ document.getElementById("show_kpi_gas_spec").addEventListener("change", render);
 </script>
 </body>
 </html>
+
 
 
 

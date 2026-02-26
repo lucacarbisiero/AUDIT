@@ -918,7 +918,12 @@
     "Altro": 0.015
   };
 
-  const interventiState = INTERVENTI_STANDARD.map(() => ({ eff:"N.A.", intervento:false, opportunita:"" }));
+ const interventiState = INTERVENTI_STANDARD.map(it => ({
+  eff: "N.A.",
+  intervento: false,
+  opportunita: "",
+  tipo_override: it.area === "Altro" ? "" : null
+}));
 
   // =========================
   // % RISPARMIO (default + override)
@@ -1531,10 +1536,21 @@
           <label style="margin-top:0;">Area</label>
           <input value="${safe(it.area)}" disabled />
         </div>
-        <div>
-          <label style="margin-top:0;">Tipo</label>
-          <input value="${safe(it.tipo)}" disabled />
-        </div>
+      <div>
+  <label style="margin-top:0;">Tipo</label>
+  ${
+    it.area === "Altro"
+    ? `
+      <select data-tipo="${idx}">
+        <option value="">—</option>
+        <option value="Elettrico" ${st.tipo_override==="Elettrico"?"selected":""}>Elettrico</option>
+        <option value="Termico" ${st.tipo_override==="Termico"?"selected":""}>Termico</option>
+        <option value="Gasolio" ${st.tipo_override==="Gasolio"?"selected":""}>Gasolio</option>
+      </select>
+    `
+    : `<input value="${safe(it.tipo)}" disabled />`
+  }
+</div>
         <div>
           <label style="margin-top:0;">Efficienza</label>
           <select data-eff="${idx}">
@@ -1572,6 +1588,13 @@
         render();
       });
     });
+    if (it.area === "Altro") {
+  wrap.querySelector(`select[data-tipo="${idx}"]`)
+    .addEventListener("change", (e) => {
+      st.tipo_override = e.target.value;
+      render();
+    });
+}
   }
 
   // =========================
@@ -1831,7 +1854,7 @@
       return `
         <tr>
           <td>${safe(it.area)}</td>
-          <td>${safe(it.tipo)}</td>
+          <td>${safe(it.area === "Altro" ? (st.tipo_override || "") : it.tipo)}</td>
           <td class="center">${safe(st.eff)}</td>
           <td class="center">${chk}</td>
           <td>${opp}</td>
@@ -1866,7 +1889,10 @@
         0;
 
       let base = 0;
-      const tipo = (it.tipo || "").trim();
+      const tipo = (it.area === "Altro"
+  ? (st.tipo_override || "")
+  : (it.tipo || "")
+).trim();
 
       if (tipo === "Elettrico") base = PEE * EE;
       else if (tipo === "Termico") base = PGAS * GAS;
@@ -2783,6 +2809,7 @@ document.getElementById("show_kpi_gas_spec").addEventListener("change", render);
 </script>
 </body>
 </html>
+
 
 
 

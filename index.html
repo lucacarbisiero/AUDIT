@@ -1,4 +1,4 @@
-  <!doctype html>
+<!doctype html>
 <html lang="it">
 <head>
   <meta charset="utf-8" />
@@ -148,30 +148,26 @@
     .chartTitle{ font-size:16px; font-weight:600; text-align:center; margin: 6px 0 8px; }
     .chartWrap{ position:relative; width:100%; }
     .chartWrap.donut{
-  max-width: 320px;      /* <-- più piccolo */
-  aspect-ratio: 1 / 1;   /* <-- crea box quadrata */
-  margin: 0 auto;
-}
-
-/* ===== Donut costi vs consumi (rettangolare) ===== */
-.chartWrap.donut.donut75{
-  max-width: 520px;
-  width: 100%;
-  aspect-ratio: 2 / 1;   /* 520 x 260 */
-  margin: 0 auto;
-}
-
-.chartWrap.donut.donut75 canvas{
-  width: 100% !important;
-  height: 100% !important;
-  display: block;
-}
-    
-.chartWrap.donut canvas{
-  width: 100% !important;
-  height: 100% !important;
-  display: block;
-}
+      max-width: 320px;
+      aspect-ratio: 1 / 1;
+      margin: 0 auto;
+    }
+    .chartWrap.donut.donut75{
+      max-width: 520px;
+      width: 100%;
+      aspect-ratio: 2 / 1;
+      margin: 0 auto;
+    }
+    .chartWrap.donut.donut75 canvas{
+      width: 100% !important;
+      height: 100% !important;
+      display: block;
+    }
+    .chartWrap.donut canvas{
+      width: 100% !important;
+      height: 100% !important;
+      display: block;
+    }
 
     .charts2{ display:grid; grid-template-columns: 2fr 1fr; gap: 14px; align-items:start; }
     .charts2equal{ display:grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items:start; }
@@ -278,302 +274,257 @@
     .projItem:last-child{ border-bottom:0; }
     .projMeta{ font-size:12px; color:var(--muted); margin-top:2px; }
     .projName{ font-weight:600; }
-.chartLegend{
-  display:flex;
-  gap:14px;
-  justify-content:center;
-  flex-wrap:wrap;
-  margin-top:10px;
-}
 
-.chartLegend .lgItem{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-size:12px;
-  color:#333;
-  white-space:nowrap;
+    .chartLegend{
+      display:flex;
+      gap:14px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+    .chartLegend .lgItem{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-size:12px;
+      color:#333;
+      white-space:nowrap;
 
-  /* barra colorata stampabile */
-  border-left: 14px solid #000;
-  padding-left: 8px;
-}
-
-.chartLegend .lgSwatch{
-  display:none;
-}
+      /* barra colorata stampabile */
+      border-left: 14px solid #000;
+      padding-left: 8px;
+    }
+    .chartLegend .lgSwatch{ display:none; }
 
     /* PRINT */
-@media print {
-  @page{
-    margin-top: 30mm;
-    margin-right: 10mm;
-    margin-bottom: 20mm;
-    margin-left: 15mm;
-  }
+    @media print {
+      @page{
+        margin-top: 30mm;
+        margin-right: 10mm;
+        margin-bottom: 20mm;
+        margin-left: 15mm;
+      }
 
-  header, #formPanel, .panel.form{ display:none !important; }
+      header, #formPanel, .panel.form{ display:none !important; }
 
-  body{
-    background:#fff !important;
-    overflow: visible !important;
-  }
+      body{
+        background:#fff !important;
+        overflow: visible !important;
+      }
 
-  .wrap{
-    grid-template-columns: 1fr !important;
-    padding: 0 !important;
-    height: auto !important;
-  }
+      .wrap{
+        grid-template-columns: 1fr !important;
+        padding: 0 !important;
+        height: auto !important;
+      }
 
-  .panel.preview{
-    border: 0 !important;
-    padding: 0 !important;
-    overflow: visible !important;
-  }
+      .panel.preview{
+        border: 0 !important;
+        padding: 0 !important;
+        overflow: visible !important;
+      }
 
-  .doc{
-    max-width: none !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-  }
+      .doc{
+        max-width: none !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
 
-  html, body, .wrap, .panel.preview, .doc, #docRoot, .printContent{
-    overflow: visible !important;
-    transform: none !important;
-    filter: none !important;
-  }
+      html, body, .wrap, .panel.preview, .doc, #docRoot, .printContent{
+        overflow: visible !important;
+        transform: none !important;
+        filter: none !important;
+      }
 
-  .pageBreak{ break-before: page; page-break-before: always; }
+      .pageBreak{ break-before: page; page-break-before: always; }
 
-  .chartCard, canvas, .nextStepsImg{
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
+      .chartCard, canvas, .nextStepsImg{
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
 
-  table{
-    break-inside: auto;
-    page-break-inside: auto;
-  }
+      table{
+        break-inside: auto;
+        page-break-inside: auto;
+      }
 
-  .pageTop{
-    break-inside: avoid;
-    page-break-inside: avoid;
-    height: 30mm;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-  }
-  .pageLogo{ height: 15mm; width: auto; }
+      .pageTop{
+        break-inside: avoid;
+        page-break-inside: avoid;
+        height: 30mm;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+      }
+      .pageLogo{ height: 15mm; width: auto; }
 
-  h2{ break-after: avoid; page-break-after: avoid; }
-  h2 + table{ break-before: avoid; page-break-before: avoid; }
+      h2{ break-after: avoid; page-break-after: avoid; }
+      h2 + table{ break-before: avoid; page-break-before: avoid; }
 
-  /* =========================
-     CHARTS2EQUAL (Energia primaria + Vettori)
-     ========================= */
-  .charts2equal{
-    display:grid !important;
-    grid-template-columns: minmax(0,1fr) minmax(0,1fr) !important;
-    gap: 6mm !important;
-    align-items:start !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-  }
+      .charts2equal{
+        display:grid !important;
+        grid-template-columns: minmax(0,1fr) minmax(0,1fr) !important;
+        gap: 6mm !important;
+        align-items:start !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
 
-  .charts2equal .chartCard{
-    width:100% !important;
-    min-width:0 !important;
-    padding:8px !important;
-    box-sizing:border-box !important;
-    overflow:hidden !important;
-    break-inside: avoid !important;
-    page-break-inside: avoid !important;
-  }
- .costiConsumiBlock .chartCard{
-    overflow: visible !important;
-  }
-  .costiConsumiBlock .chartWrap{
-    overflow: visible !important;
-  }
-  /* Donut (Energia primaria) quadrato */
-  .charts2equal .chartCard:first-child .chartWrap.donut{
-    width: 220px !important;
-    height: 220px !important;
-    aspect-ratio: 1 / 1 !important;
-    margin: 0 auto !important;
-  }
-  .charts2equal .chartCard:first-child .chartWrap.donut canvas{
-    width:100% !important;
-    height:100% !important;
-    display:block !important;
-  }
+      .charts2equal .chartCard{
+        width:100% !important;
+        min-width:0 !important;
+        padding:8px !important;
+        box-sizing:border-box !important;
+        overflow:hidden !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
 
-  /* Bar (Vettori) a tutta altezza */
-  .charts2equal .chartCard:nth-child(2) .chartWrap{
-    height: 220px !important;
-    min-height: 220px !important;
-    width: 100% !important;
-  }
-  #chartVettoriEnergetici{
-    width:100% !important;
-    height:100% !important;
-    display:block !important;
-  }
+      .costiConsumiBlock .chartCard{ overflow: visible !important; }
+      .costiConsumiBlock .chartWrap{ overflow: visible !important; }
 
-  /* =========================
-     BLOCCO costi + grafico
-     ========================= */
-  .costiConsumiBlock{
-    break-inside: avoid !important;
-    page-break-inside: avoid !important;
-  }
+      .charts2equal .chartCard:first-child .chartWrap.donut{
+        width: 220px !important;
+        height: 220px !important;
+        aspect-ratio: 1 / 1 !important;
+        margin: 0 auto !important;
+      }
+      .charts2equal .chartCard:first-child .chartWrap.donut canvas{
+        width:100% !important;
+        height:100% !important;
+        display:block !important;
+      }
 
-  /* Donut costi vs consumi quadrato */
-.chartWrap.donut.donut75{
-  width: 520px !important;
-  height: 260px !important;
-  max-width: 520px !important;
-  aspect-ratio: auto !important;
-}
-  .chartWrap.donut.donut75 canvas,
- #chartCostiConsumi{
-    width:100% !important;
-    height:100% !important;
-  }
+      .charts2equal .chartCard:nth-child(2) .chartWrap{
+        height: 220px !important;
+        min-height: 220px !important;
+        width: 100% !important;
+      }
+      #chartVettoriEnergetici{
+        width:100% !important;
+        height:100% !important;
+        display:block !important;
+      }
 
-  /* =========================
-     CHARTS2 (Efficienza: bar + donut)
-     ========================= */
-  .charts2{
-    display:grid !important;
-    grid-template-columns: minmax(0,1fr) minmax(0,1fr) !important;
-    gap: 6mm !important;
-    align-items:start !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-  }
+      .costiConsumiBlock{
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
 
-  .charts2 .chartCard{
-    width:100% !important;
-    min-width:0 !important;
-    padding:8px !important;
-    box-sizing:border-box !important;
-    overflow:hidden !important;
-    break-inside: avoid !important;
-    page-break-inside: avoid !important;
-  }
+      .chartWrap.donut.donut75{
+        width: 520px !important;
+        height: 260px !important;
+        max-width: 520px !important;
+        aspect-ratio: auto !important;
+      }
+      .chartWrap.donut.donut75 canvas,
+      #chartCostiConsumi{
+        width:100% !important;
+        height:100% !important;
+      }
 
-  /* Bar a sinistra: stessa altezza del donut (200px) */
-  .charts2 .chartCard:first-child .chartWrap{
-    height: 200px !important;
-    min-height: 200px !important;
-    width: 100% !important;
-  }
-  #chartEffBar{
-    width:100% !important;
-    height:100% !important;
-    display:block !important;
-  }
+      .charts2{
+        display:grid !important;
+        grid-template-columns: minmax(0,1fr) minmax(0,1fr) !important;
+        gap: 6mm !important;
+        align-items:start !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
 
-  /* Donut a destra: box quadrato */
-  .charts2 .chartCard:nth-child(2) .chartWrap.donut{
-    width: 200px !important;
-    height: 200px !important;
-    aspect-ratio: 1 / 1 !important;
-    margin: 0 auto !important;
-  }
-  .charts2 .chartCard:nth-child(2) .chartWrap.donut canvas{
-    width:100% !important;
-    height:100% !important;
-    display:block !important;
-  }
+      .charts2 .chartCard{
+        width:100% !important;
+        min-width:0 !important;
+        padding:8px !important;
+        box-sizing:border-box !important;
+        overflow:hidden !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
 
-  canvas{ max-width:100% !important; }
+      .charts2 .chartCard:first-child .chartWrap{
+        height: 200px !important;
+        min-height: 200px !important;
+        width: 100% !important;
+      }
+      #chartEffBar{
+        width:100% !important;
+        height:100% !important;
+        display:block !important;
+      }
+
+      .charts2 .chartCard:nth-child(2) .chartWrap.donut{
+        width: 200px !important;
+        height: 200px !important;
+        aspect-ratio: 1 / 1 !important;
+        margin: 0 auto !important;
+      }
+      .charts2 .chartCard:nth-child(2) .chartWrap.donut canvas{
+        width:100% !important;
+        height:100% !important;
+        display:block !important;
+      }
+
+      canvas{ max-width:100% !important; }
+
+      *{
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+
     .nextStepsGrid{
-    grid-template-columns: 1.2fr 1fr !important; /* più immagine */
-    gap: 8mm !important;
-  }
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 16px;
+      align-items: start;
+      margin-top: 10px;
+    }
 
-.nextStepsFigure{
-    border: 0 !important;
-    padding: 0 !important;
-    background: transparent !important;
-  }
-.nextStepsCaption{
-    display: none !important;
-  }
-  .nextStepsCallout{
-    break-inside: avoid !important;
-    page-break-inside: avoid !important;
-  }
+    .nextStepsFigure{
+      margin: 0;
+      border: 0;
+      border-radius: 0;
+      padding: 0;
+      background: transparent;
+    }
 
-  /* evita che l’immagine diventi troppo piccola in stampa */
-  .nextStepsImg{
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-  *{
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-}
-.nextStepsGrid{
-  display: grid;
-  grid-template-columns: 1.2fr 1fr; /* prima 1.35 / 0.85 -> ora più immagine */
-  gap: 16px;
-  align-items: start;
-  margin-top: 10px;
-}
+    .nextStepsImg{
+      display: block;
+      width: 100%;
+      height: auto;
+      max-width: 100%;
+      border-radius: 12px;
+    }
 
-.nextStepsFigure{
-  margin: 0;
-  border: 0;
-  border-radius: 0;
-  padding: 0;
-  background: transparent;
-}
+    .nextStepsCaption{ display: none !important; }
 
-.nextStepsImg{
-  display: block;
-  width: 100%;
-  height: auto;
-  max-width: 100%;
-  border-radius: 12px;
-}
+    .nextStepsCallout{
+      margin-top: 14px;
+      padding: 12px 14px;
+      border: 1px solid #e8e8e8;
+      border-left: 4px solid #7E57C2;
+      border-radius: 12px;
+      background: #fafafa;
+    }
 
-.nextStepsCaption{
-  display: none !important;
-}
+    .nextStepsCallout p{ margin: 0; }
 
-.nextStepsCallout{
-  margin-top: 14px;
-  padding: 12px 14px;
-  border: 1px solid #e8e8e8;
-  border-left: 4px solid #7E57C2; /* brand */
-  border-radius: 12px;
-  background: #fafafa;
-}
+    @media (max-width: 980px){
+      .nextStepsGrid{ grid-template-columns: 1fr; }
+    }
 
-.nextStepsCallout p{
-  margin: 0;
-}
-
-@media (max-width: 980px){
-  .nextStepsGrid{ grid-template-columns: 1fr; }
-}
-/* ===== FIX: il bar deve riempire il box ===== */
-.charts2 .chartCard:first-child .chartWrap{
-  height: 240px;          /* o 260px se vuoi più alto */
-}
-
-#chartEffBar{
-  width: 100% !important;
-  height: 100% !important; /* <-- fondamentale */
-  display: block;
-}
-    
+    /* ===== FIX: il bar deve riempire il box ===== */
+    .charts2 .chartCard:first-child .chartWrap{
+      height: 240px;
+    }
+    #chartEffBar{
+      width: 100% !important;
+      height: 100% !important;
+      display: block;
+    }
   </style>
 </head>
 
@@ -593,22 +544,22 @@
   <section class="panel form" id="formPanel">
     <hr class="hr"/>
 
-<h2>Indicatori specifici - visualizzazione</h2>
+    <h2>Indicatori specifici - visualizzazione</h2>
+    <div class="row">
+      <div>
+        <label>
+          <input type="checkbox" id="show_kpi_ee_spec" checked>
+          Mostra KPI Energia elettrica specifico
+        </label>
+      </div>
+      <div>
+        <label>
+          <input type="checkbox" id="show_kpi_gas_spec" checked>
+          Mostra KPI Gas specifico
+        </label>
+      </div>
+    </div>
 
-<div class="row">
-  <div>
-    <label>
-      <input type="checkbox" id="show_kpi_ee_spec" checked>
-      Mostra KPI Energia elettrica specifico
-    </label>
-  </div>
-  <div>
-    <label>
-      <input type="checkbox" id="show_kpi_gas_spec" checked>
-      Mostra KPI Gas specifico
-    </label>
-  </div>
-</div>
     <div class="formContent">
       <h2>Dati base</h2>
 
@@ -664,19 +615,19 @@
           <input id="driver_um" placeholder="Es. pezzi, ton, ore, m³..." />
         </div>
         <div>
-         <label>Ore lavorative ({{ore_lavorative}})</label>
-    <input id="ore_lavorative" type="number" step="1" min="0" />
+          <label>Ore lavorative ({{ore_lavorative}})</label>
+          <input id="ore_lavorative" type="number" step="1" min="0" />
         </div>
       </div>
 
       <div class="row">
         <div>
-              <label>Ambiente riscaldato ({{ambiente_riscaldato}})</label>
-    <select id="ambiente_riscaldato">
-      <option value="">—</option>
-      <option value="Si">Si</option>
-      <option value="No">No</option>
-    </select>
+          <label>Ambiente riscaldato ({{ambiente_riscaldato}})</label>
+          <select id="ambiente_riscaldato">
+            <option value="">—</option>
+            <option value="Si">Si</option>
+            <option value="No">No</option>
+          </select>
         </div>
         <div><!-- spacer --></div>
       </div>
@@ -793,7 +744,6 @@
 
       <div class="intervForm" id="interventiForm"></div>
 
-      <!-- NUOVO: Maschera percentuali risparmio -->
       <hr class="hr"/>
       <h2>Risparmi stimati - percentuali</h2>
       <div class="note">
@@ -866,7 +816,6 @@
   // =========================
   // CLIMA (medie regionali)
   // =========================
-  // Valori medi regionali calcolati come media dei GG comunali (DPR 412/1993 - Allegato A) raggruppati per regione.
   const CLIMA_REGIONE = {
     "Abruzzo": { fascia: "E", gg: 2207 },
     "Basilicata": { fascia: "D", gg: 2050 },
@@ -926,7 +875,6 @@
     { area:"Altro", tipo:"" }
   ];
 
-  // % base (prima: statiche). Ora diventano la CLASSE "Bassa".
   const PCT_AREA = {
     "Motori elettrici": 0.015,
     "Applicazione inverter": 0.02,
@@ -946,16 +894,13 @@
     "Altro": 0.015
   };
 
- const interventiState = INTERVENTI_STANDARD.map(it => ({
-  eff: "N.A.",
-  intervento: false,
-  opportunita: "",
-  tipo_override: it.area === "Altro" ? "" : null
-}));
+  const interventiState = INTERVENTI_STANDARD.map(it => ({
+    eff: "N.A.",
+    intervento: false,
+    opportunita: "",
+    tipo_override: it.area === "Altro" ? "" : null
+  }));
 
-  // =========================
-  // % RISPARMIO (default + override)
-  // =========================
   function defaultPctBassaForArea(area){
     return PCT_AREA[area] ?? 0;
   }
@@ -963,7 +908,6 @@
     return (Number(pBassa) || 0) * 0.7;
   }
 
-  // percentuali per ogni intervento (indice come INTERVENTI_STANDARD)
   const risparmioPctState = INTERVENTI_STANDARD.map(it => {
     const b = defaultPctBassaForArea(it.area);
     return { bassa: b, media: defaultPctMediaFromBassa(b) };
@@ -1034,8 +978,8 @@
           <tr><td>Superficie stabilimento [m2]:</td><td class="right">{{superficie}}</td></tr>
           <tr><td>Driver energetico:</td><td class="right">{{driver}}</td></tr>
           <tr><td>UM driver energetico:</td><td class="right">{{driver_um}}</td></tr>
-         <tr><td>Ore lavorative:</td><td class="right">{{ore_lavorative}}</td></tr>
-<tr><td>Ambiente riscaldato:</td><td class="right">{{ambiente_riscaldato}}</td></tr>
+          <tr><td>Ore lavorative:</td><td class="right">{{ore_lavorative}}</td></tr>
+          <tr><td>Ambiente riscaldato:</td><td class="right">{{ambiente_riscaldato}}</td></tr>
           <tr><td>Regione:</td><td class="right">{{regione}}</td></tr>
           <tr><td>Fascia climatica:</td><td class="right">{{fascia_climatica}}</td></tr>
           <tr><td>Gradi giorno medi regionali:</td><td class="right">{{gradi_giorno}}</td></tr>
@@ -1048,8 +992,6 @@
           <tr><td>Tariffa energetica [€/l]:</td><td class="right">{{Pgasolio}}</td></tr>
         </tbody>
       </table>
-
-        
 
       <div class="pageBreak"></div>
       <div class="pageTop">
@@ -1144,7 +1086,8 @@
           </tr>
         </tbody>
       </table>
- <div class="note">FER = Fonte di Energia Rinnovabile.</div>
+      <div class="note">FER = Fonte di Energia Rinnovabile.</div>
+
       <div class="pageBreak"></div>
       <div class="pageTop">
         <img class="pageLogo" src="logo.png" alt="Logo">
@@ -1153,15 +1096,13 @@
       <h3>RIEPILOGO CONSUMI E COSTI</h3>
       <div class="charts2equal">
         <div class="chartCard">
-  <div class="chartTitle">Energia primaria [tep]</div>
-  <div class="chartWrap donut">
-    <canvas id="chartEnergiaPrimaria" height="220"></canvas>
-  </div>
-  <div id="legendEnergiaPrimaria" class="chartLegend"></div>
-
-  <!-- ✅ LEGENDA ORIZZONTALE QUI SOTTO -->
-  <div id="legendEnergiaPrimaria" class="chartLegend"></div>
-</div>
+          <div class="chartTitle">Energia primaria [tep]</div>
+          <div class="chartWrap donut">
+            <canvas id="chartEnergiaPrimaria" height="220"></canvas>
+          </div>
+          <!-- ✅ UNA SOLA LEGENDA (id unico) -->
+          <div id="legendEnergiaPrimaria" class="chartLegend"></div>
+        </div>
 
         <div class="chartCard">
           <div class="chartTitle">Principali vettori energetici [tep]</div>
@@ -1173,28 +1114,30 @@
 
       <p class="muted">(*) Il tep rappresenta la quantità di energia rilasciata dalla combustione di una Tonnellata Equivalente di Petrolio grezzo.</p>
       <p class="muted">(**) L'energia FER deriva da Fonti Energetiche Rinnovabili, come impianti fotovoltaici o idroelettrici.</p>
-<div class="costiConsumiBlock">
-      <p>Di seguito si riportano i costi associati ai consumi energetici:</p>
 
-      <table>
-        <thead>
-          <tr><th>Consumi</th><th class="center">Prezzo</th><th class="center">Quantità</th><th class="center">Costo energia</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Energia Elettrica</td><td class="right">{{PEE}}</td><td class="right">{{EErete}}</td><td class="right">{{costoEE}} €</td></tr>
-          <tr><td>Gas</td><td class="right">{{Pgas}}</td><td class="right">{{gas}}</td><td class="right">{{costogas}} €</td></tr>
-          <tr><td>Carburante</td><td class="right">{{Pgasolio}}</td><td class="right">{{gasolio}}</td><td class="right">{{costogasolio}} €</td></tr>
-          <tr><th>TOTALE</th><th></th><th></th><th class="right">{{costotot}} €</th></tr>
-        </tbody>
-      </table>
+      <div class="costiConsumiBlock">
+        <p>Di seguito si riportano i costi associati ai consumi energetici:</p>
 
-      <div class="chartCard">
-        <div class="chartTitle">Confronto costi vs consumi energetici</div>
+        <table>
+          <thead>
+            <tr><th>Consumi</th><th class="center">Prezzo</th><th class="center">Quantità</th><th class="center">Costo energia</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Energia Elettrica</td><td class="right">{{PEE}}</td><td class="right">{{EErete}}</td><td class="right">{{costoEE}} €</td></tr>
+            <tr><td>Gas</td><td class="right">{{Pgas}}</td><td class="right">{{gas}}</td><td class="right">{{costogas}} €</td></tr>
+            <tr><td>Carburante</td><td class="right">{{Pgasolio}}</td><td class="right">{{gasolio}}</td><td class="right">{{costogasolio}} €</td></tr>
+            <tr><th>TOTALE</th><th></th><th></th><th class="right">{{costotot}} €</th></tr>
+          </tbody>
+        </table>
+
+        <div class="chartCard">
+          <div class="chartTitle">Confronto costi vs consumi energetici</div>
           <div class="chartWrap donut donut75">
-          <canvas id="chartCostiConsumi" width="220" height="220"></canvas>
+            <canvas id="chartCostiConsumi" width="220" height="220"></canvas>
+          </div>
         </div>
       </div>
-  </div>
+
       <div class="pageBreak"></div>
       <div class="pageTop">
         <img class="pageLogo" src="logo.png" alt="Logo">
@@ -1256,9 +1199,9 @@
             <th class="center">Unità</th>
           </tr>
         </thead>
-       <tbody>
-  {{KPI_SPEC_ROWS}}
-</tbody>
+        <tbody>
+          {{KPI_SPEC_ROWS}}
+        </tbody>
       </table>
 
       <div class="pageBreak"></div>
@@ -1344,57 +1287,45 @@
       </div>
 
       <div class="sectionBlock nextSteps">
-  <h2>6. Next steps</h2>
+        <h2>6. Next steps</h2>
 
-  <p>
-    A seguito del sopralluogo e dell’analisi preliminare dei consumi energetici, si raccomanda di approfondire le
-    inefficienze più facilmente individuabili, quali perdite di aria compressa, dispersioni energetiche e utilizzi non
-    ottimali delle apparecchiature. Queste aree consentono di ottenere riduzioni di costo rapide, con investimenti
-    limitati e tempi di ritorno contenuti.
-  </p>
+        <p>
+          A seguito del sopralluogo e dell’analisi preliminare dei consumi energetici, si raccomanda di approfondire le
+          inefficienze più facilmente individuabili, quali perdite di aria compressa, dispersioni energetiche e utilizzi non
+          ottimali delle apparecchiature. Queste aree consentono di ottenere riduzioni di costo rapide, con investimenti
+          limitati e tempi di ritorno contenuti.
+        </p>
 
-  <div class="nextStepsGrid">
-    <div class="nextStepsText">
-      <p>
-        Un fattore determinante per una gestione efficace dell’energia è l’adozione di un sistema di monitoraggio
-        strutturato dei consumi, in grado di fornire dati affidabili, continui e confrontabili nel tempo. Il presidio dei
-        principali indicatori di prestazione energetica (EnPI) permette di controllare una voce di costo strategica,
-        individuare tempestivamente eventuali anomalie e valutare in modo oggettivo l’impatto economico degli
-        interventi di efficientamento.
-      </p>
+        <div class="nextStepsGrid">
+          <div class="nextStepsText">
+            <p>
+              Un fattore determinante per una gestione efficace dell’energia è l’adozione di un sistema di monitoraggio
+              strutturato dei consumi, in grado di fornire dati affidabili, continui e confrontabili nel tempo.
+            </p>
+            <p>
+              Il valore del sistema di monitoraggio non si esaurisce nel breve periodo: pur venendo installato oggi, esso
+              costituisce un asset informativo a lungo termine.
+            </p>
+            <p>
+              Il monitoraggio dei consumi deve essere parte integrante di un approccio strutturato di energy management,
+              orientato al controllo continuo delle prestazioni energetiche e alla riduzione stabile dei costi operativi.
+            </p>
+          </div>
 
-      <p>
-        Il valore del sistema di monitoraggio non si esaurisce nel breve periodo: pur venendo installato oggi, esso
-        costituisce un asset informativo a lungo termine. La creazione di uno storico dei consumi e di una base dati
-        solida rappresenta un elemento essenziale per supportare decisioni future, quali investimenti, ampliamenti
-        produttivi o nuove linee di business, consentendo di stimarne in modo affidabile gli impatti energetici ed
-        economici.
-      </p>
+          <figure class="nextStepsFigure">
+            <img class="nextStepsImg" src="next_steps.png" alt="Next steps" />
+            <figcaption class="nextStepsCaption">Schema delle fasi operative consigliate.</figcaption>
+          </figure>
+        </div>
 
-      <p>
-        Il monitoraggio dei consumi deve essere parte integrante di un approccio strutturato di energy management,
-        orientato al controllo continuo delle prestazioni energetiche e alla riduzione stabile dei costi operativi. Una
-        gestione dell’energia basata su dati misurabili consente di migliorare la prevedibilità dei costi e di supportare
-        la pianificazione strategica nel medio e lungo periodo.
-      </p>
+        <div class="nextStepsCallout">
+          <p>
+            Si evidenzia infine che il presente check-up energetico ha carattere orientativo e non sostituisce una diagnosi
+            energetica approfondita.
+          </p>
+        </div>
+      </div>
     </div>
-
-    <figure class="nextStepsFigure">
-      <img class="nextStepsImg" src="next_steps.png" alt="Next steps" />
-      <figcaption class="nextStepsCaption">Schema delle fasi operative consigliate.</figcaption>
-    </figure>
-  </div>
-
-  <div class="nextStepsCallout">
-    <p>
-      Si evidenzia infine che il presente check-up energetico ha carattere orientativo e non sostituisce una diagnosi
-      energetica approfondita. Qualora l’azienda intenda disporre di una visione completa dei flussi energetici e di una
-      quantificazione puntuale dei benefici economici degli interventi, è fortemente consigliato procedere con una
-      diagnosi energetica strutturata, considerata uno strumento fondamentale per una gestione consapevole ed efficace
-      dell’energia.
-    </p>
-  </div>
-</div>
   `;
 
   // =========================
@@ -1407,7 +1338,6 @@
   }
   function num(v){ const n = Number(String(v ?? "").replace(",", ".")); return Number.isFinite(n) ? n : 0; }
 
-  // --- FORMAT NUMERI (aggiornati) ---
   function fmtInt(n){
     return Number(n).toLocaleString("it-IT", { maximumFractionDigits: 0, useGrouping: true });
   }
@@ -1417,11 +1347,12 @@
   function fmt2(n){
     return Number(n).toLocaleString("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping: true });
   }
-  
+  function fmt3(n){
+    return Number(n).toLocaleString("it-IT", { minimumFractionDigits: 3, maximumFractionDigits: 3, useGrouping: true });
+  }
   function fmt4(n){
     return Number(n).toLocaleString("it-IT", { minimumFractionDigits: 4, maximumFractionDigits: 4, useGrouping: true });
   }
-  // Specifici: 1 decimale + separatore migliaia
   function fmtSpec1(n){
     return Number(n).toLocaleString("it-IT", { minimumFractionDigits: 1, maximumFractionDigits: 1, useGrouping: true });
   }
@@ -1478,7 +1409,6 @@
       const raw = String(code || "").trim();
       if (!raw) return out;
 
-      // Normalizza a formato XX.XX.XX (se mancano gruppi o zeri finali)
       const normalizeTo6 = (c) => {
         const parts = String(c || "").split(".").filter(Boolean);
         while (parts.length < 3) parts.push("00");
@@ -1490,14 +1420,10 @@
         return p.join(".");
       };
 
-      // 1) versione "così com'è"
       push(raw);
-
-      // 2) versione XX.XX.XX (molto comune nelle tabelle ATECO)
       const v6 = normalizeTo6(raw);
       push(v6);
 
-      // 3) genera anche varianti via potatura (es.: 80.10.00 -> 80.10.0 -> 80.10 -> 80)
       let cur = raw;
       while (cur.includes(".")) {
         if (/\.0+$/.test(cur)){
@@ -1511,7 +1437,6 @@
         push(normalizeTo6(cur));
       }
 
-      // 4) fallback minimo: prime 2 cifre
       push(raw.slice(0,2));
       return out;
     }
@@ -1520,14 +1445,12 @@
 
     const candidates = buildCandidates(c0);
 
-    // 1) prova stesso anno
     for (const c of candidates){
       const rec = getRec(a, c);
       const norm = normalizeRec(rec);
       if (norm) return norm;
     }
 
-    // 2) ultimo tentativo: prova l'altro anno (utile se il codice inserito è del vecchio ATECO)
     const other = (a === "2025") ? "2007" : (a === "2007" ? "2025" : null);
     if (other){
       for (const c of candidates){
@@ -1557,116 +1480,109 @@
     return (eff === "Media" || eff === "Bassa");
   }
 
- function renderInterventiForm() {
-  interventiForm.innerHTML = "";
-  INTERVENTI_STANDARD.forEach((it, idx) => {
-    const st = interventiState[idx];
+  function renderInterventiForm() {
+    interventiForm.innerHTML = "";
+    INTERVENTI_STANDARD.forEach((it, idx) => {
+      const st = interventiState[idx];
 
-    const wrap = document.createElement("div");
-    wrap.className = "iRow";
-    wrap.innerHTML = `
-      <div>
-        <label style="margin-top:0;">Area</label>
-        <input value="${safe(it.area)}" disabled />
-      </div>
-
-      <div>
-        <label style="margin-top:0;">Tipo</label>
-        ${
-          it.area === "Altro"
-          ? `
-            <select data-tipo="${idx}">
-              <option value="">—</option>
-              <option value="Elettrico" ${st.tipo_override==="Elettrico"?"selected":""}>Elettrico</option>
-              <option value="Termico" ${st.tipo_override==="Termico"?"selected":""}>Termico</option>
-              <option value="Gasolio" ${st.tipo_override==="Gasolio"?"selected":""}>Gasolio</option>
-            </select>
-          `
-          : `<input value="${safe(it.tipo)}" disabled />`
-        }
-      </div>
-
-      <div>
-        <label style="margin-top:0;">Efficienza</label>
-        <select data-eff="${idx}">
-          <option ${st.eff==="Alta"?"selected":""} value="Alta">Alta</option>
-          <option ${st.eff==="Media"?"selected":""} value="Media">Media</option>
-          <option ${st.eff==="Bassa"?"selected":""} value="Bassa">Bassa</option>
-          <option ${st.eff==="N.A."?"selected":""} value="N.A.">N.A.</option>
-        </select>
-      </div>
-
-      <div>
-        <label style="margin-top:0;">Intervento</label>
-        <div class="inlineChk" title="Spuntato automaticamente per Media o Bassa">
-          <input type="checkbox" data-chk="${idx}" ${st.intervento ? "checked" : ""} disabled />
+      const wrap = document.createElement("div");
+      wrap.className = "iRow";
+      wrap.innerHTML = `
+        <div>
+          <label style="margin-top:0;">Area</label>
+          <input value="${safe(it.area)}" disabled />
         </div>
-      </div>
 
-      <div style="grid-column:1/-1;">
-        <label>Opportunità</label>
-        <textarea data-op="${idx}" placeholder="Scrivi qui..." ${st.intervento ? "" : "disabled"}>${safe(st.opportunita)}</textarea>
-      </div>
-    `;
-    interventiForm.appendChild(wrap);
+        <div>
+          <label style="margin-top:0;">Tipo</label>
+          ${
+            it.area === "Altro"
+            ? `
+              <select data-tipo="${idx}">
+                <option value="">—</option>
+                <option value="Elettrico" ${st.tipo_override==="Elettrico"?"selected":""}>Elettrico</option>
+                <option value="Termico" ${st.tipo_override==="Termico"?"selected":""}>Termico</option>
+                <option value="Gasolio" ${st.tipo_override==="Gasolio"?"selected":""}>Gasolio</option>
+              </select>
+            `
+            : `<input value="${safe(it.tipo)}" disabled />`
+          }
+        </div>
 
-    // listener Efficienza
-    wrap.querySelector(`select[data-eff="${idx}"]`).addEventListener("change", (e) => {
-      const eff = e.target.value;
-      st.eff = eff;
-      st.intervento = computeInterventoAuto(eff);
-      if (!st.intervento) st.opportunita = "";
-      renderInterventiForm();
-      renderRisparmiPctForm();
-      render();
-    });
+        <div>
+          <label style="margin-top:0;">Efficienza</label>
+          <select data-eff="${idx}">
+            <option ${st.eff==="Alta"?"selected":""} value="Alta">Alta</option>
+            <option ${st.eff==="Media"?"selected":""} value="Media">Media</option>
+            <option ${st.eff==="Bassa"?"selected":""} value="Bassa">Bassa</option>
+            <option ${st.eff==="N.A."?"selected":""} value="N.A.">N.A.</option>
+          </select>
+        </div>
 
-    // listener Opportunità
-    wrap.querySelector(`textarea[data-op="${idx}"]`).addEventListener("input", (e) => {
-      st.opportunita = e.target.value;
-      render();
-    });
+        <div>
+          <label style="margin-top:0;">Intervento</label>
+          <div class="inlineChk" title="Spuntato automaticamente per Media o Bassa">
+            <input type="checkbox" data-chk="${idx}" ${st.intervento ? "checked" : ""} disabled />
+          </div>
+        </div>
 
-    // ✅ listener Tipo SOLO per Altro (qui è nel punto giusto)
-    if (it.area === "Altro") {
-      wrap.querySelector(`select[data-tipo="${idx}"]`).addEventListener("change", (e) => {
-        st.tipo_override = e.target.value;
+        <div style="grid-column:1/-1;">
+          <label>Opportunità</label>
+          <textarea data-op="${idx}" placeholder="Scrivi qui..." ${st.intervento ? "" : "disabled"}>${safe(st.opportunita)}</textarea>
+        </div>
+      `;
+      interventiForm.appendChild(wrap);
+
+      wrap.querySelector(`select[data-eff="${idx}"]`).addEventListener("change", (e) => {
+        const eff = e.target.value;
+        st.eff = eff;
+        st.intervento = computeInterventoAuto(eff);
+        if (!st.intervento) st.opportunita = "";
+        renderInterventiForm();
+        renderRisparmiPctForm();
         render();
       });
-    }
-  });
-}
+
+      wrap.querySelector(`textarea[data-op="${idx}"]`).addEventListener("input", (e) => {
+        st.opportunita = e.target.value;
+        render();
+      });
+
+      if (it.area === "Altro") {
+        wrap.querySelector(`select[data-tipo="${idx}"]`).addEventListener("change", (e) => {
+          st.tipo_override = e.target.value;
+          render();
+        });
+      }
+    });
+  }
 
   // =========================
-  // Maschera % risparmio (edit)
+  // Maschera % risparmio
   // =========================
   const risparmiPctForm = document.getElementById("risparmiPctForm");
 
-  function fmtPctInput(x){ // 0.03 -> "3,0"
+  function fmtPctInput(x){
     const v = (Number(x) || 0) * 100;
     return v.toLocaleString("it-IT", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
   }
-function parsePctInput(str){ // "3,5" o "3.5" o "1.234,5"
-  let s = String(str ?? "").trim();
-  if (!s) return 0;
 
-  const hasComma = s.includes(",");
-  const hasDot = s.includes(".");
+  function parsePctInput(str){
+    let s = String(str ?? "").trim();
+    if (!s) return 0;
 
-  if (hasComma && hasDot) {
-    // formato it: "1.234,5" => togli punti migliaia, virgola decimale
-    s = s.replace(/\./g, "").replace(",", ".");
-  } else if (hasComma) {
-    // "3,5" => "3.5"
-    s = s.replace(",", ".");
-  } else {
-    // solo punto: "3.5" resta "3.5" (non lo trattare come migliaia)
-    // niente
+    const hasComma = s.includes(",");
+    const hasDot = s.includes(".");
+
+    if (hasComma && hasDot) {
+      s = s.replace(/\./g, "").replace(",", ".");
+    } else if (hasComma) {
+      s = s.replace(",", ".");
+    }
+
+    const n = Number(s);
+    return Number.isFinite(n) ? (n / 100) : 0;
   }
-
-  const n = Number(s);
-  return Number.isFinite(n) ? (n / 100) : 0;
-}
 
   function renderRisparmiPctForm(){
     if(!risparmiPctForm) return;
@@ -1793,7 +1709,6 @@ function parsePctInput(str){ // "3,5" o "3.5" o "1.234,5"
 
     const EEtot = EErete_kWh + EEfer_kWh;
 
-    // indicatori generali (per superficie)
     const kpi_ee_num  = superficieNum > 0 ? (EEtot / superficieNum) : NaN;
     const kpi_gas_num = superficieNum > 0 ? (gas_smc / superficieNum) : NaN;
     const kpi_gasolio_num =
@@ -1801,16 +1716,12 @@ function parsePctInput(str){ // "3,5" o "3.5" o "1.234,5"
         ? (gasolio_l / (kmNum * veicoliNum)) * 100
         : NaN;
 
-    // indicatori specifici (per driver)
     const kpi_ee_spec_num  = driverNum > 0 ? (EEtot / driverNum) : NaN;
     const kpi_gas_spec_num = driverNum > 0 ? (gas_smc / driverNum) : NaN;
 
-    // benchmark ATECO
     const annoA = String(input.atecoAnno || "2007").trim();
     const codA = normAteco(input.ateco);
-
-    let info = getAtecoInfo(annoA, codA);
-
+    const info = getAtecoInfo(annoA, codA);
 
     const bench_ee_num      = (info.kwh_m2 == null) ? null : Number(info.kwh_m2);
     const bench_gas_num     = (info.smc_m2 == null) ? null : Number(info.smc_m2);
@@ -1849,9 +1760,10 @@ function parsePctInput(str){ // "3,5" o "3.5" o "1.234,5"
       gas: fmtInt(gas_smc),
       gasolio: fmtInt(gasolio_l),
 
-      PEE: input.PEE ? fmt2(PEE) : "—",
-      Pgas: input.Pgas ? fmt2(Pgas) : "—",
-      Pgasolio: input.Pgasolio ? fmt2(Pgasolio) : "—",
+      /* ✅ prezzi a 3 decimali */
+      PEE: input.PEE ? fmt3(PEE) : "—",
+      Pgas: input.Pgas ? fmt3(Pgas) : "—",
+      Pgasolio: input.Pgasolio ? fmt3(Pgasolio) : "—",
 
       Eerete_tep: fmt1(Eerete_tep),
       EEfer_tep: fmt1(EEfer_tep),
@@ -1869,7 +1781,6 @@ function parsePctInput(str){ // "3,5" o "3.5" o "1.234,5"
       costogasolio: fmt2(costogasolio),
       costotot: fmt2(costotot),
 
-      // indicatori generali
       kpi_ee: Number.isFinite(kpi_ee_num) ? fmt2(kpi_ee_num) : "—",
       kpi_gas: Number.isFinite(kpi_gas_num) ? fmt2(kpi_gas_num) : "—",
       kpi_gasolio: Number.isFinite(kpi_gasolio_num) ? fmt4(kpi_gasolio_num) : "—",
@@ -1882,7 +1793,6 @@ function parsePctInput(str){ // "3,5" o "3.5" o "1.234,5"
       stato_gas: statoBenchmark(kpi_gas_num, bench_gas_num),
       stato_gasolio: statoBenchmark(kpi_gasolio_num, bench_gasolio_num),
 
-      // indicatori specifici (FIX: 1 decimale + separatore migliaia)
       kpi_ee_spec: Number.isFinite(kpi_ee_spec_num) ? fmtSpec1(kpi_ee_spec_num) : "—",
       kpi_gas_spec: Number.isFinite(kpi_gas_spec_num) ? fmtSpec1(kpi_gas_spec_num) : "—",
 
@@ -1946,9 +1856,9 @@ function parsePctInput(str){ // "3,5" o "3.5" o "1.234,5"
 
       let base = 0;
       const tipo = (it.area === "Altro"
-  ? (st.tipo_override || "")
-  : (it.tipo || "")
-).trim();
+        ? (st.tipo_override || "")
+        : (it.tipo || "")
+      ).trim();
 
       if (tipo === "Elettrico") base = PEE * EE;
       else if (tipo === "Termico") base = PGAS * GAS;
@@ -1961,7 +1871,7 @@ function parsePctInput(str){ // "3,5" o "3.5" o "1.234,5"
       return `
         <tr>
           <td>${safe(it.area)}</td>
-         <td>${safe(it.area === "Altro" ? (st.tipo_override || "") : it.tipo)}</td>
+          <td>${safe(it.area === "Altro" ? (st.tipo_override || "") : it.tipo)}</td>
           <td class="right">${fmt2(risp)} €</td>
         </tr>
       `;
@@ -1984,48 +1894,51 @@ function parsePctInput(str){ // "3,5" o "3.5" o "1.234,5"
     }
     return rows + footer;
   }
-function buildKpiSpecRowsHTML(calc) {
-  let rows = "";
 
-  const showEE = document.getElementById("show_kpi_ee_spec")?.checked;
-  const showGas = document.getElementById("show_kpi_gas_spec")?.checked;
+  function buildKpiSpecRowsHTML(calc) {
+    let rows = "";
 
-  if (showEE) {
-    rows += `
-      <tr>
-        <td>Energia elettrica totale</td>
-        <td class="right">${calc.kpi_ee_spec}</td>
-        <td class="center">kWh/(${calc.UM_show})</td>
-      </tr>
-    `;
+    const showEE = document.getElementById("show_kpi_ee_spec")?.checked;
+    const showGas = document.getElementById("show_kpi_gas_spec")?.checked;
+
+    if (showEE) {
+      rows += `
+        <tr>
+          <td>Energia elettrica totale</td>
+          <td class="right">${calc.kpi_ee_spec}</td>
+          <td class="center">kWh/(${calc.UM_show})</td>
+        </tr>
+      `;
+    }
+
+    if (showGas) {
+      rows += `
+        <tr>
+          <td>Gas</td>
+          <td class="right">${calc.kpi_gas_spec}</td>
+          <td class="center">Smc/(${calc.UM_show})</td>
+        </tr>
+      `;
+    }
+
+    if (!rows) {
+      rows = `
+        <tr>
+          <td colspan="3" class="center muted">
+            Nessun indicatore specifico selezionato.
+          </td>
+        </tr>
+      `;
+    }
+
+    return rows;
   }
 
-  if (showGas) {
-    rows += `
-      <tr>
-        <td>Gas</td>
-        <td class="right">${calc.kpi_gas_spec}</td>
-        <td class="center">Smc/(${calc.UM_show})</td>
-      </tr>
-    `;
-  }
-
-  if (!rows) {
-    rows = `
-      <tr>
-        <td colspan="3" class="center muted">
-          Nessun indicatore specifico selezionato.
-        </td>
-      </tr>
-    `;
-  }
-
-  return rows;
-}
   // =========================
   // Charts
   // =========================
   Chart.register(ChartDataLabels);
+
   let chartCostiConsumi=null, chartEffBar=null, chartEffDonut=null, chartEnergiaPrimaria=null, chartVettoriEnergetici=null;
 
   function destroyCharts(){
@@ -2035,66 +1948,27 @@ function buildKpiSpecRowsHTML(calc) {
     if(chartEnergiaPrimaria){ chartEnergiaPrimaria.destroy(); chartEnergiaPrimaria=null; }
     if(chartVettoriEnergetici){ chartVettoriEnergetici.destroy(); chartVettoriEnergetici=null; }
   }
-// ✅ HTML Legend plugin (scrive la legenda in una DIV)
-const htmlLegendPlugin = {
-  id: "htmlLegend",
-  afterUpdate(chart, args, options) {
-    const container = document.getElementById(options.containerID);
-    if (!container) return;
 
-    container.innerHTML = "";
+  /* ✅ UN SOLO plugin: htmlLegend */
+  const htmlLegendPlugin = {
+    id: "htmlLegend",
+    afterUpdate(chart, args, options) {
+      const container = document.getElementById(options.containerID);
+      if (!container) return;
 
-    const items = chart.options.plugins.legend.labels.generateLabels(chart);
-    items.forEach(item => {
-      const el = document.createElement("div");
-      el.className = "lgItem";
-      el.innerHTML = `
-        <span class="lgSwatch" style="background:${item.fillStyle}"></span>
-        <span>${item.text}</span>
-      `;
+      container.innerHTML = "";
+      const items = chart.options.plugins.legend.labels.generateLabels(chart);
 
-      // opzionale: click per nascondere/mostrare lo spicchio
-      el.style.cursor = "pointer";
-      el.onclick = () => {
-        chart.toggleDataVisibility(item.index);
-        chart.update();
-      };
+      items.forEach(item => {
+        const el = document.createElement("div");
+        el.className = "lgItem";
+        el.style.borderLeftColor = item.fillStyle; // colore stampabile
+        el.textContent = item.text;
+        container.appendChild(el);
+      });
+    }
+  };
 
-      container.appendChild(el);
-    });
-  }
-};
-
-  function buildHtmlLegend(chart, legendContainerId){
-  const el = document.getElementById(legendContainerId);
-  if(!el) return;
-
-  // pulizia
-  el.innerHTML = "";
-
-  const items = chart.options.plugins.legend.labels.generateLabels(chart);
-
-  items.forEach(item => {
-    const div = document.createElement("div");
-    div.className = "lgItem";
-
-    // ✅ colore stampabile (barra a sinistra)
-    div.style.borderLeftColor = item.fillStyle;
-
-    // testo
-    div.textContent = item.text;
-
-    el.appendChild(div);
-  });
-}
-
-const htmlLegendPlugin = {
-  id: "htmlLegendPlugin",
-  afterUpdate(chart, args, opts){
-    if(!opts || !opts.containerId) return;
-    buildHtmlLegend(chart, opts.containerId);
-  }
-};
   function renderCharts(calc){
     const r = calc._raw;
 
@@ -2106,7 +1980,7 @@ const htmlLegendPlugin = {
 
       chartEnergiaPrimaria = new Chart(epEl, {
         type: "doughnut",
-        plugins: [htmlLegendPlugin], // ✅ questa riga
+        plugins: [htmlLegendPlugin],
         data: { labels, datasets: [{
           data,
           backgroundColor: [ENERGY_COL.ee, ENERGY_COL.gas, ENERGY_COL.gasolio],
@@ -2118,58 +1992,46 @@ const htmlLegendPlugin = {
         options: {
           responsive: true,
           maintainAspectRatio: false,
-                    cutout: "62%",
+          cutout: "62%",
           rotation: -90 * (Math.PI/180),
-         layout: {
-  padding: {
-    top: 40,
-    bottom: 40,
-    left: 70,
-    right: 70
-  }
-},
-          radius: "88%", 
-     plugins: {
-  // ❌ spegni la legenda nativa
-  legend: { display: false },
+          layout: { padding: { top: 40, bottom: 40, left: 70, right: 70 } },
+          radius: "88%",
+          plugins: {
+            legend: { display: false },
+            /* ✅ opzioni al plugin = id htmlLegend */
+            htmlLegend: { containerID: "legendEnergiaPrimaria" },
 
-  // ✅ attiva la legenda HTML nella DIV sotto
-  htmlLegend: { containerID: "legendEnergiaPrimaria" },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => {
+                  const v = ctx.parsed || 0;
+                  const pct = Math.round((v / tot) * 100);
+                  return `${ctx.label}: ${fmt1(v)} tep (${pct}%)`;
+                }
+              }
+            },
 
-  tooltip: {
-    callbacks: {
-      label: (ctx) => {
-        const v = ctx.parsed || 0;
-        const pct = Math.round((v / tot) * 100);
-        return `${ctx.label}: ${fmt1(v)} tep (${pct}%)`;
-      }
-    }
-  },
-
-  // ✅ SUL GRAFICO: SOLO %
-  datalabels: {
-    color: "#111",
-    font: { size: 13, weight: "700" },
-    anchor: "end",
-    align: "end",
-    offset: 12,
-    clamp: true,
-    clip: false,
-
-    // mostra etichetta solo se lo spicchio è "abbastanza grande"
-    display: (ctx) => {
-      const value = ctx.dataset.data[ctx.dataIndex] || 0;
-      const pct = tot > 0 ? value / tot : 0;
-      return pct >= 0.05; // 5% (puoi mettere 0.03 se vuoi più etichette)
-    },
-
-    formatter: (value) => {
-      if (!value || value <= 0) return "";
-      const pct = Math.round((value / tot) * 100);
-      return `${pct}%`;
-    }
-  }
-}
+            /* ✅ SUL GRAFICO: SOLO % */
+            datalabels: {
+              color: "#111",
+              font: { size: 13, weight: "700" },
+              anchor: "end",
+              align: "end",
+              offset: 12,
+              clamp: true,
+              clip: false,
+              display: (ctx) => {
+                const value = ctx.dataset.data[ctx.dataIndex] || 0;
+                const pct = tot > 0 ? value / tot : 0;
+                return pct >= 0.05;
+              },
+              formatter: (value) => {
+                if (!value || value <= 0) return "";
+                const pct = Math.round((value / tot) * 100);
+                return `${pct}%`;
+              }
+            }
+          }
         }
       });
     }
@@ -2277,45 +2139,32 @@ const htmlLegendPlugin = {
           ]
         },
         options:{
-  responsive:true,
-  maintainAspectRatio:false,
-
-  layout:{ 
-    padding:{ top: 18, bottom: 18, left: 130, right: 130 } 
-  },
-
-  radius: "88%",
-  cutout: "52%",
-  rotation: -90*(Math.PI/180),
-
-  plugins:{
-    legend:{display:false},
-
-    datalabels:{
-      display:(ctx)=> ctx.datasetIndex===1 && 
-                      (ctx.dataIndex===0 || ctx.dataIndex===1),
-
-      color:"#111",
-      font:{ size: 13, weight:"700" },
-
-      anchor:"end",
-      align:(ctx)=> (ctx.dataIndex===0 ? "right" : "left"),
-      offset: 18,
-
-      clip: false,
-      clamp: true,
-
-      textAlign:(ctx)=> 
-        (ctx.dataIndex===0 ? "right" : "left"),
-
-      formatter:(value, ctx)=>{
-        if(!value || value<=0) return "";
-        const lab = ctx.chart.data.labels[ctx.dataIndex];
-        return ["Consumi [tep]", lab, fmt1(value)];
-      }
-    }
-  }
-}
+          responsive:true,
+          maintainAspectRatio:false,
+          layout:{ padding:{ top: 18, bottom: 18, left: 130, right: 130 } },
+          radius: "88%",
+          cutout: "52%",
+          rotation: -90*(Math.PI/180),
+          plugins:{
+            legend:{display:false},
+            datalabels:{
+              display:(ctx)=> ctx.datasetIndex===1 && (ctx.dataIndex===0 || ctx.dataIndex===1),
+              color:"#111",
+              font:{ size: 13, weight:"700" },
+              anchor:"end",
+              align:(ctx)=> (ctx.dataIndex===0 ? "right" : "left"),
+              offset: 18,
+              clip: false,
+              clamp: true,
+              textAlign:(ctx)=> (ctx.dataIndex===0 ? "right" : "left"),
+              formatter:(value, ctx)=>{
+                if(!value || value<=0) return "";
+                const lab = ctx.chart.data.labels[ctx.dataIndex];
+                return ["Consumi [tep]", lab, fmt1(value)];
+              }
+            }
+          }
+        }
       });
     }
 
@@ -2327,63 +2176,71 @@ const htmlLegendPlugin = {
     if(bEl){
       chartEffBar = new Chart(bEl,{
         type:"bar",
-        data:{ labels:["Bassa","Media","Alta"], datasets:[{ data:[bassa, media, alta], backgroundColor:[EFF_COL.bassa, EFF_COL.media, EFF_COL.alta], borderRadius:10, 
-  categoryPercentage: 0.95, 
-  barPercentage: 0.95,
-                                                          barThickness: 42,
-                                                          maxBarThickness: 52}]},
+        data:{ labels:["Bassa","Media","Alta"], datasets:[{
+          data:[bassa, media, alta],
+          backgroundColor:[EFF_COL.bassa, EFF_COL.media, EFF_COL.alta],
+          borderRadius:10,
+          categoryPercentage: 0.95,
+          barPercentage: 0.95,
+          barThickness: 42,
+          maxBarThickness: 52
+        }]},
         options: {
-  indexAxis: "y",
-  responsive: true,
-  maintainAspectRatio: false,
-
-  layout: { padding: { right: 28 } }, // spazio per le etichette
-
-  plugins: {
-    legend: { display: false },
-    datalabels: {
-      color: "#111",
-      anchor: "end",
-      align: "end",
-      offset: 10,
-      clip: false,
-      clamp: true,
-      font: { size: 16, weight: "700" },
-      formatter: (v) => String(v)
-    }
-  },
-
-  scales: {
-    x: {
-      beginAtZero: true,
-      grace: "20%",
-      ticks: { font: { size: 14, weight: "600" } },
-      grid: { color: "#E6E6E6" }
-    },
-    y: {
-      grid: { display: false },
-      ticks: { font: { size: 15, weight: "600" } } // <-- QUI dentro y
-    }
-  }
-}
+          indexAxis: "y",
+          responsive: true,
+          maintainAspectRatio: false,
+          layout: { padding: { right: 28 } },
+          plugins: {
+            legend: { display: false },
+            datalabels: {
+              color: "#111",
+              anchor: "end",
+              align: "end",
+              offset: 10,
+              clip: false,
+              clamp: true,
+              font: { size: 16, weight: "700" },
+              formatter: (v) => String(v)
+            }
+          },
+          scales: {
+            x: {
+              beginAtZero: true,
+              grace: "20%",
+              ticks: { font: { size: 14, weight: "600" } },
+              grid: { color: "#E6E6E6" }
+            },
+            y: {
+              grid: { display: false },
+              ticks: { font: { size: 15, weight: "600" } }
+            }
+          }
+        }
       });
+
+      /* ✅ solo qui: se il canvas esiste */
+      bEl.removeAttribute("width");
+      bEl.removeAttribute("height");
+      bEl.style.width = "100%";
+      bEl.style.height = "100%";
     }
-  // FIX stampa: evita stretch del testo (canvas scalato)
-  bEl.removeAttribute("width");
-  bEl.removeAttribute("height");
-  bEl.style.width = "100%";
-  bEl.style.height = "100%";
+
     const dEl = document.getElementById("chartEffDonut");
     if(dEl){
       chartEffDonut = new Chart(dEl,{
         type:"doughnut",
-        data:{ labels:["Bassa","Media","Alta"], datasets:[{ data:[bassa, media, alta], backgroundColor:[EFF_COL.bassa, EFF_COL.media, EFF_COL.alta], borderColor:"#fff", borderWidth:6 }]},
+        data:{ labels:["Bassa","Media","Alta"], datasets:[{
+          data:[bassa, media, alta],
+          backgroundColor:[EFF_COL.bassa, EFF_COL.media, EFF_COL.alta],
+          borderColor:"#fff",
+          borderWidth:6
+        }]},
         options:{
           responsive:true,
-              maintainAspectRatio:true,
-    aspectRatio:1,
+          maintainAspectRatio:true,
+          aspectRatio:1,
           cutout:"70%",
-           radius:"88%",  
+          radius:"88%",
           rotation:-90*(Math.PI/180),
           plugins:{
             legend:{display:false},
@@ -2422,7 +2279,7 @@ const htmlLegendPlugin = {
       driver_um: safe(document.getElementById("driver_um").value),
 
       ore_lavorative: safe(document.getElementById("ore_lavorative").value),
-ambiente_riscaldato: safe(document.getElementById("ambiente_riscaldato").value),
+      ambiente_riscaldato: safe(document.getElementById("ambiente_riscaldato").value),
 
       regione: safe(document.getElementById("regione").value),
       fascia_climatica: safe(document.getElementById("fascia_climatica").value),
@@ -2449,8 +2306,9 @@ ambiente_riscaldato: safe(document.getElementById("ambiente_riscaldato").value),
     const calc = compute(input);
 
     let html = TEMPLATE.replace("{{INTERVENTI_ROWS}}", buildInterventiRowsHTML());
-html = html.replace("{{RISPARMI_ROWS}}", buildRisparmiRowsHTML(calc));
-html = html.replace("{{KPI_SPEC_ROWS}}", buildKpiSpecRowsHTML(calc));
+    html = html.replace("{{RISPARMI_ROWS}}", buildRisparmiRowsHTML(calc));
+    html = html.replace("{{KPI_SPEC_ROWS}}", buildKpiSpecRowsHTML(calc));
+
     docRoot.innerHTML = applyTemplate(html, calc);
 
     destroyCharts();
@@ -2458,7 +2316,7 @@ html = html.replace("{{KPI_SPEC_ROWS}}", buildKpiSpecRowsHTML(calc));
   }
 
   // =========================
-  // Progetti / JSON / Excel
+  // Progetti / JSON / Excel (invariato rispetto al tuo)
   // =========================
   const LS_KEY = "audit_projects_v1";
 
@@ -2514,9 +2372,9 @@ html = html.replace("{{KPI_SPEC_ROWS}}", buildKpiSpecRowsHTML(calc));
       interventiState: interventiState.map(s => ({
         eff: s.eff,
         intervento: !!s.intervento,
-        opportunita: s.opportunita ?? ""
+        opportunita: s.opportunita ?? "",
+        tipo_override: s.tipo_override ?? ""
       })),
-      // NUOVO: percentuali risparmio
       risparmioPctState: risparmioPctState.map(p => ({
         bassa: Number(p.bassa) || 0,
         media: Number(p.media) || 0
@@ -2589,10 +2447,10 @@ html = html.replace("{{KPI_SPEC_ROWS}}", buildKpiSpecRowsHTML(calc));
         interventiState[i].eff = s.eff ?? "N.A.";
         interventiState[i].intervento = !!s.intervento;
         interventiState[i].opportunita = s.opportunita ?? "";
+        interventiState[i].tipo_override = s.tipo_override ?? "";
       });
     }
 
-    // NUOVO: carica percentuali risparmio (se assenti, fallback ai default)
     if (Array.isArray(payload.risparmioPctState)) {
       payload.risparmioPctState.forEach((p, i) => {
         if(!risparmioPctState[i]) return;
@@ -2608,148 +2466,6 @@ html = html.replace("{{KPI_SPEC_ROWS}}", buildKpiSpecRowsHTML(calc));
     }
 
     updateDescrizioneAteco();
-    renderInterventiForm();
-    renderRisparmiPctForm();
-    render();
-  }
-
-  // Excel: definizioni campi (tutti)
-  function getAllInputFieldDefs(){
-    const defs = [
-      { section:"Dati base", label:"Società", id:"azienda" },
-      { section:"Dati base", label:"Data", id:"data" },
-      { section:"Dati base", label:"Indirizzo del sito", id:"indirizzo" },
-      { section:"Dati base", label:"Codice ATECO", id:"ateco" },
-      { section:"Dati base", label:"Anno ATECO", id:"atecoAnno" },
-      { section:"Dati base", label:"Descrizione ATECO", id:"descrizioneateco" },
-
-      { section:"Dati generali", label:"Superficie stabilimento [m²]", id:"superficie" },
-      { section:"Dati generali", label:"Driver energetico", id:"driver" },
-      { section:"Dati generali", label:"UM driver energetico", id:"driver_um" },
-      { section:"Dati generali", label:"Ore lavorative", id:"ore_lavorative" },
-      { section:"Dati generali", label:"Ambiente riscaldato", id:"ambiente_riscaldato" },
-
-      { section:"Dati climatici", label:"Regione", id:"regione" },
-      { section:"Dati climatici", label:"Fascia climatica", id:"fascia_climatica" },
-      { section:"Dati climatici", label:"Gradi giorno medi regionali", id:"gradi_giorno" },
-
-      { section:"Flotta aziendale", label:"Numero veicoli flotta aziendale", id:"veicoli" },
-      { section:"Flotta aziendale", label:"Chilometraggio medio auto [km]", id:"km" },
-
-      { section:"Consumi annui", label:"Energia elettrica rete [kWh]", id:"EErete" },
-      { section:"Consumi annui", label:"Energia elettrica FER [kWh]", id:"EEfer" },
-      { section:"Consumi annui", label:"Consumo annuo gas [Smc]", id:"gas" },
-      { section:"Consumi annui", label:"Consumo annuo carburante [l]", id:"gasolio" },
-
-      { section:"Tariffe", label:"Tariffa energia elettrica [€/kWh]", id:"PEE" },
-      { section:"Tariffe", label:"Tariffa gas [€/Smc]", id:"Pgas" },
-      { section:"Tariffe", label:"Tariffa carburante [€/l]", id:"Pgasolio" },
-
-      { section:"Note", label:"Commento generale", id:"commento_generale" }
-    ];
-
-    INTERVENTI_STANDARD.forEach((it, idx) => {
-      defs.push({ section:"Aree di intervento", label:`${it.area} - Efficienza`, key:`interventi.${idx}.eff` });
-      defs.push({ section:"Aree di intervento", label:`${it.area} - Opportunità`, key:`interventi.${idx}.opportunita` });
-      defs.push({ section:"Aree di intervento", label:`${it.area} - Intervento consigliato`, key:`interventi.${idx}.intervento` });
-
-      // (non richiesto: % risparmio in Excel) -> lasciato fuori per compatibilità con tuo Excel attuale
-    });
-
-    return defs;
-  }
-
-  function getValueByDef(def){
-    if (def.id){
-      const el = document.getElementById(def.id);
-      return el ? (el.value ?? "") : "";
-    }
-    if (def.key && def.key.startsWith("interventi.")){
-      const parts = def.key.split(".");
-      const idx = Number(parts[1]);
-      const field = parts[2];
-      const st = interventiState[idx];
-      if (!st) return "";
-      if (field === "intervento") return st.intervento ? "1" : "0";
-      return st[field] ?? "";
-    }
-    return "";
-  }
-
-  function setValueByDef(def, value){
-    if (def.id){
-      const el = document.getElementById(def.id);
-      if (el) el.value = value ?? "";
-      return;
-    }
-    if (def.key && def.key.startsWith("interventi.")){
-      const parts = def.key.split(".");
-      const idx = Number(parts[1]);
-      const field = parts[2];
-      const st = interventiState[idx];
-      if (!st) return;
-
-      if (field === "eff"){
-        st.eff = String(value ?? "").trim() || "N.A.";
-        st.intervento = computeInterventoAuto(st.eff);
-        if (!st.intervento) st.opportunita = "";
-        return;
-      }
-      if (field === "opportunita"){
-        if (st.intervento) st.opportunita = String(value ?? "");
-        return;
-      }
-      if (field === "intervento"){
-        return; // auto
-      }
-    }
-  }
-
-  function exportExcel(){
-    const defs = getAllInputFieldDefs();
-    const rows = defs.map(d => ({
-      Sezione: d.section,
-      Campo: d.label,
-      ID: d.id ?? "",
-      Chiave: d.key ?? "",
-      Valore: getValueByDef(d)
-    }));
-
-    const ws = XLSX.utils.json_to_sheet(rows, { header:["Sezione","Campo","ID","Chiave","Valore"] });
-    ws["!cols"] = [
-      { wch: 18 }, { wch: 40 }, { wch: 18 }, { wch: 24 }, { wch: 40 }
-    ];
-
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Input");
-
-    const fileName = `audit_input_${new Date().toISOString().slice(0,10)}.xlsx`;
-    XLSX.writeFile(wb, fileName);
-  }
-
-  async function importExcel(file){
-    const buf = await file.arrayBuffer();
-    const wb = XLSX.read(buf, { type:"array" });
-    const ws = wb.Sheets["Input"] || wb.Sheets[wb.SheetNames[0]];
-    if (!ws) throw new Error("Foglio Excel non trovato");
-
-    const data = XLSX.utils.sheet_to_json(ws, { defval:"" });
-    const defs = getAllInputFieldDefs();
-
-    const byId = new Map(defs.filter(d=>d.id).map(d=>[d.id, d]));
-    const byKey = new Map(defs.filter(d=>d.key).map(d=>[d.key, d]));
-
-    data.forEach(row => {
-      const id = String(row.ID ?? "").trim();
-      const key = String(row.Chiave ?? "").trim();
-      const val = row.Valore ?? "";
-
-      if (id && byId.has(id)) setValueByDef(byId.get(id), val);
-      else if (key && byKey.has(key)) setValueByDef(byKey.get(key), val);
-    });
-
-    updateDescrizioneAteco();
-    updateClimaFromRegione();
     renderInterventiForm();
     renderRisparmiPctForm();
     render();
@@ -2772,9 +2488,8 @@ html = html.replace("{{KPI_SPEC_ROWS}}", buildKpiSpecRowsHTML(calc));
 
     document.getElementById("atecoAnno").value = "2007";
 
-    interventiState.forEach(s => { s.eff="N.A."; s.intervento=false; s.opportunita=""; });
+    interventiState.forEach(s => { s.eff="N.A."; s.intervento=false; s.opportunita=""; s.tipo_override=""; });
 
-    // reset % risparmio ai default
     INTERVENTI_STANDARD.forEach((it, i) => {
       const b = defaultPctBassaForArea(it.area);
       risparmioPctState[i].bassa = b;
@@ -2879,30 +2594,11 @@ html = html.replace("{{KPI_SPEC_ROWS}}", buildKpiSpecRowsHTML(calc));
   document.getElementById("regione").addEventListener("change", () => { updateClimaFromRegione(); render(); });
 
   document.getElementById("btnPrint").addEventListener("click", () => window.print());
-document.getElementById("show_kpi_ee_spec").addEventListener("change", render);
-document.getElementById("show_kpi_gas_spec").addEventListener("change", render);
+  document.getElementById("show_kpi_ee_spec").addEventListener("change", render);
+  document.getElementById("show_kpi_gas_spec").addEventListener("change", render);
   document.getElementById("btnExportJson").addEventListener("click", exportAuditJSON);
-
-  const fileImportJson = document.getElementById("fileImportJson");
-  document.getElementById("btnImportJson").addEventListener("click", () => fileImportJson.click());
-  fileImportJson.addEventListener("change", async (e) => {
-    const file = e.target.files?.[0];
-    if(!file) return;
-    try{
-      const txt = await file.text();
-      const payload = JSON.parse(txt);
-      applyAuditJSON(payload);
-    } catch(err){
-      alert("Errore import JSON: " + (err?.message || err));
-    } finally {
-      fileImportJson.value = "";
-    }
-  });
-
   document.getElementById("btnReset").addEventListener("click", resetAll);
-
   document.getElementById("btnToggleFull").addEventListener("click", toggleFullForm);
-
   document.getElementById("btnNuovoProj").addEventListener("click", () => {
     if(confirm("Creare un nuovo progetto? I dati non salvati andranno persi.")){
       resetAll();
@@ -2915,23 +2611,6 @@ document.getElementById("show_kpi_gas_spec").addEventListener("change", render);
     if (e.target.id === "projModal") closeProjectModal();
   });
 
-  document.getElementById("btnExportExcel").addEventListener("click", exportExcel);
-
-  const fileImportExcel = document.getElementById("fileImportExcel");
-  document.getElementById("btnImportExcel").addEventListener("click", () => fileImportExcel.click());
-  fileImportExcel.addEventListener("change", async (e) => {
-    const file = e.target.files?.[0];
-    if(!file) return;
-    try{
-      await importExcel(file);
-      alert("Import Excel completato.");
-    } catch(err){
-      alert("Errore import Excel: " + (err?.message || err));
-    } finally {
-      fileImportExcel.value = "";
-    }
-  });
-
   // init
   renderInterventiForm();
   renderRisparmiPctForm();
@@ -2941,16 +2620,3 @@ document.getElementById("show_kpi_gas_spec").addEventListener("change", render);
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-

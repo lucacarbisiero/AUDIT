@@ -563,6 +563,24 @@
 <div class="wrap">
   <!-- FORM -->
   <section class="panel form" id="formPanel">
+    <hr class="hr"/>
+
+<h2>Indicatori specifici - visualizzazione</h2>
+
+<div class="row">
+  <div>
+    <label>
+      <input type="checkbox" id="show_kpi_ee_spec" checked>
+      Mostra KPI Energia elettrica specifico
+    </label>
+  </div>
+  <div>
+    <label>
+      <input type="checkbox" id="show_kpi_gas_spec" checked>
+      Mostra KPI Gas specifico
+    </label>
+  </div>
+</div>
     <div class="formContent">
       <h2>Dati base</h2>
 
@@ -1201,18 +1219,9 @@
             <th class="center">Unità</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>Energia elettrica totale</td>
-            <td class="right">{{kpi_ee_spec}}</td>
-            <td class="center">kWh/({{UM_show}})</td>
-          </tr>
-          <tr>
-            <td>Gas</td>
-            <td class="right">{{kpi_gas_spec}}</td>
-            <td class="center">Smc/({{UM_show}})</td>
-          </tr>
-        </tbody>
+       <tbody>
+  {{KPI_SPEC_ROWS}}
+</tbody>
       </table>
 
       <div class="pageBreak"></div>
@@ -1893,7 +1902,44 @@
     }
     return rows + footer;
   }
+function buildKpiSpecRowsHTML(calc) {
+  let rows = "";
 
+  const showEE = document.getElementById("show_kpi_ee_spec")?.checked;
+  const showGas = document.getElementById("show_kpi_gas_spec")?.checked;
+
+  if (showEE) {
+    rows += `
+      <tr>
+        <td>Energia elettrica totale</td>
+        <td class="right">${calc.kpi_ee_spec}</td>
+        <td class="center">kWh/(${calc.UM_show})</td>
+      </tr>
+    `;
+  }
+
+  if (showGas) {
+    rows += `
+      <tr>
+        <td>Gas</td>
+        <td class="right">${calc.kpi_gas_spec}</td>
+        <td class="center">Smc/(${calc.UM_show})</td>
+      </tr>
+    `;
+  }
+
+  if (!rows) {
+    rows = `
+      <tr>
+        <td colspan="3" class="center muted">
+          Nessun indicatore specifico selezionato.
+        </td>
+      </tr>
+    `;
+  }
+
+  return rows;
+}
   // =========================
   // Charts
   // =========================
@@ -2245,7 +2291,8 @@ ambiente_riscaldato: safe(document.getElementById("ambiente_riscaldato").value),
     const calc = compute(input);
 
     let html = TEMPLATE.replace("{{INTERVENTI_ROWS}}", buildInterventiRowsHTML());
-    html = html.replace("{{RISPARMI_ROWS}}", buildRisparmiRowsHTML(calc));
+html = html.replace("{{RISPARMI_ROWS}}", buildRisparmiRowsHTML(calc));
+html = html.replace("{{KPI_SPEC_ROWS}}", buildKpiSpecRowsHTML(calc));
     docRoot.innerHTML = applyTemplate(html, calc);
 
     destroyCharts();
@@ -2674,7 +2721,8 @@ ambiente_riscaldato: safe(document.getElementById("ambiente_riscaldato").value),
   document.getElementById("regione").addEventListener("change", () => { updateClimaFromRegione(); render(); });
 
   document.getElementById("btnPrint").addEventListener("click", () => window.print());
-
+document.getElementById("show_kpi_ee_spec").addEventListener("change", render);
+document.getElementById("show_kpi_gas_spec").addEventListener("change", render);
   document.getElementById("btnExportJson").addEventListener("click", exportAuditJSON);
 
   const fileImportJson = document.getElementById("fileImportJson");
@@ -2735,6 +2783,7 @@ ambiente_riscaldato: safe(document.getElementById("ambiente_riscaldato").value),
 </script>
 </body>
 </html>
+
 
 
 

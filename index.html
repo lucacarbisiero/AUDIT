@@ -483,21 +483,26 @@
       margin-top: 10px;
     }
 
-    .nextStepsFigure{
-      margin: 0;
-      border: 0;
-      border-radius: 0;
-      padding: 0;
-      background: transparent;
-    }
+   .nextStepsFigure{
+  border: 1px solid #eee;
+  border-radius: 14px;
+  padding: 12px;
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.04);
 
-    .nextStepsImg{
-      display: block;
-      width: 100%;
-      height: auto;
-      max-width: 100%;
-      border-radius: 12px;
-    }
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:100%;
+  min-height: 220px;   /* equilibrio con testo */
+}
+
+.nextStepsImg{
+  max-width: 85%;
+  max-height: 170px;
+  object-fit: contain;
+  display:block;
+}
 
     .nextStepsCaption{ display: none !important; }
 
@@ -569,7 +574,11 @@
 
 .stepsGrid{
   display: grid;
-  grid-template-columns: 1.25fr 1fr;
+  grid-template-columns: 1.4fr 0.9fr; /* testo leggermente più largo */
+  gap: 18px;
+  margin-top: 16px;
+  align-items: stretch;
+}
   gap: 16px;
   margin-top: 14px;
   align-items: start;
@@ -2772,4 +2781,5 @@
 </script>
 </body>
 </html>
+
 

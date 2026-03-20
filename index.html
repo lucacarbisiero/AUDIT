@@ -2756,7 +2756,38 @@
   document.getElementById("projModal").addEventListener("click", (e) => {
     if (e.target.id === "projModal") closeProjectModal();
   });
+document.getElementById("btnExportExcel").addEventListener("click", exportExcel);
 
+const fileImportExcel = document.getElementById("fileImportExcel");
+document.getElementById("btnImportExcel").addEventListener("click", () => fileImportExcel.click());
+fileImportExcel.addEventListener("change", async (e) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+  try {
+    await importExcel(file);
+    alert("Import Excel completato.");
+  } catch (err) {
+    alert("Errore import Excel: " + (err?.message || err));
+  } finally {
+    fileImportExcel.value = "";
+  }
+});
+
+const fileImportJson = document.getElementById("fileImportJson");
+document.getElementById("btnImportJson").addEventListener("click", () => fileImportJson.click());
+fileImportJson.addEventListener("change", async (e) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+  try {
+    const txt = await file.text();
+    const payload = JSON.parse(txt);
+    applyAuditJSON(payload);
+  } catch (err) {
+    alert("Errore import JSON: " + (err?.message || err));
+  } finally {
+    fileImportJson.value = "";
+  }
+});
   // init
   renderInterventiForm();
   renderRisparmiPctForm();
